@@ -39,7 +39,14 @@ fun ChangeMobileScreen(onBack: () -> Unit) {
     var number by remember { mutableStateOf("") }
     Column(Modifier.fillMaxSize().background(ReptilianTheme.Surface)) {
         LegacyText("Enter new number", Modifier.padding(8.dp))
-        OutlinedTextField(number, { number = it }, Modifier.fillMaxWidth().padding(8.dp), singleLine = true)
+        LegacyFormList(
+            fields = listOf(
+                LegacyFormField("mobile", "Mobile number", "Your mobile number", "Please enter your mobile phone number in full international format including country code (for example +63918_____)", 13, inputFlags = 3)
+            ),
+            values = mapOf("mobile" to number),
+            onValueChange = { _, value -> number = value },
+            modifier = Modifier.fillMaxWidth().padding(8.dp)
+        )
         Spacer(Modifier.weight(1f))
         LegacyFunctionBar(leftLabel = "OK", rightLabel = "Cancel")
     }
