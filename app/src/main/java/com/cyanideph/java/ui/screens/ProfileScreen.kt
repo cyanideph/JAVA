@@ -1,94 +1,49 @@
 package com.cyanideph.java.ui.screens
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
 
+/** Exact field model from com.kolipri.kalypte.dj (Update profile). */
 @Composable
 fun ProfileScreen(onBack: () -> Unit) {
-    var nickname by remember { mutableStateOf("") }
-    var first by remember { mutableStateOf("") }
-    var last by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
+    val fields = listOf(
+        LegacyFormField("displayname", "Nickname", "Your nickname", "* Nickname\\n\\nThis is how other people will see you in the service. If empty, your first and last name are used as defaults.", 50),
+        LegacyFormField("firstname", "First name", "Your first name", "* Your first name\\n\\nPlease enter your first name as it will appear on your profile.", 50),
+        LegacyFormField("lastname", "Last name", "Your last name", "* Last name\\n\\nPlease enter your last(family) name as it will appear on your profile.", 50),
+        LegacyFormField("email", "Email address", "Your email address", "* Your email address\\n\\nPlease enter your current email address.", 50)
+    )
+    var values by remember { mutableStateOf(emptyMap<String, String>()) }
     var error by remember { mutableStateOf<String?>(null) }
 
-    fun validate(): Boolean {
-        when {
-            last.isBlank() -> { error = "* Lastname is too short."; return false }
-            first.isBlank() -> { error = "* Firstname is too short."; return false }
-            email.isBlank() -> { error = "* Incorrect data\n\nPlease make sure to fill out all fields as instructed:\n\nEmail is too short."; return false }
-            email.length < 3 -> { error = "* Incorrect data\n\nPlease make sure to fill out all fields as instructed:\n\nEmail address has an invalid Entry"; return false }
-            !email.contains("@") -> { error = "* Incorrect data\n\nPlease make sure to fill out all fields as instructed:\n\nEmail address has an invalid Entry"; return false }
+    fun validPlain(value: String) = value.all { it.isLetterOrDigit() || it.isWhitespace() }
+    fun submit() {
+        val nickname = values["displayname"].orEmpty()
+        val first = values["firstname"].orEmpty()
+        val last = values["lastname"].orEmpty()
+        val email = values["email"].orEmpty()
+        error = when {
+            nickname.isNotEmpty() && !validPlain(nickname) -> "* Nickname must not contain special symbols"
+            last.isEmpty() -> "* Lastname is too short."
+            !validPlain(last) -> "* Lastname must not contain special symbols"
+            first.isEmpty() -> "* Firstname is too short."
+            !validPlain(first) -> "* Firstname must not contain special symbols"
+            email.isEmpty() -> "* Incorrect data\\n\\nPlease make sure to fill out all fields as instructed:\\n\\nEmail is too short."
+            email.length < 3 || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> "* Incorrect data\\n\\nPlease make sure to fill out all fields as instructed:\\n\\nEmail address has an invalid Entry"
+            else -> null
         }
-        return true
     }
 
-    LegacyBackground(Modifier.fillMaxSize()) {
+    LegacyBackground(Modifier.fillMaxSize(), ReptilianTheme.Surface) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("* Update profile", Modifier.fillMaxWidth())
-            Column(
-                Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(6.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-                LegacyProfileField("Nickname", nickname, { nickname = it })
-                LegacyProfileField("First name", first, { first = it })
-                LegacyProfileField("Last name", last, { last = it })
-                LegacyProfileField("Email address", email, { email = it })
-            }
-            LegacyFunctionBar(
-                leftLabel = "Update",
-                rightLabel = "Cancel",
-                modifier = Modifier.fillMaxWidth()
-            )
+            LegacyFormList(fields, values, { key, value -> values = values + (key to value) }, Modifier.weight(1f).fillMaxWidth().padding(8.dp))
+            LegacyFunctionBar("Update", "Cancel", Modifier.fillMaxWidth().clickable { submit() })
         }
     }
-
-    if (error != null) {
-        AlertDialog(
-            onDismissRequest = { error = null },
-            title = { LegacyText("Error") },
-            text = { LegacyText(error.orEmpty()) },
-            confirmButton = {
-                TextButton(onClick = { error = null }) { LegacyText("OK") }
-            }
-        )
-    }
-}
-
-@Composable
-private fun LegacyProfileField(
-    label: String,
-    value: String,
-    onValueChange: (String) -> Unit
-) {
-    Column(Modifier.fillMaxWidth()) {
-        LegacyText(label)
-        BasicTextField(
-            value = value,
-            onValueChange = { if (it.length <= 50) onValueChange(it) },
-            singleLine = true,
-            cursorBrush = SolidColor(ReptilianTheme.Text),
-            textStyle = androidx.compose.ui.text.TextStyle(
-                color = ReptilianTheme.Text,
-                fontSize = ReptilianTheme.standardSize
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(30.dp)
-                .background(ReptilianTheme.panelBackground)
-                .border(1.dp, ReptilianTheme.Text)
-                .padding(horizontal = 3.dp, vertical = 5.dp)
-        )
-    }
+    error?.let { message -> LegacyDialogMessage(message) { error = null } }
 }
