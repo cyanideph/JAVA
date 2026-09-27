@@ -43,7 +43,7 @@ fun LegacyFormList(
                 ) {
                     LegacyText(field.label)
                     val shown = values[field.key].orEmpty()
-                    LegacyText(if (field.password) "*".repeat(shown.length) else shown)
+                    LegacyText(shown)
                 }
             }
         }
