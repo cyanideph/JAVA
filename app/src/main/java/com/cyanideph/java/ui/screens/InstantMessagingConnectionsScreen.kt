@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -62,10 +61,15 @@ private fun ConnectionLoginDialog(provider: String, onLogin: () -> Unit, onCance
             Spacer(Modifier.height(6.dp))
             LegacyText(if (provider == "Yahoo") "Yahoo ID" else "MSN ID")
             LegacyText(if (provider == "Yahoo") "(eg. abs)" else "(eg. abs@hotmail.com)")
-            OutlinedTextField(value = username, onValueChange = { username = it.take(50) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
-            Spacer(Modifier.height(4.dp))
-            LegacyText("Password")
-            OutlinedTextField(value = password, onValueChange = { password = it.take(50) }, modifier = Modifier.fillMaxWidth(), singleLine = true, visualTransformation = PasswordVisualTransformation())
+            LegacyFormList(
+                fields = listOf(
+                    LegacyFormField("username", if (provider == "Yahoo") "Yahoo ID" else "MSN ID", if (provider == "Yahoo") "(eg. abs)" else "(eg. abs@hotmail.com)", "", 50),
+                    LegacyFormField("password", "Password", "Password", "", 50, true)
+                ),
+                values = mapOf("username" to username, "password" to password),
+                onValueChange = { key, value -> if (key == "username") username = value else password = value },
+                modifier = Modifier.fillMaxWidth()
+            )
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                 TextButton(onClick = onLogin) { LegacyText("Login") }
                 TextButton(onClick = onCancel) { LegacyText("Cancel") }
