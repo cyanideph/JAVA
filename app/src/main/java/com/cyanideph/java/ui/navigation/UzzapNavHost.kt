@@ -24,7 +24,7 @@ composable(Routes.HISTORY){HistoryScreen{navController.popBackStack()}}
 composable(Routes.REGISTER){RegistrationScreen{navController.popBackStack()}}
 composable(Routes.ABOUT){AboutScreen{navController.popBackStack()}}
 composable(Routes.MENUS){LegacyMenusScreen({navController.popBackStack()},{})}
-composable(Routes.BATTERY){BatterySavingScreen{navController.popBackStack()}}
+composable(Routes.BATTERY){BatterySavingScreen(onBack={navController.popBackStack()},onMenu={navController.navigate(Routes.MAIN)})}
 composable(Routes.OFFLINE){OfflineSettingsScreen{navController.popBackStack()}}
 composable(Routes.PURCHASE_HISTORY){PurchaseHistoryScreen{navController.popBackStack()}}
 composable(Routes.CHANGE_MOBILE){ChangeMobileScreen{navController.popBackStack()}}
