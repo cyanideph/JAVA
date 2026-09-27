@@ -96,10 +96,11 @@ fun ChatroomTonesScreen(onBack: () -> Unit) {
 @Composable
 fun SubscriptionMenuScreen(onBack: () -> Unit, onPurchaseHistory: () -> Unit) {
     val options = listOf("Current Billing Status", "Purchase a Package", "Auto-Renew", "View Purchase History")
-    var selected by remember { mutableIntStateOf(0) }
+    var selected by remember { mutableIntStateOf(0) }\n    var processing by remember { mutableStateOf(false) }
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("Subscription Menu", Modifier.fillMaxWidth())
+            LegacyText("* Select subscription option:", Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp))
             options.forEachIndexed { index, label ->
                 LegacyText(
                     label,
@@ -114,7 +115,7 @@ fun SubscriptionMenuScreen(onBack: () -> Unit, onPurchaseHistory: () -> Unit) {
                 leftLabel = "Select",
                 rightLabel = "Cancel",
                 modifier = Modifier.fillMaxWidth(),
-                onLeftClick = { if (options[selected] == "View Purchase History") onPurchaseHistory() },
+                onLeftClick = {\n                    if (options[selected] == "View Purchase History") onPurchaseHistory() else processing = true\n                },
                 onRightClick = onBack
             )
         }
