@@ -29,7 +29,7 @@ private val legacyGroups = listOf(
 )
 
 @Composable
-fun BuddyListScreen(onBack: () -> Unit) {
+fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: () -> Unit = {}) {
     val context = LocalContext.current
     val density = LocalDensity.current
     var selectedGroup by remember { mutableIntStateOf(1) }
