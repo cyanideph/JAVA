@@ -36,7 +36,7 @@ Choose " Email " to have your messages forwarded to Email when off.
 If no options are selected, your messages will be stored for up to 14 days until you next Login to Uzzap."""
 
 @Composable
-fun BatterySavingScreen(onBack: () -> Unit) {
+fun BatterySavingScreen(onBack: () -> Unit, onMenu: () -> Unit) {
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("Battery Saving Mode", Modifier.fillMaxWidth())
@@ -46,7 +46,7 @@ fun BatterySavingScreen(onBack: () -> Unit) {
                 rightLabel = "Menu",
                 modifier = Modifier.fillMaxWidth(),
                 onLeftClick = onBack,
-                onRightClick = onBack
+                onRightClick = onMenu
             )
         }
     }
