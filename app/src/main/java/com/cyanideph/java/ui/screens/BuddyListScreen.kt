@@ -35,7 +35,6 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
     var selectedGroup by remember { mutableIntStateOf(1) }
     var selectedBuddy by remember { mutableIntStateOf(-1) }
     var search by remember { mutableStateOf("") }
-    var showGroups by remember { mutableStateOf(false) }
     var showOptions by remember { mutableStateOf(false) }
     var showContactOptions by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
@@ -92,7 +91,8 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
                     onDismiss = { showOptions = false },
                     onAdd = { showOptions = false; onAddInvite() },
                     onHelp = { showOptions = false; onHelp() },
-                    onManageGroups = { showOptions = false; showGroups = true }
+                    onContact = { showOptions = false; showContactOptions = true },
+                    onManageGroups = { showOptions = false }
                 )
             }
         }
@@ -113,6 +113,7 @@ private fun BuddyOptionsPopup(
     onDismiss: () -> Unit,
     onAdd: () -> Unit,
     onHelp: () -> Unit,
+    onContact: () -> Unit,
     onManageGroups: () -> Unit
 ) {
     val options = buildList {
@@ -133,7 +134,7 @@ private fun BuddyOptionsPopup(
                         .fillMaxWidth()
                         .clickable {
                             when (label) {
-                                "Contact" -> onDismiss()
+                                "Contact" -> onContact()
                                 "Add/Invite Buddies" -> onAdd()
                                 "Manage Groups" -> onManageGroups()
                                 "Uzzap Help" -> onHelp()
