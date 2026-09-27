@@ -122,3 +122,23 @@ private fun LegacyFieldEditor(
         }
     }
 }
+
+
+@Composable
+fun LegacyDialogMessage(
+    text: String,
+    onDismiss: () -> Unit
+) {
+    Dialog(onDismissRequest = onDismiss) {
+        LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
+            Column(Modifier.fillMaxWidth().padding(10.dp)) {
+                LegacyText(text)
+                LegacyFunctionBar(
+                    leftLabel = "",
+                    rightLabel = "OK",
+                    modifier = Modifier.fillMaxWidth().clickable(onClick = onDismiss)
+                )
+            }
+        }
+    }
+}
