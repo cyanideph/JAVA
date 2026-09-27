@@ -83,7 +83,8 @@ private fun ConnectionLoginDialog(provider: String, onLogin: () -> Unit, onCance
                 LegacyFunctionBar(
                     leftLabel = "Login",
                     rightLabel = "Cancel",
-                    modifier = Modifier.fillMaxWidth().clickable(onClick = onLogin)
+                    modifier = Modifier.fillMaxWidth(),
+                    onLeftClick = onLogin
                 )
             }
         }
