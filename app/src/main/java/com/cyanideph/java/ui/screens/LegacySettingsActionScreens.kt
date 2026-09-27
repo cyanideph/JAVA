@@ -70,13 +70,22 @@ fun ChatroomTonesScreen(onBack: () -> Unit) {
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("* Chatroom Tones", Modifier.fillMaxWidth())
-            LegacyText("Choose if you wish an alert tone to sound for chatroom messages.", Modifier.padding(8.dp))
-            LegacyText(if (enabled) "Chatroom Tones: Yes" else "Chatroom Tones: No", Modifier.padding(8.dp))
+            LegacyText(
+                "Choose if you wish an alert tone to sound for chatroom messages.",
+                Modifier.fillMaxWidth().padding(8.dp)
+            )
+            LegacyText(
+                if (enabled) "Chatroom Tones    Yes" else "Chatroom Tones    No",
+                Modifier.fillMaxWidth()
+                    .clickable { enabled = !enabled }
+                    .background(ReptilianTheme.MenuSelected)
+                    .padding(horizontal = 8.dp, vertical = 6.dp)
+            )
             Spacer(Modifier.weight(1f))
             LegacyFunctionBar(
-                leftLabel = if (enabled) "Disable" else "Enable",
-                rightLabel = "Save",
-                modifier = Modifier.fillMaxWidth().clickable { enabled = !enabled }
+                leftLabel = if (enabled) "no" else "yes",
+                rightLabel = "Close",
+                modifier = Modifier.fillMaxWidth().clickable { onBack() }
             )
         }
     }
