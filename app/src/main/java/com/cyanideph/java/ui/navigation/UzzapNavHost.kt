@@ -3,15 +3,16 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import com.cyanideph.java.ui.screens.*
-object Routes{const val LOGIN="login";const val REGISTER="register";const val MAIN="main";const val BUDDIES="buddies";const val MESSAGES="messages";const val ROOMS="rooms";const val ROOM="room/{name}";const val SETTINGS="settings";const val HELP="help";const val PROFILE="profile";const val STATUS="status";const val HISTORY="history";const val MENUS="menus"}
+object Routes{const val LOGIN="login";const val REGISTER="register";const val MAIN="main";const val BUDDIES="buddies";const val MESSAGES="messages";const val ROOMS="rooms";const val ROOM="room/{name}";const val SETTINGS="settings";const val HELP="help";const val PROFILE="profile";const val STATUS="status";const val HISTORY="history";const val MENUS="menus";const val RECEIVED_CONTACTS="received-contacts"}
 @Composable fun UzzapNavHost(navController:NavHostController){NavHost(navController,startDestination=Routes.LOGIN){
 composable(Routes.LOGIN){LoginScreen{navController.navigate(Routes.MAIN){popUpTo(Routes.LOGIN){inclusive=true}}}}
 composable(Routes.MAIN){MainMenuScreen({navController.navigate(Routes.BUDDIES)},{navController.navigate(Routes.MESSAGES)},{navController.navigate(Routes.ROOMS)},{navController.navigate(Routes.SETTINGS)},{navController.navigate(Routes.HELP)})}
 composable(Routes.BUDDIES){BuddyListScreen{navController.popBackStack()}}
+composable(Routes.RECEIVED_CONTACTS){ReceivedContactsScreen{navController.popBackStack()}}
 composable(Routes.MESSAGES){MessagesScreen(
     onBack={navController.popBackStack()},
     onViewHistory={navController.navigate(Routes.HISTORY)},
-    onReceivedContacts={navController.navigate(Routes.BUDDIES)},
+    onReceivedContacts={navController.navigate(Routes.RECEIVED_CONTACTS)},
     onProfile={navController.navigate(Routes.PROFILE)}
 )}
 composable(Routes.ROOMS){ChatRoomsScreen({navController.popBackStack()}){n->navController.navigate("room/"+java.net.URLEncoder.encode(n,"UTF-8"))}}
