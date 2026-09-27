@@ -40,7 +40,13 @@ fun ChatRoomScreen(room: String, onBack: () -> Unit) {
                 participants.forEach { LegacyText("- " + it) }
                 LegacyText("-")
             }
-            LegacyFunctionBar(leftLabel = "Options", rightLabel = "Buddies", modifier = Modifier.fillMaxWidth().clickable { showOptions = true })
+            LegacyFunctionBar(
+                leftLabel = "Options",
+                rightLabel = "Buddies",
+                modifier = Modifier.fillMaxWidth(),
+                onLeftClick = { showOptions = true },
+                onRightClick = onBack
+            )
         }
     }
 
