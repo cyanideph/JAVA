@@ -23,12 +23,13 @@ fun LegacyMenusScreen(onBack: () -> Unit, onSelect: (String) -> Unit) {
     )
     var selected by remember { mutableIntStateOf(0) }
     var open by remember { mutableStateOf(false) }
+    var popupSelected by remember { mutableIntStateOf(0) }
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("Legacy Menus", Modifier.fillMaxWidth())
             Column(Modifier.weight(1f).fillMaxWidth()) {
                 entries.forEachIndexed { index, entry ->
-                    LegacyText(entry.first, Modifier.fillMaxWidth().background(if (index == selected) ReptilianTheme.MenuSelected else ReptilianTheme.Surface).clickable { selected = index; open = true }.padding(horizontal = 8.dp, vertical = 6.dp))
+                    LegacyText(entry.first, Modifier.fillMaxWidth().background(if (index == selected) ReptilianTheme.MenuSelected else ReptilianTheme.Surface).clickable { selected = index; popupSelected = 0; open = true }.padding(horizontal = 8.dp, vertical = 6.dp))
                 }
             }
             LegacyFunctionBar(leftLabel = "Options", rightLabel = "Menu", modifier = Modifier.fillMaxWidth().clickable { open = true })
@@ -38,7 +39,15 @@ fun LegacyMenusScreen(onBack: () -> Unit, onSelect: (String) -> Unit) {
         val entry = entries[selected]
         Dialog(onDismissRequest = { open = false }) {
             Column(Modifier.background(ReptilianTheme.Surface)) {
-                entry.second.forEach { item -> LegacyText(item, Modifier.fillMaxWidth().clickable { open = false; onSelect(item) }.padding(horizontal = 18.dp, vertical = 9.dp)) }
+                entry.second.forEachIndexed { index, item ->
+                    LegacyText(
+                        item,
+                        Modifier.fillMaxWidth()
+                            .background(if (index == popupSelected) ReptilianTheme.MenuSelected else ReptilianTheme.Surface)
+                            .clickable { popupSelected = index; open = false; onSelect(item) }
+                            .padding(horizontal = 18.dp, vertical = 9.dp)
+                    )
+                }
                 LegacyText("Close", Modifier.fillMaxWidth().clickable { open = false }.padding(horizontal = 18.dp, vertical = 9.dp))
             }
         }
