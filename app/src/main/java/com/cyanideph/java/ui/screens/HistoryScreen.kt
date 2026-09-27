@@ -44,9 +44,9 @@ fun HistoryScreen(
             LegacyFunctionBar(
                 leftLabel = "Options",
                 rightLabel = "Buddies",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { showOptions = true }
+                modifier = Modifier.fillMaxWidth(),
+                onLeftClick = { showOptions = true },
+                onRightClick = onBack
             )
         }
     }
