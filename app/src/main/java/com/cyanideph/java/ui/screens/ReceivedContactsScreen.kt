@@ -48,8 +48,9 @@ fun ReceivedContactsScreen(onBack: () -> Unit) {
             LegacyFunctionBar(
                 leftLabel = "Options",
                 rightLabel = "Close",
-                modifier = Modifier.fillMaxWidth()
-                    .clickable { showOptions = true }
+                modifier = Modifier.fillMaxWidth(),
+                onLeftClick = { showOptions = true },
+                onRightClick = onBack
             )
         }
     }
