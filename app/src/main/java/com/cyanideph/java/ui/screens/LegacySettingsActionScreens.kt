@@ -75,22 +75,22 @@ fun ChatroomTonesScreen(onBack: () -> Unit) {
                 Modifier.fillMaxWidth().padding(8.dp)
             )
             LegacyText(
-                if (enabled) "Chatroom Tones    Yes" else "Chatroom Tones    No",
+                "Chatroom Tones    " + if (enabled) "yes" else "no",
                 Modifier.fillMaxWidth()
-                    .clickable { enabled = !enabled }
                     .background(ReptilianTheme.MenuSelected)
+                    .clickable { enabled = !enabled }
                     .padding(horizontal = 8.dp, vertical = 6.dp)
             )
             Spacer(Modifier.weight(1f))
             LegacyFunctionBar(
-                leftLabel = if (enabled) "no" else "yes",
-                rightLabel = "Close",
-                modifier = Modifier.fillMaxWidth().clickable { onBack() }
+                leftLabel = "",
+                rightLabel = "Save",
+                modifier = Modifier.fillMaxWidth(),
+                onRightClick = onBack
             )
         }
     }
 }
-
 @Composable
 fun SubscriptionMenuScreen(onBack: () -> Unit, onPurchaseHistory: () -> Unit) {
     val options = listOf("Current Billing Status", "Purchase a Package", "Auto-Renew", "View Purchase History")
