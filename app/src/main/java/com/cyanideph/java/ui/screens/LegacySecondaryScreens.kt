@@ -38,11 +38,38 @@ fun BatterySavingScreen(onBack: () -> Unit) {
 
 @Composable
 fun OfflineSettingsScreen(onBack: () -> Unit) {
+    var selected by remember { mutableIntStateOf(0) }
+    val options = listOf("Available SMS", "Email")
+    val description = """* Offline Settings
+
+Allows you to set how your messages will be delivered when UZZAP is off:
+
+Choose " Available SMS " to receive messages via SMS when Uzzap is off - Only available for some networks.
+
+Choose " Email " to have your messages forwarded to Email when off.
+
+If no options are selected, your messages will be stored for up to 14 days until you next Login to Uzzap."""
+
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
-            LegacyTitleBar("Offline Settings", Modifier.fillMaxWidth())
-            Spacer(Modifier.weight(1f))
-            LegacyFunctionBar("Options","Close Tab",Modifier.fillMaxWidth().clickable { onBack() })
+            LegacyTitleBar("* Offline Settings", Modifier.fillMaxWidth())
+            LegacyText(description, Modifier.weight(1f).fillMaxWidth().padding(6.dp))
+            Column(Modifier.fillMaxWidth()) {
+                options.forEachIndexed { index, label ->
+                    LegacyText(
+                        label,
+                        Modifier.fillMaxWidth()
+                            .background(if (selected == index) ReptilianTheme.MenuSelected else ReptilianTheme.Surface)
+                            .clickable { selected = index }
+                            .padding(horizontal = 8.dp, vertical = 5.dp)
+                    )
+                }
+            }
+            LegacyFunctionBar(
+                leftLabel = "Select",
+                rightLabel = "Close Tab",
+                modifier = Modifier.fillMaxWidth().clickable { onBack() }
+            )
         }
     }
 }
