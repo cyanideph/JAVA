@@ -171,17 +171,83 @@ private fun LegacyEditorDialog(value: String, onValue: (String) -> Unit, onClose
 }
 
 @Composable
+private data class LegacyContact(val name: String, val statusAsset: String)
+
+@Composable
 private fun LegacyRecipientDialog(
-    title: String,
     onPick: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val recipients = listOf("cy", "Friend 1", "Friend 2")
+    val contacts = remember {
+        listOf(
+            LegacyContact("cy", "online"),
+            LegacyContact("Friend 1", "online"),
+            LegacyContact("Friend 2", "offline"),
+            LegacyContact("Friend 3", "notavailable")
+        ).sortedBy { it.name.lowercase() }
+    }
+    var query by remember { mutableStateOf("") }
+    var selected by remember { mutableStateOf<Set<String>>(emptySet()) }
+    val filtered = contacts.filter { it.name.contains(query.trim(), ignoreCase = true) }
+
     Dialog(onDismissRequest = onDismiss) {
-        Column(Modifier.background(ReptilianTheme.Surface)) {
-            LegacyText(title, Modifier.padding(10.dp))
-            recipients.forEach { name ->
-                LegacyText(name, Modifier.fillMaxWidth().clickable { onPick(name) }.padding(10.dp))
+        Column(Modifier.background(ReptilianTheme.Surface).padding(6.dp)) {
+            LegacyText("Recipient", Modifier.padding(6.dp))
+            OutlinedTextField(
+                value = query,
+                onValueChange = { query = it },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
+            )
+            Row {
+                LegacyText(
+                    "Select All",
+                    Modifier.clickable { selected = filtered.map { it.name }.toSet() }.padding(8.dp)
+                )
+                LegacyText(
+                    "Clear",
+                    Modifier.clickable { selected = emptySet() }.padding(8.dp)
+                )
+            }
+            filtered.forEach { contact ->
+                val checked = contact.name in selected
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            selected = if (checked) selected - contact.name else selected + contact.name
+                        }
+                        .padding(6.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    val bitmap = LegacyAssets.rememberBitmap(LocalContext.current, contact.statusAsset)
+                    val density = LocalDensity.current
+                    Image(
+                        bitmap,
+                        null,
+                        Modifier.size(
+                            with(density) { bitmap.width.toDp() },
+                            with(density) { bitmap.height.toDp() }
+                        ),
+                        contentScale = ContentScale.None
+                    )
+                    Spacer(Modifier.width(5.dp))
+                    LegacyCheckbox(checked)
+                    Spacer(Modifier.width(5.dp))
+                    LegacyText(contact.name)
+                }
+            }
+            Row {
+                LegacyText(
+                    "OK",
+                    Modifier.clickable {
+                        selected.firstOrNull()?.let(onPick) ?: onDismiss()
+                    }.padding(10.dp)
+                )
+                LegacyText(
+                    "Cancel",
+                    Modifier.clickable(onClick = onDismiss).padding(10.dp)
+                )
             }
         }
     }
