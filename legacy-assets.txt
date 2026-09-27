@@ -1,0 +1,11 @@
+alert.amr
+alert.wav
+themes/uzzap/background-pattern.png
+themes/uzzap/functionbar-left.png
+themes/uzzap/functionbar-middle.png
+themes/uzzap/functionbar-right.png
+themes/uzzap/menu-bottombar.png
+themes/uzzap/theme.ini
+themes/uzzap/titlebar-left.png
+themes/uzzap/titlebar-middle.png
+themes/uzzap/titlebar-right.png
