@@ -43,6 +43,7 @@ jobs:
           ref: 4645532460a865a6196ab04091a46f0d33d381e7
           path: javauzzap-source
           fetch-depth: 1
+          token: ${{ secrets.LEGACY_SOURCE_TOKEN }}
 
       - name: Build debug APK
         env:
