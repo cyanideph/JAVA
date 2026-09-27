@@ -75,15 +75,13 @@ fun BuddyListScreen(onBack: () -> Unit) {
                 }
             }
 
-            Row(Modifier.fillMaxWidth()) {
-                Box(Modifier.weight(1f).clickable { showOptions = true }) {
-                    LegacyText("Options", Modifier.padding(8.dp))
-                }
-                Box(Modifier.weight(1f).clickable { onBack() }) {
-                    LegacyText("Menu", Modifier.padding(8.dp))
-                }
-            }
-            LegacyFunctionBar(Modifier.fillMaxWidth())
+            LegacyFunctionBar(
+                leftLabel = "Options",
+                rightLabel = "Menu",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { showOptions = true }
+            )
             if (showOptions) {
                 BuddyOptionsPopup(
                     hasBuddy = selectedBuddy >= 0,
@@ -112,6 +110,7 @@ private fun BuddyOptionsPopup(
         add("New Group")
         add("Add/Invite Buddies")
         add("Clear Message History")
+        add("Clear Search Bar")
         add("Uzzap Help")
     }
     androidx.compose.ui.window.Dialog(onDismissRequest = onDismiss) {
