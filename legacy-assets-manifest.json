@@ -2,5 +2,703 @@
   "sourceRepository": "https://github.com/cyanideph/javauzzap",
   "sourceRef": "4645532460a865a6196ab04091a46f0d33d381e7",
   "destinationRoot": "legacy",
-  "strategy": "canonical-binary-sync"
+  "strategy": "canonical-binary-sync",
+  "integrity": "git-blob-sha1",
+  "assets": [
+    {
+      "path": "alert.amr",
+      "gitBlobSha": "de15811ed7c64a28fd8ed1c39f102a8a8b2f8a2c",
+      "size": 2598
+    },
+    {
+      "path": "alert.wav",
+      "gitBlobSha": "a2ea974950f7cea7c0ec8900a74d6c0fe13905c7",
+      "size": 13113
+    },
+    {
+      "path": "battery.txt",
+      "gitBlobSha": "9761693e7c14334c8d03ac5c548b6fa5094d5a81",
+      "size": 537
+    },
+    {
+      "path": "help.txt",
+      "gitBlobSha": "e0306b83d8aeabf2b705345d8ed5b58658e0b7f0",
+      "size": 4846
+    },
+    {
+      "path": "help0.txt",
+      "gitBlobSha": "725f215cff9e6c95b3aea69b52d7db6db0ae8dcf",
+      "size": 1543
+    },
+    {
+      "path": "themes/default/000-smart-large.png",
+      "gitBlobSha": "204c3a88463be11ffc75212da72c831b00f5940f",
+      "size": 2698
+    },
+    {
+      "path": "themes/default/000-smart-small.png",
+      "gitBlobSha": "03335df085b5e8395e19691d97f397cec051e774",
+      "size": 2010
+    },
+    {
+      "path": "themes/default/001-abm-large.png",
+      "gitBlobSha": "eb3f378f85fb57962dda72ae51f3c678884b950a",
+      "size": 4148
+    },
+    {
+      "path": "themes/default/001-abm-small.png",
+      "gitBlobSha": "f39df9ddadc9bee98a619be650741a0c638ada7b",
+      "size": 2883
+    },
+    {
+      "path": "themes/default/002-buddies-large.png",
+      "gitBlobSha": "b07e5aa92bc110f8c27f7535bb4f7c37a128c742",
+      "size": 3196
+    },
+    {
+      "path": "themes/default/002-buddies-small.png",
+      "gitBlobSha": "bdf4cdebafd9e84bc98c41a4e704ca8ec46321b1",
+      "size": 2157
+    },
+    {
+      "path": "themes/default/003-settings-large.png",
+      "gitBlobSha": "e94013caefa2085133a3eafd73a7098a59d731b2",
+      "size": 3821
+    },
+    {
+      "path": "themes/default/003-settings-small.png",
+      "gitBlobSha": "cf272071ea3092e8fcec0f071cf98d534ffc0967",
+      "size": 2320
+    },
+    {
+      "path": "themes/default/005-themes-large.png",
+      "gitBlobSha": "024298089a56c2150252f6911af477a16286bebb",
+      "size": 2225
+    },
+    {
+      "path": "themes/default/005-themes-small.png",
+      "gitBlobSha": "18d80a69508d063bda993ed408069e4bd71c5c35",
+      "size": 2373
+    },
+    {
+      "path": "themes/default/006-help-large.png",
+      "gitBlobSha": "d48947bbe97937e0ece65f90e5dbd3f4b9bee21c",
+      "size": 2226
+    },
+    {
+      "path": "themes/default/006-help-small.png",
+      "gitBlobSha": "419a2218b0e25c27d7f0c3c04dccaec29e1e8a4a",
+      "size": 1979
+    },
+    {
+      "path": "themes/default/007-batteryinfo-large.png",
+      "gitBlobSha": "f1d0971d68d180ed606f7ed0ed586418ef63cafe",
+      "size": 3285
+    },
+    {
+      "path": "themes/default/007-batteryinfo-small.png",
+      "gitBlobSha": "b5ae435db3c6ad7a3e5bdefd0e569111148010a0",
+      "size": 1984
+    },
+    {
+      "path": "themes/default/008-ringtone-large.png",
+      "gitBlobSha": "0dca4e2c5ef52d5c7d3f7c31b527a3b88bdfb693",
+      "size": 2545
+    },
+    {
+      "path": "themes/default/008-ringtone-small.png",
+      "gitBlobSha": "f2d1c2e07a0df849e0cfd4ad253074d30cd2916e",
+      "size": 1763
+    },
+    {
+      "path": "themes/default/A.txt",
+      "gitBlobSha": "8b137891791fe96927ad78e64b0aad7bded08bdc",
+      "size": 1
+    },
+    {
+      "path": "themes/default/background-pattern-white.png",
+      "gitBlobSha": "5119a02dec67498f8fc305cbc9d1d663cfdd4782",
+      "size": 157
+    },
+    {
+      "path": "themes/default/background-pattern.png",
+      "gitBlobSha": "9e6c20f7199ad2a4dc566fecf7024879fdfde17e",
+      "size": 163
+    },
+    {
+      "path": "themes/default/battery-tab.png",
+      "gitBlobSha": "249a5409e90935c5766d01c1ce46613d6eff0912",
+      "size": 558
+    },
+    {
+      "path": "themes/default/billing.png",
+      "gitBlobSha": "95a72b3e01566ccb5f4eabb4a46b47338e2146ab",
+      "size": 298
+    },
+    {
+      "path": "themes/default/buddylist-icon.png",
+      "gitBlobSha": "ce70cb9421b6ead06f3996c1ca11560123f39820",
+      "size": 445
+    },
+    {
+      "path": "themes/default/callandchat.png",
+      "gitBlobSha": "8ebef482919b744b83dd94829b0d678cdc12779a",
+      "size": 1174
+    },
+    {
+      "path": "themes/default/chat-icon.png",
+      "gitBlobSha": "5952953a335c86ea1e3dfff031efd70c0425baf0",
+      "size": 821
+    },
+    {
+      "path": "themes/default/chatroom-category.png",
+      "gitBlobSha": "df9d79001f14e0aaa85b8f8082ec1d13e14e3465",
+      "size": 950
+    },
+    {
+      "path": "themes/default/chatrooms.png",
+      "gitBlobSha": "47836c5ed0d63152fd6b556c49070050e6851620",
+      "size": 580
+    },
+    {
+      "path": "themes/default/d000-em-large.png",
+      "gitBlobSha": "5e589507ff03c6b929c398382d25fe4ef3e9b74e",
+      "size": 3037
+    },
+    {
+      "path": "themes/default/d000-em-small.png",
+      "gitBlobSha": "5aff85d696fea24b1cd988f3475cd07d969c9050",
+      "size": 2805
+    },
+    {
+      "path": "themes/default/d001-im-large.png",
+      "gitBlobSha": "95e232c8a7c8dbf24837cc80c112b24545f50967",
+      "size": 3513
+    },
+    {
+      "path": "themes/default/d001-im-small.png",
+      "gitBlobSha": "5ea70344960a4d1b3d9341dccb5723aeb897ad45",
+      "size": 2835
+    },
+    {
+      "path": "themes/default/d002-chat-large.png",
+      "gitBlobSha": "d8edbaac6947628de4c06e4bfa320e62719c5073",
+      "size": 2893
+    },
+    {
+      "path": "themes/default/d002-chat-small.png",
+      "gitBlobSha": "f2500f8efacf5a8cba3086f2c2f4b92b11ca89dd",
+      "size": 2651
+    },
+    {
+      "path": "themes/default/d003-status-large.png",
+      "gitBlobSha": "6429a82fed059e1c5f9cfd4c70cc18910ea3cea8",
+      "size": 1858
+    },
+    {
+      "path": "themes/default/d003-status-small.png",
+      "gitBlobSha": "03eb10f986dba0e05054f674fad8784ccda7b24d",
+      "size": 1859
+    },
+    {
+      "path": "themes/default/disconnected.png",
+      "gitBlobSha": "eb0e50d83e58568030d772df199304a14fed67dd",
+      "size": 934
+    },
+    {
+      "path": "themes/default/dolphin1.png",
+      "gitBlobSha": "d64b8bbab45334ce3484b1b107630f95cef86487",
+      "size": 3318
+    },
+    {
+      "path": "themes/default/dolphin2.png",
+      "gitBlobSha": "751f93d1f40f71bf539df7b2a3a52a0737626976",
+      "size": 5917
+    },
+    {
+      "path": "themes/default/dolphin3.png",
+      "gitBlobSha": "d8f9b3f70b4397615e5cd8ac92954f2f930b1608",
+      "size": 4238
+    },
+    {
+      "path": "themes/default/dolphin4.png",
+      "gitBlobSha": "2774db0aafacc9cd0b999e32b961673b3be2ecb4",
+      "size": 4273
+    },
+    {
+      "path": "themes/default/emoticon-11.png",
+      "gitBlobSha": "de74846ea9a48142196d6d8b782129082764f884",
+      "size": 1147
+    },
+    {
+      "path": "themes/default/emoticon-12.png",
+      "gitBlobSha": "167d46492f7a28493d32a5ccad2b487d6df2b7b3",
+      "size": 1192
+    },
+    {
+      "path": "themes/default/emoticon-13.png",
+      "gitBlobSha": "d113569f5fd3d3f01f46824aa76782af8d4ef845",
+      "size": 1191
+    },
+    {
+      "path": "themes/default/emoticon-14.png",
+      "gitBlobSha": "002053adb200a240325f9d08060feca884811c4d",
+      "size": 1201
+    },
+    {
+      "path": "themes/default/emoticon-15.png",
+      "gitBlobSha": "2ff728719a5e99fd40cd9304043e651f4eb2fa8f",
+      "size": 1192
+    },
+    {
+      "path": "themes/default/emoticon-16.png",
+      "gitBlobSha": "070db4077840ad498d3eb64cf8e47b768ccc29d6",
+      "size": 1163
+    },
+    {
+      "path": "themes/default/emoticon-17.png",
+      "gitBlobSha": "db1e01090a5d05334e0e1bf2800ec418bb58285b",
+      "size": 1168
+    },
+    {
+      "path": "themes/default/emoticon-18.png",
+      "gitBlobSha": "5d03b6c376313621496fe2409fcd80aab1c6daa1",
+      "size": 1152
+    },
+    {
+      "path": "themes/default/emoticon-19.png",
+      "gitBlobSha": "92855c2e0364d6d6d991a0d124cccfde190acd75",
+      "size": 1165
+    },
+    {
+      "path": "themes/default/emoticon-20.png",
+      "gitBlobSha": "edaa1af254418fafe68fa119849a96c3311d68d4",
+      "size": 1188
+    },
+    {
+      "path": "themes/default/emoticon-47.png",
+      "gitBlobSha": "23a40775e0328e1416606a68897632abe7b29ad7",
+      "size": 1116
+    },
+    {
+      "path": "themes/default/emoticon-angry.png",
+      "gitBlobSha": "c8256ba6639bf7fc7ed723419f22f8ced3ebba08",
+      "size": 1171
+    },
+    {
+      "path": "themes/default/emoticon-clown.png",
+      "gitBlobSha": "e844eb46702be8e32932416ab37a3cf0f36c9ac6",
+      "size": 911
+    },
+    {
+      "path": "themes/default/emoticon-cry.png",
+      "gitBlobSha": "2dc417104d52ba49f25630f6ab34a23ce558c2e2",
+      "size": 1160
+    },
+    {
+      "path": "themes/default/emoticon-drink.png",
+      "gitBlobSha": "27cd55741e8e9a9fa382b2ac54eec1c551903e49",
+      "size": 896
+    },
+    {
+      "path": "themes/default/emoticon-e.png",
+      "gitBlobSha": "aa3cb8fcdae7acef75411d35940cdca1f48ff876",
+      "size": 1194
+    },
+    {
+      "path": "themes/default/emoticon-laugh.png",
+      "gitBlobSha": "f5bda4567c19b1471e1bb6d5cc254d1577faf4f5",
+      "size": 1160
+    },
+    {
+      "path": "themes/default/emoticon-love.png",
+      "gitBlobSha": "85c73c8b5197ac5b75725d54c4fe8fdbf7d2b159",
+      "size": 993
+    },
+    {
+      "path": "themes/default/emoticon-party.png",
+      "gitBlobSha": "35f047a3e3b00a0e8d9f517f9059653cc1b0bf89",
+      "size": 845
+    },
+    {
+      "path": "themes/default/emoticon-rose.png",
+      "gitBlobSha": "0a570647187b0c8da99148ed077b0fbe833f2d98",
+      "size": 309
+    },
+    {
+      "path": "themes/default/emoticon-sad.png",
+      "gitBlobSha": "d4167ec4dbf84e708ba420b41384e74b53dbc415",
+      "size": 1195
+    },
+    {
+      "path": "themes/default/emoticon-sick.png",
+      "gitBlobSha": "1bd82c31da86e8dd71b42b44765777cd977eba81",
+      "size": 798
+    },
+    {
+      "path": "themes/default/emoticon-smile.png",
+      "gitBlobSha": "a3cb66737dde71ceebb9dbcb10794edaf8fd7672",
+      "size": 1204
+    },
+    {
+      "path": "themes/default/emoticon-surprise.png",
+      "gitBlobSha": "b7c39d7beed8433161bd3f00ab1d0e5d05758400",
+      "size": 1188
+    },
+    {
+      "path": "themes/default/emoticon-tongue.png",
+      "gitBlobSha": "105d1a2aaa87743de1b270ec682929aae2efd1e6",
+      "size": 1152
+    },
+    {
+      "path": "themes/default/emoticon-wink.png",
+      "gitBlobSha": "ac6810fc01ddd74387f4664d3269503966319a57",
+      "size": 1204
+    },
+    {
+      "path": "themes/default/frame-bottom.png",
+      "gitBlobSha": "c67fcc942036042e866a1a503d0864724c8b7324",
+      "size": 160
+    },
+    {
+      "path": "themes/default/frame-bottomleft.png",
+      "gitBlobSha": "076573ab19d48b5d798b4bcfcdb0d7f19ce35a91",
+      "size": 327
+    },
+    {
+      "path": "themes/default/frame-bottomright.png",
+      "gitBlobSha": "31098dd8eee3c157c8316da358d9bbd65d144a9e",
+      "size": 287
+    },
+    {
+      "path": "themes/default/frame-left.png",
+      "gitBlobSha": "d9244794fac34f3401d5cacd9d55d720d88210f5",
+      "size": 138
+    },
+    {
+      "path": "themes/default/frame-right.png",
+      "gitBlobSha": "bdde058dd51ec079bd8945e9c45b7f3020a8d106",
+      "size": 133
+    },
+    {
+      "path": "themes/default/frame-top.png",
+      "gitBlobSha": "d2fa8e2f73f76f40a211de117677c222404edc53",
+      "size": 145
+    },
+    {
+      "path": "themes/default/frame-topleft.png",
+      "gitBlobSha": "00237b07ea1bea00a26821d899f1ed507927d523",
+      "size": 254
+    },
+    {
+      "path": "themes/default/frame-topright.png",
+      "gitBlobSha": "3f69a65cd6a0ace9e75b5549447dc167cfb12b6e",
+      "size": 303
+    },
+    {
+      "path": "themes/default/freeforchat.png",
+      "gitBlobSha": "f13e14ea7cb53a14e1289bf4a1131a72735fef09",
+      "size": 824
+    },
+    {
+      "path": "themes/default/functionbar-left.png",
+      "gitBlobSha": "772ef3db16d851c7b4b314885ecb34ba519ac01d",
+      "size": 683
+    },
+    {
+      "path": "themes/default/functionbar-middle.png",
+      "gitBlobSha": "6d39e82f83da030cbc166d474183fbe522c22648",
+      "size": 221
+    },
+    {
+      "path": "themes/default/functionbar-right.png",
+      "gitBlobSha": "7b484779e44ba86b6352a54a7fdd3b48f793fe9a",
+      "size": 667
+    },
+    {
+      "path": "themes/default/ghost.png",
+      "gitBlobSha": "aeaf15b06c2119a27bf403308baeee5a81013138",
+      "size": 872
+    },
+    {
+      "path": "themes/default/gift.png",
+      "gitBlobSha": "6ca3adf3799267ff2bfff977dd4d36b9106c41ec",
+      "size": 861
+    },
+    {
+      "path": "themes/default/head-buntis.png",
+      "gitBlobSha": "dd924710dd0036db2b617ca48c274110b7ab286a",
+      "size": 387
+    },
+    {
+      "path": "themes/default/head-deckard.png",
+      "gitBlobSha": "ce7b1f8ba59483f3ce1b7f45d95150d9671d1a9d",
+      "size": 409
+    },
+    {
+      "path": "themes/default/head-jp.png",
+      "gitBlobSha": "cfab629b1a22657441de6ae57ad927ad75bfbb5a",
+      "size": 356
+    },
+    {
+      "path": "themes/default/head-kool.png",
+      "gitBlobSha": "158ae7e7ed1ffc95a3e7aae9e21ec70f7c29c2ce",
+      "size": 382
+    },
+    {
+      "path": "themes/default/head-lupz.png",
+      "gitBlobSha": "e5fd6a0da6ae3bd6476c4a36131239b0a670e82f",
+      "size": 383
+    },
+    {
+      "path": "themes/default/head-requiem.png",
+      "gitBlobSha": "7a69fa47994ba65fabcf7fe4a8a09b8d1773c85a",
+      "size": 353
+    },
+    {
+      "path": "themes/default/head-root.png",
+      "gitBlobSha": "18a0ca2654bb25a593c7a578f75ca91be9787812",
+      "size": 487
+    },
+    {
+      "path": "themes/default/head-saiyan.png",
+      "gitBlobSha": "f0059f4a4b8917bb938984b0376efeda8c526916",
+      "size": 418
+    },
+    {
+      "path": "themes/default/head-valkyrie.png",
+      "gitBlobSha": "6b83af264db7a2babd09c930f197cbebe033984f",
+      "size": 346
+    },
+    {
+      "path": "themes/default/help.png",
+      "gitBlobSha": "2e923a291918d5ebefbfa4f40f1a2bef92fef664",
+      "size": 929
+    },
+    {
+      "path": "themes/default/history.png",
+      "gitBlobSha": "88d8f99992f895d12c54aae764d25da39de73106",
+      "size": 850
+    },
+    {
+      "path": "themes/default/kiss.png",
+      "gitBlobSha": "026c11138d0e48d79a191219ea6713e47959b166",
+      "size": 402
+    },
+    {
+      "path": "themes/default/kolipri-42x29.png",
+      "gitBlobSha": "2af452e137fea0f2559ca8a43aa7f75d88afcfa4",
+      "size": 1498
+    },
+    {
+      "path": "themes/default/logo-large.png",
+      "gitBlobSha": "497b3595b6fb300bf672c4f83ad52e5500e3ee6a",
+      "size": 11517
+    },
+    {
+      "path": "themes/default/logo-topbar.png",
+      "gitBlobSha": "93f7115ec38e210ce7b1f48c1836f6679a9fd135",
+      "size": 938
+    },
+    {
+      "path": "themes/default/menu-bottombar.png",
+      "gitBlobSha": "eac06c8ef64af0a0213d181bf954fbf9995ca2b0",
+      "size": 211
+    },
+    {
+      "path": "themes/default/message.png",
+      "gitBlobSha": "83b24e475d43dbe3e056d39fc829b940162199f5",
+      "size": 440
+    },
+    {
+      "path": "themes/default/minus.png",
+      "gitBlobSha": "cd6e1a61ea47515f80cff30164edcdf6d79018da",
+      "size": 748
+    },
+    {
+      "path": "themes/default/msn-offline.png",
+      "gitBlobSha": "a72f72dd5f644799995aa4018a84e53dbd1607e7",
+      "size": 904
+    },
+    {
+      "path": "themes/default/msn-online.png",
+      "gitBlobSha": "e4d18ab2bdba34db3cf2853e17deae559b73e039",
+      "size": 849
+    },
+    {
+      "path": "themes/default/mute.png",
+      "gitBlobSha": "283e86eb00aaa14ae080cde2740c8f609323bc0d",
+      "size": 795
+    },
+    {
+      "path": "themes/default/notavailable.png",
+      "gitBlobSha": "85dfbe124c26733d189f201e733a48c661b27a45",
+      "size": 891
+    },
+    {
+      "path": "themes/default/offline.png",
+      "gitBlobSha": "d9704d3df338080e2129b66773450518665be502",
+      "size": 931
+    },
+    {
+      "path": "themes/default/online.png",
+      "gitBlobSha": "f42ae183213f814b46487504592ef35df142fa88",
+      "size": 915
+    },
+    {
+      "path": "themes/default/plus.png",
+      "gitBlobSha": "263bbe3c25a07a536fb635b15ee4aaa5919a59ad",
+      "size": 819
+    },
+    {
+      "path": "themes/default/rose-small.png",
+      "gitBlobSha": "d8eea46b99ca6943b560986f4d4eaedc6c9e2904",
+      "size": 369
+    },
+    {
+      "path": "themes/default/search.png",
+      "gitBlobSha": "a1aaf1d8314f6374894561c615bd1120b594a24d",
+      "size": 717
+    },
+    {
+      "path": "themes/default/sending-message-icon.png",
+      "gitBlobSha": "281649f93266e8e0271d5c9f8bc04f66688f829f",
+      "size": 914
+    },
+    {
+      "path": "themes/default/settings-tab.png",
+      "gitBlobSha": "104c4f77d502e25396e5c33330ce4206b9500830",
+      "size": 1101
+    },
+    {
+      "path": "themes/default/settings.png",
+      "gitBlobSha": "75c3bdfe6b7e39d96a861521843549e5a582f4d7",
+      "size": 383
+    },
+    {
+      "path": "themes/default/small-arrow.png",
+      "gitBlobSha": "e51426b713ea48d165f9e67cb8d86cf97f8c2997",
+      "size": 836
+    },
+    {
+      "path": "themes/default/statusmessage.png",
+      "gitBlobSha": "97d8aadd07458c61485be103f2c958a4ddd8d33c",
+      "size": 674
+    },
+    {
+      "path": "themes/default/sync.png",
+      "gitBlobSha": "e3dc4b2b849c6ca2d65bbf5ddfbc0ea2e56074b4",
+      "size": 1153
+    },
+    {
+      "path": "themes/default/tab-not-selected.png",
+      "gitBlobSha": "400139e0936e00e2d42bf10b14630ebce6326352",
+      "size": 994
+    },
+    {
+      "path": "themes/default/tab-selected.png",
+      "gitBlobSha": "fde5990e49037dcd8dc86caba6810bed8754a745",
+      "size": 816
+    },
+    {
+      "path": "themes/default/theme.ini",
+      "gitBlobSha": "1a4348de38286ec5d52adc8a86b5bb2717349f83",
+      "size": 1457
+    },
+    {
+      "path": "themes/default/tickbox-not-selected.png",
+      "gitBlobSha": "92109a57f133a52cf31fa374ecc124cebc0f6c76",
+      "size": 245
+    },
+    {
+      "path": "themes/default/tickbox-selected.png",
+      "gitBlobSha": "d2d3545015a5257a60453365c7ddf57ad2aec4df",
+      "size": 416
+    },
+    {
+      "path": "themes/default/titlebar-left.png",
+      "gitBlobSha": "b93d9c5acbb9e7124e878dd183b7dc4a19684237",
+      "size": 678
+    },
+    {
+      "path": "themes/default/titlebar-middle.png",
+      "gitBlobSha": "a55e60c9114bce099be4e15d9dc74f2a5eefa948",
+      "size": 225
+    },
+    {
+      "path": "themes/default/titlebar-right.png",
+      "gitBlobSha": "b4364ab1ef662246bf1ae223a2a0c05ae1fe66fa",
+      "size": 660
+    },
+    {
+      "path": "themes/default/unread-icon.png",
+      "gitBlobSha": "e53325b6a2cc3cb0cc5de75b6b64c8311628fd90",
+      "size": 824
+    },
+    {
+      "path": "themes/default/unread-sending-icon.png",
+      "gitBlobSha": "94830ca3d14621394fb4a4579394d6adbe6e5866",
+      "size": 905
+    },
+    {
+      "path": "themes/default/yahoo-offline.png",
+      "gitBlobSha": "9bc3ca960d12f7ad6ebeea2c588fb2810daea913",
+      "size": 916
+    },
+    {
+      "path": "themes/default/yahoo-online.png",
+      "gitBlobSha": "dfa4fcc9315f06727a8b24ced620bf6f7ddd6513",
+      "size": 842
+    },
+    {
+      "path": "themes/uzzap/a.txt",
+      "gitBlobSha": "8b137891791fe96927ad78e64b0aad7bded08bdc",
+      "size": 1
+    },
+    {
+      "path": "themes/uzzap/background-pattern.png",
+      "gitBlobSha": "5ca0f8be16463d6016cfd06f0214433f1875710d",
+      "size": 5363
+    },
+    {
+      "path": "themes/uzzap/functionbar-left.png",
+      "gitBlobSha": "df06dc5292afbc459d7aa36725d71fda4a2495dd",
+      "size": 303
+    },
+    {
+      "path": "themes/uzzap/functionbar-middle.png",
+      "gitBlobSha": "35e3ce0d2b9383c432b537afc6ba594b84782eea",
+      "size": 254
+    },
+    {
+      "path": "themes/uzzap/functionbar-right.png",
+      "gitBlobSha": "421fd5ee6969ec8c2936fd5e1b0b34ecf4cf53a9",
+      "size": 303
+    },
+    {
+      "path": "themes/uzzap/menu-bottombar.png",
+      "gitBlobSha": "eac06c8ef64af0a0213d181bf954fbf9995ca2b0",
+      "size": 211
+    },
+    {
+      "path": "themes/uzzap/theme.ini",
+      "gitBlobSha": "02ac51573c661c7f652cf715dfcbf6ac4b0976f7",
+      "size": 1021
+    },
+    {
+      "path": "themes/uzzap/titlebar-left.png",
+      "gitBlobSha": "9589dcc1e85e34db6874837ba91903a44f94210c",
+      "size": 302
+    },
+    {
+      "path": "themes/uzzap/titlebar-middle.png",
+      "gitBlobSha": "adc5e1b1336be1b97e2b62dd805e74cdc57fd5f1",
+      "size": 255
+    },
+    {
+      "path": "themes/uzzap/titlebar-right.png",
+      "gitBlobSha": "2f96144affe18dbf0ceea48982d9f21453b99b3a",
+      "size": 302
+    }
+  ]
 }
