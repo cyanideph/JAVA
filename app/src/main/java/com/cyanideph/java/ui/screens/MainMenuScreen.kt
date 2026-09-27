@@ -1,6 +1,7 @@
 package com.cyanideph.java.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -51,13 +52,6 @@ fun MainMenuScreen(
         LegacyMenuItem("Chat Rooms", "d002-chat-small", "d002-chat-large", onRooms),
         LegacyMenuItem("Change Status", "d003-status-small", "d003-status-large") { }
     )
-
-    val columns = remember {
-        val widths = items.map {
-            LegacyAssets.bitmap(context, it.large).width
-        }
-        maxOf(1, 360 / maxOf(1, widths.maxOrNull() ?: 1))
-    }
 
     LegacyBackground(Modifier.fillMaxSize()) {
         BoxWithConstraints(Modifier.fillMaxSize()) {
