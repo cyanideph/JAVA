@@ -305,7 +305,16 @@ private fun LegacyNetworkLoginScreen(
             true
         )
     )
-    var values by remember { mutableStateOf(emptyMap<String, String>()) }
+    val context = LocalContext.current
+    val prefs = remember { context.getSharedPreferences("uzzap_legacy", android.content.Context.MODE_PRIVATE) }
+    var values by remember {
+        mutableStateOf(
+            mapOf(
+                "username" to (prefs.getString("amazilia.username", "") ?: ""),
+                "password" to (prefs.getString("amazilia.password", "") ?: "")
+            )
+        )
+    }
     var showAutoLogin by remember { mutableStateOf(false) }
 
     if (showAutoLogin) {
@@ -325,16 +334,18 @@ private fun LegacyNetworkLoginScreen(
                     horizontalArrangement = Arrangement.End
                 ) {
                     TextButton(onClick = {
-                        context.getSharedPreferences("uzzap_legacy", android.content.Context.MODE_PRIVATE)
-                            .edit()
+                        prefs.edit()
+                            .putString("amazilia.username", values["username"].orEmpty().lowercase())
+                            .putString("amazilia.password", values["password"].orEmpty())
                             .putString("kolipri.xmpp.autologin", "yes")
                             .apply()
                         showAutoLogin = false
                         onLogin()
                     }) { LegacyText("Yes") }
                     TextButton(onClick = {
-                        context.getSharedPreferences("uzzap_legacy", android.content.Context.MODE_PRIVATE)
-                            .edit()
+                        prefs.edit()
+                            .putString("amazilia.username", values["username"].orEmpty().lowercase())
+                            .putString("amazilia.password", values["password"].orEmpty())
                             .putString("kolipri.xmpp.autologin", "no")
                             .apply()
                         showAutoLogin = false
