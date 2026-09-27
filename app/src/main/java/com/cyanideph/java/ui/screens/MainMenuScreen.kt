@@ -76,7 +76,6 @@ fun MainMenuScreen(
                         .fillMaxWidth()
                 ) {
                     val totalRows = (items.size + columnCount - 1) / columnCount
-                    val rowStep = cellHeight + spacing
                     val viewportHeight = maxHeight - textBarHeight - bottomBarHeight
                     val visibleRows = maxOf(1, ((with(density) { viewportHeight.toPx() } + spacingPx) / (cellHeightPx + spacingPx)).toInt())
                     val needsScroll = totalRows > visibleRows
@@ -141,7 +140,7 @@ fun MainMenuScreen(
                         Box(
                             Modifier
                                 .align(Alignment.TopEnd)
-                                .offset { IntOffset(1.dp.roundToPx(), thumbOffset.toInt()) }
+                                .offset { IntOffset(with(density) { 1.dp.roundToPx() }, thumbOffset.toInt()) }
                                 .width(6.dp)
                                 .height(with(density) { thumbHeight.toDp() })
                                 .background(ReptilianTheme.ScrollbarFill)
