@@ -37,3 +37,28 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.10.0")
     debugImplementation("androidx.compose.ui:ui-tooling")
 }
+
+import java.net.HttpURLConnection
+import java.net.URI
+
+val legacyAssetsManifest = rootProject.file("legacy-assets.txt")
+val syncLegacyAssets by tasks.registering {
+    outputs.dir(layout.projectDirectory.dir("app/src/main/assets/legacy"))
+    doLast {
+        val destination = layout.projectDirectory.dir("app/src/main/assets/legacy").asFile
+        destination.mkdirs()
+        legacyAssetsManifest.readLines().map(String::trim)
+            .filter { it.isNotEmpty() && !it.startsWith("#") }
+            .forEach { relative ->
+                val out = destination.resolve(relative)
+                out.parentFile.mkdirs()
+                if (out.exists() && out.length() > 0) return@forEach
+                val connection = URI("https://raw.githubusercontent.com/cyanideph/javauzzap/main/$relative").toURL().openConnection() as HttpURLConnection
+                connection.connectTimeout = 20000
+                connection.readTimeout = 60000
+                connection.inputStream.use { input -> out.outputStream().use { output -> input.copyTo(output) } }
+                connection.disconnect()
+            }
+    }
+}
+tasks.named("preBuild") { dependsOn(syncLegacyAssets) }
