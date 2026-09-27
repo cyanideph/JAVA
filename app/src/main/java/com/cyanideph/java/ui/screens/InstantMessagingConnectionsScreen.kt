@@ -4,12 +4,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.cyanideph.java.legacy.assets.LegacyAssets
@@ -63,17 +61,32 @@ private fun ConnectionLoginDialog(provider: String, onLogin: () -> Unit, onCance
             LegacyText(if (provider == "Yahoo") "(eg. abs)" else "(eg. abs@hotmail.com)")
             LegacyFormList(
                 fields = listOf(
-                    LegacyFormField("username", if (provider == "Yahoo") "Yahoo ID" else "MSN ID", if (provider == "Yahoo") "(eg. abs)" else "(eg. abs@hotmail.com)", "", 50),
-                    LegacyFormField("password", "Password", "Password", "", 50, true)
+                    LegacyFormField(
+                        "username",
+                        if (provider == "Yahoo") "Yahoo ID" else "MSN ID",
+                        "Your " + provider + " ID",
+                        "* " + provider + " ID\\n\\nYour " + provider + " ID " + if (provider == "Yahoo") "(eg. abs)" else "(eg. abs@hotmail.com)",
+                        50
+                    ),
+                    LegacyFormField(
+                        "password",
+                        "Password",
+                        "Your " + provider + " Password",
+                        "* " + provider + " password\\n\\nPlease enter the password for your " + provider + " account here.",
+                        50,
+                        password = true,
+                        inputFlags = 65536
+                    )
                 ),
                 values = mapOf("username" to username, "password" to password),
                 onValueChange = { key, value -> if (key == "username") username = value else password = value },
                 modifier = Modifier.fillMaxWidth()
             )
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                TextButton(onClick = onLogin) { LegacyText("Login") }
-                TextButton(onClick = onCancel) { LegacyText("Cancel") }
-            }
+            LegacyFunctionBar(
+                leftLabel = "Login",
+                rightLabel = "Cancel",
+                modifier = Modifier.fillMaxWidth().clickable(onClick = onLogin)
+            )
         }
     }
 }
