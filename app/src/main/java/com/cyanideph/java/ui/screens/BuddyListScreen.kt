@@ -142,9 +142,9 @@ private fun BuddyRow(
     val context = LocalContext.current
     val density = LocalDensity.current
     val statusAsset = when (buddy.status) {
-        "Available" -> "online"
-        "Not Available" -> "notavailable"
-        else -> "offline"
+        "Available" -> "themes/default/online.png"
+        "Not Available" -> "themes/default/notavailable.png"
+        else -> "themes/default/offline.png"
     }
     val icon = LegacyAssets.rememberBitmap(context, statusAsset)
     val bg = if (selected) ReptilianTheme.MenuSelected else ReptilianTheme.Surface
