@@ -94,13 +94,14 @@ fun BuddyListScreen(onBack: () -> Unit) {
 @Composable
 private fun BuddyOptionsPopup(
     hasBuddy: Boolean,
+    isActionRequired: Boolean,
     onDismiss: () -> Unit,
     onAdd: () -> Unit,
     onHelp: () -> Unit
 ) {
     val options = buildList {
         if (hasBuddy) add("Contact")
-        if (!hasBuddy) add("Send Group Message")
+        if (!hasBuddy && !isActionRequired) add("Send Group Message")
         if (!hasBuddy) add("Manage Groups")
         add("New Group")
         add("Add/Invite Buddies")
