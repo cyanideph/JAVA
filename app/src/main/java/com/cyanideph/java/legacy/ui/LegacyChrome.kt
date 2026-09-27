@@ -41,8 +41,25 @@ fun LegacyTitleBar(title:String,modifier:Modifier=Modifier){
 }
 
 @Composable
-fun LegacyFunctionBar(modifier:Modifier=Modifier)=
-    LegacyBitmapBar("${BarPath}functionbar-left.png","${BarPath}functionbar-middle.png","${BarPath}functionbar-right.png",modifier)
+fun LegacyFunctionBar(
+    leftLabel: String = "",
+    rightLabel: String = "",
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    val density = LocalDensity.current
+    val middle = LegacyAssets.rememberBitmap(context, "themes/uzzap/functionbar-middle.png")
+    Box(modifier) {
+        LegacyBitmapBar("themes/uzzap/functionbar-left.png", "themes/uzzap/functionbar-middle.png", "themes/uzzap/functionbar-right.png", Modifier.fillMaxWidth())
+        Row(
+            Modifier.fillMaxWidth().height(with(density) { middle.height.toDp() }),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            LegacyText(leftLabel, Modifier.padding(start = 6.dp))
+            LegacyText(rightLabel, Modifier.padding(end = 6.dp))
+        }
+    }
+}
 
 @Composable
 fun LegacyBackground(modifier:Modifier=Modifier,content:@Composable BoxScope.()->Unit){
