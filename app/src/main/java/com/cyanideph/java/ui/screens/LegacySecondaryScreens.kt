@@ -60,9 +60,11 @@ fun ChatInviteScreen(room: String, onBack: () -> Unit) {
             LegacyText("Chat Invite - " + room, Modifier.padding(8.dp))
             LegacyText("You have been invited to join the Chatroom '" + room + "'. Do you accept this invitation?\n", Modifier.padding(8.dp))
             Row(Modifier.padding(8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Button({ accepted = true }) { Text("Yes") }
-                Button(onBack) { Text("No") }
-                Button(onBack) { Text("Close Tab") }
+                LegacyFunctionBar(
+                    leftLabel = "Yes",
+                    rightLabel = "No",
+                    modifier = Modifier.fillMaxWidth().clickable { accepted = true }
+                )
             }
         }
     } else {
