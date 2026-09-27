@@ -1,5 +1,6 @@
 import java.net.HttpURLConnection
 import java.net.URI
+import java.security.MessageDigest
 
 plugins {
     id("com.android.application")
@@ -43,23 +44,57 @@ dependencies {
 
 
 val legacyAssetsManifest = rootProject.file("legacy-assets.txt")
+val legacyAssetsIntegrity = rootProject.file("legacy-assets-integrity.txt")
 val legacyAssetsSourceRef = "4645532460a865a6196ab04091a46f0d33d381e7"
+
+fun gitBlobSha1(bytes: ByteArray): String {
+    val header = "blob ${bytes.size}\u0000".toByteArray(Charsets.UTF_8)
+    val digest = MessageDigest.getInstance("SHA-1")
+    return digest.digest(header + bytes).joinToString("") { "%02x".format(it) }
+}
+
 val syncLegacyAssets by tasks.registering {
     outputs.dir(layout.projectDirectory.dir("app/src/main/assets/legacy"))
     doLast {
         val destination = layout.projectDirectory.dir("app/src/main/assets/legacy").asFile
         destination.mkdirs()
+
+        val expected = legacyAssetsIntegrity.readLines()
+            .map(String::trim)
+            .filter { it.isNotEmpty() && !it.startsWith("#") }
+            .associate {
+                val parts = it.split("  ", limit = 2)
+                require(parts.size == 2) { "Malformed legacy asset integrity entry: $it" }
+                parts[1] to parts[0]
+            }
+
         legacyAssetsManifest.readLines().map(String::trim)
             .filter { it.isNotEmpty() && !it.startsWith("#") }
             .forEach { relative ->
+                val expectedSha = expected[relative]
+                    ?: error("Missing integrity fingerprint for legacy asset: $relative")
                 val out = destination.resolve(relative)
                 out.parentFile.mkdirs()
-                if (out.exists() && out.length() > 0) return@forEach
-                val connection = URI("https://raw.githubusercontent.com/cyanideph/javauzzap/$legacyAssetsSourceRef/$relative").toURL().openConnection() as HttpURLConnection
-                connection.connectTimeout = 20000
-                connection.readTimeout = 60000
-                connection.inputStream.use { input -> out.outputStream().use { output -> input.copyTo(output) } }
-                connection.disconnect()
+
+                if (out.exists() && gitBlobSha1(out.readBytes()) == expectedSha) return@forEach
+
+                val temp = File.createTempFile("uzzap-legacy-", ".asset", out.parentFile)
+                try {
+                    val connection = URI("https://raw.githubusercontent.com/cyanideph/javauzzap/$legacyAssetsSourceRef/$relative")
+                        .toURL().openConnection() as HttpURLConnection
+                    connection.connectTimeout = 20000
+                    connection.readTimeout = 60000
+                    connection.inputStream.use { input -> temp.outputStream().use { output -> input.copyTo(output) } }
+                    connection.disconnect()
+
+                    val actualSha = gitBlobSha1(temp.readBytes())
+                    require(actualSha == expectedSha) {
+                        "Legacy asset integrity failure for $relative: expected $expectedSha but downloaded $actualSha"
+                    }
+                    temp.copyTo(out, overwrite = true)
+                } finally {
+                    temp.delete()
+                }
             }
     }
 }
