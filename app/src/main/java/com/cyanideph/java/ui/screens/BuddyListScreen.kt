@@ -98,7 +98,6 @@ fun BuddyListScreen(onBack: () -> Unit) {
 }
 
 @Composable
-@Composable
 private fun BuddyOptionsPopup(
     hasBuddy: Boolean,
     isActionRequired: Boolean,
