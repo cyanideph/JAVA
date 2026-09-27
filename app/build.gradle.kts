@@ -1,3 +1,6 @@
+import java.net.HttpURLConnection
+import java.net.URI
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -38,8 +41,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
 }
 
-import java.net.HttpURLConnection
-import java.net.URI
 
 val legacyAssetsManifest = rootProject.file("legacy-assets.txt")
 val syncLegacyAssets by tasks.registering {
