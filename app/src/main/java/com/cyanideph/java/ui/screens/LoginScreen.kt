@@ -402,11 +402,24 @@ private fun LegacyNetworkLoginScreen(
                 onLeftClick = {
                     val username = values["username"].orEmpty()
                     val password = values["password"].orEmpty()
-                    prefs.edit()
-                        .putString("amazilia.username", username.lowercase())
-                        .putString("amazilia.password", password)
-                        .apply()
-                    showAutoLogin = true
+
+                    // Frontend-only build/demo account. It never contacts the legacy service.
+                    // Use username "demo" and password "demo" to enter the app locally.
+                    if (username.equals("demo", ignoreCase = true) && password == "demo") {
+                        prefs.edit()
+                            .putString("amazilia.username", "demo")
+                            .putString("amazilia.password", "")
+                            .putString("kolipri.xmpp.autologin", "no")
+                            .putBoolean("uzzap.demo.account", true)
+                            .apply()
+                        onLogin()
+                    } else {
+                        prefs.edit()
+                            .putString("amazilia.username", username.lowercase())
+                            .putString("amazilia.password", password)
+                            .apply()
+                        showAutoLogin = true
+                    }
                 },
                 onRightClick = onCancel
             )
