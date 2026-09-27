@@ -39,6 +39,7 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
     var showOptions by remember { mutableStateOf(false) }
     var showContactOptions by remember { mutableStateOf(false) }
     var showGroups by remember { mutableStateOf(false) }
+    var showManageGroups by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
 
     val buddies = LegacyBuddyRepository.buddiesFor(context)
@@ -104,7 +105,7 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
                     onAdd = { showOptions = false; onAddInvite() },
                     onHelp = { showOptions = false; onHelp() },
                     onContact = { showOptions = false; showContactOptions = true },
-                    onManageGroups = { showOptions = false; showGroups = true },
+                    onManageGroups = { showOptions = false; showManageGroups = true },
                     onClearSearch = { search = ""; selectedBuddy = -1; showOptions = false }
                 )
             }
@@ -123,6 +124,26 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
                                 }.padding(horizontal = 18.dp, vertical = 9.dp)
                             )
                         }
+                    }
+                }
+            }
+    }
+            if (showManageGroups) {
+                Dialog(onDismissRequest = { showManageGroups = false }) {
+                    Column(Modifier.background(ReptilianTheme.Surface)) {
+                        LegacyText("Rename Group", Modifier.fillMaxWidth().clickable { showManageGroups = false }.padding(horizontal = 18.dp, vertical = 9.dp))
+                        val group = legacyGroups[selectedGroup].first
+                        if (group != "buddies" && group != "action_required" && group != "other_contacts") {
+                            LegacyText("Manage Buddies in Group", Modifier.fillMaxWidth().clickable { showManageGroups = false }.padding(horizontal = 18.dp, vertical = 9.dp))
+                        }
+                        if (group != "buddies" && group != "action_required" && group != "most_frequent" && group != "chatterbox" && group != "other_contacts") {
+                            LegacyText("Delete Group", Modifier.fillMaxWidth().clickable { showManageGroups = false }.padding(horizontal = 18.dp, vertical = 9.dp))
+                        }
+                        if (group != "buddies" && group != "action_required" && group != "other_contacts") {
+                            LegacyText("Change Sort to Online First", Modifier.fillMaxWidth().clickable { showManageGroups = false }.padding(horizontal = 18.dp, vertical = 9.dp))
+                            LegacyText("Change Sort to Alphabetical", Modifier.fillMaxWidth().clickable { showManageGroups = false }.padding(horizontal = 18.dp, vertical = 9.dp))
+                        }
+                        LegacyText("Return Groups to Defaults", Modifier.fillMaxWidth().clickable { showManageGroups = false }.padding(horizontal = 18.dp, vertical = 9.dp))
                     }
                 }
             }
