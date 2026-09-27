@@ -15,7 +15,7 @@ import com.cyanideph.java.legacy.ui.*
 @Composable
 fun HistoryScreen(
     onBack: () -> Unit,
-    contactName: String = "Friend 1"
+    contactName: String = "Unknown"
 ) {
     // Do not invent history records. The legacy screen is populated by the message store.\n    val messages = emptyList<String>()
     var showOptions by remember { mutableStateOf(false) }
