@@ -245,6 +245,7 @@ fun ChatInviteScreen(room: String, onBack: () -> Unit, onMenu: () -> Unit) {
 @Composable
 fun StoredMessageScreen(onBack: () -> Unit) {
     var showOptions by remember { mutableStateOf(false) }
+
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("Stored Message", Modifier.fillMaxWidth())
@@ -257,7 +258,21 @@ fun StoredMessageScreen(onBack: () -> Unit) {
         }
     }
     if (showOptions) {
-        LegacyDialogMessage("Send Reply\n\nForward Message\n\nClose Tab") { showOptions = false }
+        Dialog(onDismissRequest = { showOptions = false }) {
+            LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
+                Column(Modifier.fillMaxWidth()) {
+                    listOf("Send Reply", "Reply All", "Forward Message", "Close Tab").forEach { action ->
+                        LegacyText(
+                            action,
+                            Modifier.fillMaxWidth().clickable {
+                                showOptions = false
+                                if (action == "Close Tab") onBack()
+                            }.padding(horizontal = 8.dp, vertical = 7.dp)
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
