@@ -8,7 +8,12 @@ object Routes{const val LOGIN="login";const val REGISTER="register";const val MA
 composable(Routes.LOGIN){LoginScreen{navController.navigate(Routes.MAIN){popUpTo(Routes.LOGIN){inclusive=true}}}}
 composable(Routes.MAIN){MainMenuScreen({navController.navigate(Routes.BUDDIES)},{navController.navigate(Routes.MESSAGES)},{navController.navigate(Routes.ROOMS)},{navController.navigate(Routes.SETTINGS)},{navController.navigate(Routes.HELP)})}
 composable(Routes.BUDDIES){BuddyListScreen{navController.popBackStack()}}
-composable(Routes.MESSAGES){MessagesScreen{navController.popBackStack()}}
+composable(Routes.MESSAGES){MessagesScreen(
+    onBack={navController.popBackStack()},
+    onViewHistory={navController.navigate(Routes.HISTORY)},
+    onReceivedContacts={navController.navigate(Routes.BUDDIES)},
+    onProfile={navController.navigate(Routes.PROFILE)}
+)}
 composable(Routes.ROOMS){ChatRoomsScreen({navController.popBackStack()}){n->navController.navigate("room/"+java.net.URLEncoder.encode(n,"UTF-8"))}}
 composable(Routes.ROOM){e->ChatRoomScreen(java.net.URLDecoder.decode(e.arguments?.getString("name")?:"Room","UTF-8")){navController.popBackStack()}}
 composable(Routes.SETTINGS){SettingsScreen{navController.popBackStack()}}
