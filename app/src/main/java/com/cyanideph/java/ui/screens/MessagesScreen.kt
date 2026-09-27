@@ -235,7 +235,9 @@ private fun LegacyRecipientDialog(
                         contentScale = ContentScale.None
                     )
                     Spacer(Modifier.width(5.dp))
-                    LegacyCheckbox(checked)
+                    LegacyCheckbox(checked, onCheckedChange = { checkedNow ->
+                        selected = if (checkedNow) selected + contact.id else selected - contact.id
+                    })
                     Spacer(Modifier.width(5.dp))
                     LegacyText(contact.displayName)
                 }
