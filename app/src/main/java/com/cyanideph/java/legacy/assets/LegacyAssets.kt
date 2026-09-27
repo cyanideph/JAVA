@@ -17,8 +17,8 @@ object LegacyThemeState {
 
     fun ensure(context: Context) {
         if (!loaded) {
-            current = context.getSharedPreferences("legacy_theme", Context.MODE_PRIVATE)
-                .getString("theme", "default") ?: "default"
+            current = context.getSharedPreferences("kalypte.theme", Context.MODE_PRIVATE)
+                .getString("kalypte.theme", "default") ?: "default"
             loaded = true
         }
     }
@@ -26,7 +26,7 @@ object LegacyThemeState {
     fun select(context: Context, theme: String) {
         current = theme
         context.getSharedPreferences("legacy_theme", Context.MODE_PRIVATE)
-            .edit().putString("theme", theme).apply()
+            .edit().putString("kalypte.theme", theme).apply()
     }
 }
 
