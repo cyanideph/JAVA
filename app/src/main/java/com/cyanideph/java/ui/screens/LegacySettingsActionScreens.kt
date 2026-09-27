@@ -1,13 +1,11 @@
 package com.cyanideph.java.ui.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
 
@@ -17,28 +15,53 @@ fun ChangePasswordScreen(onBack: () -> Unit) {
     var new1 by remember { mutableStateOf("") }
     var new2 by remember { mutableStateOf("") }
     var error by remember { mutableStateOf<String?>(null) }
+
+    val fields = listOf(
+        LegacyFormField("old", "Old password", "Your old password", "", 30, password = true, inputFlags = 65536),
+        LegacyFormField("new1", "New password", "Enter your new password", "", 30, password = true, inputFlags = 65536),
+        LegacyFormField("new2", "Verification", "Re-type new password", "", 30, password = true, inputFlags = 65536)
+    )
+    fun values() = mapOf("old" to old, "new1" to new1, "new2" to new2)
+
     fun update() {
         error = when {
-            old.isBlank() || new1.isBlank() || new2.isBlank() -> "Please fill in all input fields."
+            old.isEmpty() || new1.isEmpty() || new2.isEmpty() -> "Please fill in all input fields."
             new1.any { !it.isLetterOrDigit() } -> "Password must not contain special symbols"
             new1 != new2 -> "Passwords do not match."
             new1.length < 6 -> "Password is too short"
             else -> null
         }
-        if (error == null) onBack()
+        if (error == null) {
+            // Transport/account update is intentionally not faked here.
+            error = "Password validation complete. Account update requires the legacy service transport."
+        }
     }
+
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("* Change password", Modifier.fillMaxWidth())
-            Column(Modifier.weight(1f).fillMaxWidth().padding(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                LegacyPasswordField("Old password", old) { old = it }
-                LegacyPasswordField("New password", new1) { new1 = it }
-                LegacyPasswordField("Verification", new2) { new2 = it }
-            }
-            LegacyFunctionBar(leftLabel = "Update", rightLabel = "Cancel", modifier = Modifier.clickable { update() })
+            LegacyFormList(
+                fields = fields,
+                values = values(),
+                onValueChange = { key, value ->
+                    when (key) {
+                        "old" -> old = value
+                        "new1" -> new1 = value
+                        "new2" -> new2 = value
+                    }
+                },
+                modifier = Modifier.weight(1f).fillMaxWidth().padding(6.dp)
+            )
+            LegacyFunctionBar(
+                leftLabel = "Update",
+                rightLabel = "Cancel",
+                modifier = Modifier.fillMaxWidth().clickable { update() }
+            )
         }
     }
-    if (error != null) AlertDialog(onDismissRequest = { error = null }, text = { LegacyText(error.orEmpty()) }, confirmButton = { TextButton({ error = null }) { LegacyText("OK") } })
+    error?.let { message ->
+        LegacyDialogMessage(message) { error = null }
+    }
 }
 
 @Composable
@@ -48,12 +71,13 @@ fun ChatroomTonesScreen(onBack: () -> Unit) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("* Chatroom Tones", Modifier.fillMaxWidth())
             LegacyText("Choose if you wish an alert tone to sound for chatroom messages.", Modifier.padding(8.dp))
-            Row(Modifier.fillMaxWidth().padding(8.dp)) {
-                Switch(checked = enabled, onCheckedChange = { enabled = it })
-                LegacyText("Chatroom Tones", Modifier.padding(start = 8.dp))
-            }
+            LegacyText(if (enabled) "Chatroom Tones: Yes" else "Chatroom Tones: No", Modifier.padding(8.dp))
             Spacer(Modifier.weight(1f))
-            LegacyFunctionBar(leftLabel = "", rightLabel = "Save", modifier = Modifier.clickable { onBack() })
+            LegacyFunctionBar(
+                leftLabel = if (enabled) "Disable" else "Enable",
+                rightLabel = "Save",
+                modifier = Modifier.fillMaxWidth().clickable { enabled = !enabled }
+            )
         }
     }
 }
@@ -66,20 +90,22 @@ fun SubscriptionMenuScreen(onBack: () -> Unit, onPurchaseHistory: () -> Unit) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("Subscription Menu", Modifier.fillMaxWidth())
             options.forEachIndexed { index, label ->
-                LegacyText(label, Modifier.fillMaxWidth().background(if (selected == index) ReptilianTheme.MenuSelected else ReptilianTheme.Surface).clickable { selected = index }.padding(horizontal = 8.dp, vertical = 7.dp))
+                LegacyText(
+                    label,
+                    Modifier.fillMaxWidth()
+                        .background(if (selected == index) ReptilianTheme.MenuSelected else ReptilianTheme.Surface)
+                        .clickable { selected = index }
+                        .padding(horizontal = 8.dp, vertical = 7.dp)
+                )
             }
             Spacer(Modifier.weight(1f))
-            LegacyFunctionBar(leftLabel = "Select", rightLabel = "Cancel", modifier = Modifier.clickable {
-                if (options[selected] == "View Purchase History") onPurchaseHistory() else onBack()
-            })
+            LegacyFunctionBar(
+                leftLabel = "Select",
+                rightLabel = "Cancel",
+                modifier = Modifier.fillMaxWidth().clickable {
+                    if (options[selected] == "View Purchase History") onPurchaseHistory() else onBack()
+                }
+            )
         }
-    }
-}
-
-@Composable
-private fun LegacyPasswordField(label: String, value: String, onChange: (String) -> Unit) {
-    Column(Modifier.fillMaxWidth()) {
-        LegacyText(label)
-        OutlinedTextField(value, onChange, Modifier.fillMaxWidth(), singleLine = true, visualTransformation = PasswordVisualTransformation())
     }
 }
