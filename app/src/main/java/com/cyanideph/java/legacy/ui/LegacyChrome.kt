@@ -5,7 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.material3.Text
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,7 +36,7 @@ fun LegacyBitmapBar(left:String,middle:String,right:String,modifier:Modifier=Mod
 fun LegacyTitleBar(title:String,modifier:Modifier=Modifier){
     Box(modifier){
         LegacyBitmapBar("${BarPath}titlebar-left.png","${BarPath}titlebar-middle.png","${BarPath}titlebar-right.png")
-        Text(title,color=ReptilianTheme.Text,fontSize=ReptilianTheme.FontSize,modifier=Modifier.padding(horizontal=8.dp))
+        BasicText(title,color=ReptilianTheme.Text,fontSize=ReptilianTheme.FontSize,modifier=Modifier.padding(horizontal=8.dp))
     }
 }
 
@@ -73,7 +73,7 @@ fun LegacyBackground(modifier: Modifier = Modifier, color: Color = Color.White, 
 
 @Composable
 fun LegacyText(text:String,modifier:Modifier=Modifier)=
-    Text(text,color=ReptilianTheme.Text,fontSize=ReptilianTheme.FontSize,modifier=modifier)
+    BasicText(text,color=ReptilianTheme.Text,fontSize=ReptilianTheme.FontSize,modifier=modifier)
 
 @Composable
 fun LegacyFrame(
