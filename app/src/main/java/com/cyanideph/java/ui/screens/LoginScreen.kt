@@ -4,13 +4,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
@@ -29,10 +27,12 @@ fun LoginScreen(onLogin: () -> Unit, onExit: () -> Unit) {
             onLogin = onLogin
         )
         "register" -> LegacyRegisterAccountScreen(
-            onCancel = { page = "landing" }
+            onCancel = { page = "landing" },
+            onSubmit = { /* legacy registration transport boundary; validation occurs before submission */ }
         )
         "forgot-password" -> LegacyForgotPasswordScreen(
-            onCancel = { page = "landing" }
+            onCancel = { page = "landing" },
+            onSubmit = { page = "landing" }
         )
         "help" -> LegacyHelpScreen(
             onCancel = { page = "landing" }
@@ -135,7 +135,7 @@ private fun LegacyLoginLandingScreen(
 
 
 @Composable
-private fun LegacyRegisterAccountScreen(onCancel: () -> Unit) {
+private fun LegacyRegisterAccountScreen(onCancel: () -> Unit, onSubmit: () -> Unit) {
     val fields = listOf(
         LegacyFormField("firstname", "First Name", "Your first name", "Please enter your first name as it will appear on your profile.", 60),
         LegacyFormField("lastname", "Last Name", "Your last name", "Please enter your last (family) name as it will appear on your profile.", 60),
@@ -149,7 +149,7 @@ private fun LegacyRegisterAccountScreen(onCancel: () -> Unit) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("* Register account", Modifier.fillMaxWidth())
             LegacyFormList(fields, values, { key, value -> values = values + (key to value) }, Modifier.weight(1f).fillMaxWidth().padding(8.dp))
-            LegacyFunctionBar("Register", "Cancel", Modifier.fillMaxWidth().clickable { onCancel() })
+            LegacyFunctionBar("Register", "Cancel", Modifier.fillMaxWidth().clickable { onSubmit() })
         }
     }
 }
@@ -317,6 +317,23 @@ private fun LegacyNetworkLoginScreen(
     var showAutoLogin by remember { mutableStateOf(false) }
 
     if (showAutoLogin) {
+        LegacyConfirmationFrame(
+            message = "Would you like to log in automatically with your username/password when the application is started?",
+            onYes = {
+                prefs.edit().putString("amazilia.username", values["username"].orEmpty().lowercase()).putString("amazilia.password", values["password"].orEmpty()).putString("kolipri.xmpp.autologin", "yes").apply()
+                showAutoLogin = false
+                onLogin()
+            },
+            onNo = {
+                prefs.edit().putString("amazilia.username", values["username"].orEmpty().lowercase()).putString("amazilia.password", values["password"].orEmpty()).putString("kolipri.xmpp.autologin", "no").apply()
+                showAutoLogin = false
+                onLogin()
+            },
+            onDismiss = { showAutoLogin = false }
+        )
+    }
+
+    LegacyBackground(Modifier.fillMaxSize(), ReptilianTheme.Surface) {
         Dialog(onDismissRequest = { showAutoLogin = false }) {
             Column(
                 modifier = Modifier
