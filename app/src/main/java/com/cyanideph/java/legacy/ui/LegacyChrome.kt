@@ -62,10 +62,10 @@ fun LegacyFunctionBar(
 }
 
 @Composable
-fun LegacyBackground(modifier:Modifier=Modifier,content:@Composable BoxScope.()->Unit){
+fun LegacyBackground(modifier: Modifier = Modifier, color: Color = Color.White, content: @Composable BoxScope.() -> Unit){
     val c=LocalContext.current
     val bg=LegacyAssets.rememberBitmap(c,"themes/uzzap/background-pattern.png")
-    Box(modifier.background(Color.White)){
+    Box(modifier.background(color)){
         Image(bg,null,Modifier.fillMaxSize(),contentScale=ContentScale.Tile)
         content()
     }
