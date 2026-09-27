@@ -39,8 +39,8 @@ fun MessagesScreen(onBack: () -> Unit) {
     var showEditor by remember { mutableStateOf(false) }
     var recipientMode by remember { mutableStateOf(false) }
     var showEmoticons by remember { mutableStateOf(false) }
-    val messageType = if (selectedTab == 2) "chat" else "im"
-    val editorLimit = if (messageType == "chat") 160 else 700
+    var messageType by remember { mutableStateOf(if (selectedTab == 2) "chatroom" else "im") }
+    val editorLimit = if (messageType == "chatroom") 160 else 700
 
     val messages = remember { listOf(
         Message("cy", "Welcome to Uzzap", "now", false),
@@ -60,7 +60,7 @@ fun MessagesScreen(onBack: () -> Unit) {
             LegacyTabStrip(
                 tabs = tabs.map { it.title },
                 selected = selectedTab,
-                onSelected = { selectedTab = it },
+                onSelected = { selectedTab = it; messageType = if (it == 2) "chatroom" else "im" },
                 modifier = Modifier.fillMaxWidth()
             )
             LegacyComposerPreview(messageText, recipient, cc, hideRecipients)
