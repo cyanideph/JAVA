@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.cyanideph.java.legacy.theme.ReptilianTheme
 
 data class LegacyFormField(
     val key: String,
@@ -101,7 +102,8 @@ private fun LegacyFieldEditor(
                     visualTransformation = if (isPassword) PasswordVisualTransformation() else androidx.compose.ui.text.input.VisualTransformation.None,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(BorderStroke(1.dp, androidx.compose.ui.graphics.Color.Black))
+                        .background(ReptilianTheme.EditorBackground)
+                        .border(BorderStroke(1.dp, ReptilianTheme.EditorBorder))
                         .padding(horizontal = 4.dp, vertical = 3.dp),
                     decorationBox = { innerTextField ->
                         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterStart) {
