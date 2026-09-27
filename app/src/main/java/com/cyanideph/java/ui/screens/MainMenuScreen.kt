@@ -12,6 +12,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.window.Dialog
+import com.cyanideph.java.legacy.ui.LegacyFrame
 import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.ui.LegacyBackground
 import com.cyanideph.java.legacy.ui.LegacyText
@@ -34,7 +36,10 @@ fun MainMenuScreen(
     onThemes: () -> Unit = {},
     onBatterySaving: () -> Unit = {},
     onStatus: () -> Unit = {},
-    onSilentMode: (Boolean) -> Unit = {}
+    onSilentMode: (Boolean) -> Unit = {},
+    onLogOff: () -> Unit = {},
+    onAbout: () -> Unit = {},
+    onExit: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val density = LocalDensity.current
@@ -114,17 +119,32 @@ fun MainMenuScreen(
                 Image(bottomBar, contentDescription = null, Modifier.fillMaxWidth().height(bottomBarHeight), contentScale = ContentScale.Tile)
                 LegacyFunctionBar(leftLabel = "Options", rightLabel = "Exit", modifier = Modifier.fillMaxWidth().clickable { showOptions = true })
             }
-            if (showOptions) LegacyOptionsPopup { showOptions = false }
+            if (showOptions) LegacyOptionsPopup(onDismiss = { showOptions = false }, onLogOff = onLogOff, onAbout = onAbout, onExit = onExit)
         }
     }
 }
 
 @Composable
-private fun LegacyOptionsPopup(onDismiss: () -> Unit) {
-    val options = listOf("Lock Keypad", "Log Off", "Intro Help Screen", "About Uzzap", "Exit Application")
-    Box(Modifier.fillMaxSize().clickable { onDismiss() }, contentAlignment = Alignment.Center) {
-        Column(Modifier.wrapContentWidth().clickable { }.background(ReptilianTheme.Surface)) {
-            options.forEach { LegacyText(it, Modifier.padding(horizontal = 18.dp, vertical = 9.dp)) }
+private fun LegacyOptionsPopup(
+    onDismiss: () -> Unit,
+    onLogOff: () -> Unit,
+    onAbout: () -> Unit,
+    onExit: () -> Unit
+) {
+    val options = listOf(
+        "Lock Keypad" to { onDismiss() },
+        "Log Off" to { onDismiss(); onLogOff() },
+        "Intro Help Screen" to { onDismiss() },
+        "About Uzzap" to { onDismiss(); onAbout() },
+        "Exit Application" to { onDismiss(); onExit() }
+    )
+    Dialog(onDismissRequest = onDismiss) {
+        LegacyFrame(Modifier.wrapContentWidth()) {
+            Column(Modifier.wrapContentWidth().background(ReptilianTheme.Surface)) {
+                options.forEach { (label, action) ->
+                    LegacyText(label, Modifier.fillMaxWidth().clickable(onClick = action).padding(horizontal = 18.dp, vertical = 9.dp))
+                }
+            }
         }
     }
 }
