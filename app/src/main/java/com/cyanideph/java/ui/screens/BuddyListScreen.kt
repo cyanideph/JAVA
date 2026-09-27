@@ -33,7 +33,7 @@ fun BuddyListScreen(onBack: () -> Unit) {
     val context = LocalContext.current
     val density = LocalDensity.current
     var selectedGroup by remember { mutableIntStateOf(1) }
-    var selectedBuddy by remember { mutableIntStateOf(-1) }
+    var selectedBuddy by remember { mutableIntStateOf(-1) }\n    var showOptions by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
 
     val buddies = listOf(
@@ -78,12 +78,53 @@ fun BuddyListScreen(onBack: () -> Unit) {
                 }
             }
 
-            LegacyFunctionBar(Modifier.fillMaxWidth())
+            Row(Modifier.fillMaxWidth()) {\n                Box(Modifier.weight(1f).clickable { showOptions = true }) {\n                    LegacyText("Options", Modifier.padding(8.dp))\n                }\n                Box(Modifier.weight(1f).clickable { onBack() }) {\n                    LegacyText("Menu", Modifier.padding(8.dp))\n                }\n            }\n            LegacyFunctionBar(Modifier.fillMaxWidth())\n            if (showOptions) {\n                BuddyOptionsPopup(\n                    hasBuddy = selectedBuddy >= 0,\n                    onDismiss = { showOptions = false },\n                    onAdd = { showOptions = false },\n                    onHelp = { showOptions = false }\n                )\n            }
         }
     }
 }
 
 @Composable
+@Composable
+private fun BuddyOptionsPopup(
+    hasBuddy: Boolean,
+    onDismiss: () -> Unit,
+    onAdd: () -> Unit,
+    onHelp: () -> Unit
+) {
+    val options = buildList {
+        if (hasBuddy) add("Contact")
+        if (!hasBuddy) add("Send Group Message")
+        if (!hasBuddy) add("Manage Groups")
+        add("New Group")
+        add("Add/Invite Buddies")
+        add("Clear Message History")
+        add("Uzzap Help")
+    }
+    androidx.compose.ui.window.Dialog(onDismissRequest = onDismiss) {
+        Column(
+            Modifier
+                .wrapContentWidth()
+                .background(ReptilianTheme.Surface)
+        ) {
+            options.forEach { label ->
+                LegacyText(
+                    label,
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            when (label) {
+                                "Add/Invite Buddies" -> onAdd()
+                                "Uzzap Help" -> onHelp()
+                                else -> onDismiss()
+                            }
+                        }
+                        .padding(horizontal = 18.dp, vertical = 9.dp)
+                )
+            }
+        }
+    }
+}
+
 private fun BuddyRow(
     buddy: Buddy,
     selected: Boolean,
