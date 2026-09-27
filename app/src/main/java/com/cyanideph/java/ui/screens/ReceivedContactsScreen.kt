@@ -45,15 +45,12 @@ fun ReceivedContactsScreen(onBack: () -> Unit) {
                     }
                 }
             }
-            Row(Modifier.fillMaxWidth()) {
-                Box(Modifier.weight(1f).clickable { showOptions = true }) {
-                    LegacyText("Options", Modifier.padding(8.dp))
-                }
-                Box(Modifier.weight(1f).clickable { onBack() }) {
-                    LegacyText("Close", Modifier.padding(8.dp))
-                }
-            }
-            LegacyFunctionBar(Modifier.fillMaxWidth())
+            LegacyFunctionBar(
+                leftLabel = "Options",
+                rightLabel = "Close",
+                modifier = Modifier.fillMaxWidth()
+                    .clickable { onBack() }
+            )
         }
     }
 
