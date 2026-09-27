@@ -55,24 +55,76 @@ fun BatterySavingScreen(onBack: () -> Unit, onMenu: () -> Unit) {
 
 @Composable
 fun OfflineSettingsScreen(onBack: () -> Unit) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val prefs = remember { context.getSharedPreferences("legacy_settings", android.content.Context.MODE_PRIVATE) }
+    var route by remember { mutableStateOf(prefs.getString("offline.route", "") ?: "") }
     var showOptions by remember { mutableStateOf(false) }
+    var showHelp by remember { mutableStateOf(false) }
+
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("Offline Settings", Modifier.fillMaxWidth())
             LegacyText(
-                legacyOfflineText,
-                Modifier.weight(1f).fillMaxWidth().padding(6.dp)
+                "* Offline Settings
+
+Choose how your messages will be delivered when Uzzap is off.
+",
+                Modifier.fillMaxWidth().padding(6.dp)
             )
+            listOf("" to "No option", "sms" to "Available SMS", "email" to "Email").forEach { (value, label) ->
+                LegacyText(
+                    label,
+                    Modifier.fillMaxWidth()
+                        .background(if (route == value) ReptilianTheme.MenuSelected else ReptilianTheme.Surface)
+                        .clickable { route = value }
+                        .padding(horizontal = 8.dp, vertical = 7.dp)
+                )
+            }
+            Spacer(Modifier.weight(1f))
             LegacyFunctionBar(
                 leftLabel = "Options",
                 rightLabel = "Save",
                 modifier = Modifier.fillMaxWidth(),
                 onLeftClick = { showOptions = true },
-                onRightClick = onBack
+                onRightClick = {
+                    prefs.edit().putString("offline.route", route).apply()
+                    onBack()
+                }
             )
         }
     }
-    if (showOptions) LegacyDialogMessage("* Offline Settings\n\nAllows you to set how your messages will be delivered when UZZAP is off:\n\nChoose \" Available SMS \" to receive messages via SMS when Uzzap is off - Only available for some networks.\n\nChoose \" Email \" to have your messages forwarded to Email when off.\n\nIf no options are selected, your messages will be stored for up to 14 days until you next Login to Uzzap.") { showOptions = false }
+
+    if (showOptions) {
+        Dialog(onDismissRequest = { showOptions = false }) {
+            LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
+                Column(Modifier.fillMaxWidth()) {
+                    listOf("Help", "Close Tab").forEach { action ->
+                        LegacyText(
+                            action,
+                            Modifier.fillMaxWidth().clickable {
+                                showOptions = false
+                                if (action == "Help") showHelp = true else onBack()
+                            }.padding(horizontal = 8.dp, vertical = 7.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    if (showHelp) {
+        LegacyDialogMessage(
+            "* Offline Settings
+
+Allows you to set how your messages will be delivered when UZZAP is off:
+
+Choose " Available SMS " to receive messages via SMS when Uzzap is off - Only available for some networks.
+
+Choose " Email " to have your messages forwarded to Email when off.
+
+If no options are selected, your messages will be stored for up to 14 days until you next Login to Uzzap."
+        ) { showHelp = false }
+    }
 }
 
 @Composable
