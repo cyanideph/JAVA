@@ -173,7 +173,11 @@ private fun LegacyRegisterAccountScreen(onCancel: () -> Unit, onSubmit: () -> Un
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("* Register account", Modifier.fillMaxWidth())
             LegacyFormList(fields, values, { key, value -> values = values + (key to value) }, Modifier.weight(1f).fillMaxWidth().padding(8.dp))
-            LegacyFunctionBar("Register", "Cancel", Modifier.fillMaxWidth().clickable { submit() })
+            LegacyFunctionBar(
+                leftLabel = "Register",
+                rightLabel = "Cancel",
+                modifier = Modifier.fillMaxWidth().clickable { submit() }
+            )
         }
     }
     error?.let { msg ->
