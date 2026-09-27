@@ -185,7 +185,7 @@ private fun LegacyRegisterAccountScreen(onCancel: () -> Unit, onSubmit: () -> Un
             LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
                 Column(Modifier.fillMaxWidth().padding(10.dp)) {
                     LegacyText("* Incorrect data\n\nPlease make sure to fill out all fields as instructed:\n\n$msg")
-                    LegacyFunctionBar("", "OK", Modifier.fillMaxWidth().clickable { error = null })
+                    LegacyFunctionBar(leftLabel = "", rightLabel = "OK", modifier = Modifier.fillMaxWidth().clickable { error = null })
                 }
             }
         }
