@@ -18,9 +18,9 @@ fun AddOtherContactScreen(onBack: () -> Unit) {
     var error by remember { mutableStateOf<String?>(null) }
 
     val fields = listOf(
-        LegacyFormField("custom-displayname", "Nickname", "Nickname", "* Nickname\\n\\nThis is the name that you will see in your buddy list for this contact.", 50),
-        LegacyFormField("custom-mobile", "Mobile number", "Mobile number", "* Mobile number\\n\\nThis is the mobile number where SMS messages for this contact will be sent.", 13, inputFlags = 3),
-        LegacyFormField("custom-email", "Email Address", "Email Address", "* Custom email\\n\\nThis is the email address where email messages for this contact will be sent", 50)
+        LegacyFormField("custom-displayname", "Nickname", "Nickname", "* Nickname\n\nThis is the name that you will see in your buddy list for this contact.", 50),
+        LegacyFormField("custom-mobile", "Mobile number", "Mobile number", "* Mobile number\n\nThis is the mobile number where SMS messages for this contact will be sent.", 13, inputFlags = 3),
+        LegacyFormField("custom-email", "Email Address", "Email Address", "* Custom email\n\nThis is the email address where email messages for this contact will be sent", 50)
     )
 
     fun save() {
@@ -28,7 +28,7 @@ fun AddOtherContactScreen(onBack: () -> Unit) {
             nickname.any { !it.isLetterOrDigit() && !it.isWhitespace() } -> "* Nickname must not contain special symbols"
             mobile.isBlank() -> "* Mobile number is required. Please fill in."
             email.length in 1..2 || emailInvalid(email) ->
-                "* Incorrect data\\n\\nPlease make sure to fill out all fields as instructed:\\n\\nEmail address has an invalid Entry"
+                "* Incorrect data\n\nPlease make sure to fill out all fields as instructed:\n\nEmail address has an invalid Entry"
             else -> "Contact validation complete. Legacy service transport is required to save the contact."
         }
     }
@@ -94,16 +94,16 @@ fun EditSmsBuddyScreen(onBack: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var error by remember { mutableStateOf<String?>(null) }
     val fields = listOf(
-        LegacyFormField("custom-displayname", "Nickname", "Nickname", "* Nickname\\n\\nThis is the name that you will see in your buddy list for this contact.", 50),
-        LegacyFormField("custom-mobile", "Mobile number", "Mobile number", "* Mobile number\\n\\nThis is the mobile number where SMS messages for this contact will be sent.", 13, inputFlags = 3),
-        LegacyFormField("custom-email", "Email Address", "Email Address", "* Custom email\\n\\nThis is the email address where email messages for this contact will be sent", 50)
+        LegacyFormField("custom-displayname", "Nickname", "Nickname", "* Nickname\n\nThis is the name that you will see in your buddy list for this contact.", 50),
+        LegacyFormField("custom-mobile", "Mobile number", "Mobile number", "* Mobile number\n\nThis is the mobile number where SMS messages for this contact will be sent.", 13, inputFlags = 3),
+        LegacyFormField("custom-email", "Email Address", "Email Address", "* Custom email\n\nThis is the email address where email messages for this contact will be sent", 50)
     )
     fun save() {
         error = when {
             nickname.any { !it.isLetterOrDigit() && !it.isWhitespace() } -> "* Nickname must not contain special symbols"
             mobile.isBlank() -> "* Mobile number is required. Please fill in."
             email.length in 1..2 || emailInvalid(email) ->
-                "* Incorrect data\\n\\nPlease make sure to fill out all fields as instructed:\\n\\nEmail address has an invalid Entry"
+                "* Incorrect data\n\nPlease make sure to fill out all fields as instructed:\n\nEmail address has an invalid Entry"
             else -> "Contact validation complete. Legacy service transport is required to save the contact."
         }
     }
@@ -154,7 +154,7 @@ fun ValidationScreen(mode: String, onBack: () -> Unit) {
     }
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
-            LegacyTitleBar(if (mode == "mobile") "Please check your mobile number:" else "Enter your Pin \\n\\n or \"Exit\" to check your SMS Inbox", Modifier.fillMaxWidth())
+            LegacyTitleBar(if (mode == "mobile") "Please check your mobile number:" else "Enter your Pin \n\n or \"Exit\" to check your SMS Inbox", Modifier.fillMaxWidth())
             LegacyFormList(
                 fields,
                 if (mode == "mobile") mapOf("mobile" to mobile) else mapOf("pin" to pin),
