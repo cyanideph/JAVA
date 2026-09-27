@@ -28,7 +28,7 @@ fun ChatRoomScreen(room: String, onBack: () -> Unit) {
 
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
-            LegacyTitleBar("Chat Room", Modifier.fillMaxWidth())
+            LegacyTitleBar("Chat - $room", Modifier.fillMaxWidth())
             Column(Modifier.weight(1f).fillMaxWidth().padding(6.dp)) {
                 LegacyText(if (joined) "" else "- Failed to join the chatroom (chat service not available)")
                 if (status.isNotEmpty()) {
