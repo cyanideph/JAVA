@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.cyanideph.java.legacy.assets.LegacyAssets
+import com.cyanideph.java.legacy.assets.LegacyThemeState
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.LegacyBackground
 import com.cyanideph.java.legacy.ui.LegacyFunctionBar
@@ -27,7 +28,10 @@ import com.cyanideph.java.legacy.ui.LegacyTitleBar
 @Composable
 fun ThemeScreen(onBack: () -> Unit) {
     val themes = listOf("default", "uzzap")
-    val selected = remember { mutableStateOf("uzzap") }
+    val selected = remember { mutableStateOf("default") }
+
+    LegacyThemeState.ensure(LocalContext.current)
+    selected.value = LegacyThemeState.current
 
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
@@ -40,7 +44,7 @@ fun ThemeScreen(onBack: () -> Unit) {
                     androidx.compose.foundation.layout.Row(
                         Modifier.fillMaxWidth()
                             .background(if (theme == selected.value) ReptilianTheme.MenuSelected else ReptilianTheme.Surface)
-                            .clickable { selected.value = theme }
+                            .clickable {\n                                selected.value = theme\n                                LegacyThemeState.select(context, theme)\n                            }
                             .padding(horizontal = 4.dp, vertical = 2.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
