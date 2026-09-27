@@ -203,10 +203,29 @@ private fun LegacyRecipientDialog(onPick: (String) -> Unit) {
 
 @Composable
 private fun LegacyEmoticonDialog(onPick: (String) -> Unit) {
-    val emoticons = listOf(":)", ";)", ":(", ":|", ":Oo", ">,")
+    val entries = listOf(
+        ":)" to "emoticon-smile", ";)" to "emoticon-wink", ":(" to "emoticon-sad",
+        ":D" to "emoticon-laugh", ":e" to "emoticon-e", "(:)" to "emoticon-love",
+        ">|" to "emoticon-angry", ":o" to "emoticon-surprise", ":>" to "emoticon-tongue",
+        ">(|" to "emoticon-cry", ":DD" to "emoticon-11", "o/" to "emoticon-12",
+        ":Oo" to "emoticon-13", " >," to "emoticon-14", ":|" to "emoticon-15",
+        ":B," to "emoticon-16", ":OOo" to "emoticon-17", ":Zz." to "emoticon-18",
+        "O:)" to "emoticon-19", "))(" to "emoticon-20", ">><)" to "emoticon-47",
+        "<:D" to "emoticon-clown", "(cU)" to "emoticon-drink", "<:)" to "emoticon-party",
+        "(+)" to "emoticon-sick", ":-)" to "emoticon-smile", ":-(" to "emoticon-sad",
+        "@};-" to "emoticon-rose"
+    )
     androidx.compose.ui.window.Dialog(onDismissRequest = { }) {
-        Column(Modifier.background(ReptilianTheme.Surface)) {
-            emoticons.forEach { value -> LegacyText(value, Modifier.fillMaxWidth().clickable { onPick(value) }.padding(8.dp)) }
+        Column(Modifier.background(ReptilianTheme.Surface).padding(6.dp)) {
+            entries.chunked(4).forEach { row ->
+                Row {
+                    row.forEach { (code, asset) ->
+                        val context = LocalContext.current
+                        val bitmap = LegacyAssets.rememberBitmap(context, asset)
+                        Image(bitmap, code, Modifier.padding(3.dp).clickable { onPick(code) }, contentScale = ContentScale.None)
+                    }
+                }
+            }
         }
     }
 }
