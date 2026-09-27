@@ -17,7 +17,8 @@ fun HistoryScreen(
     onBack: () -> Unit,
     contactName: String = "Unknown"
 ) {
-    // Do not invent history records. The legacy screen is populated by the message store.\n    val messages = emptyList<String>()
+    // Do not invent history records. The legacy screen is populated by the message store.
+    val messages = emptyList<String>()
     var showOptions by remember { mutableStateOf(false) }
     var showMessage by remember { mutableStateOf(false) }
 
@@ -54,13 +55,15 @@ fun HistoryScreen(
     if (showOptions) {
         Dialog(onDismissRequest = { showOptions = false }) {
             Column(Modifier.background(ReptilianTheme.Surface)) {
-                LegacyText(
-                    "Open Message",
-                    Modifier.fillMaxWidth().clickable {
-                        showOptions = false
-                        showMessage = true
-                    }.padding(horizontal = 18.dp, vertical = 9.dp)
-                )
+                if (messages.isNotEmpty()) {
+                    LegacyText(
+                        "Open Message",
+                        Modifier.fillMaxWidth().clickable {
+                            showOptions = false
+                            showMessage = true
+                        }.padding(horizontal = 18.dp, vertical = 9.dp)
+                    )
+                }
                 LegacyText(
                     "Send New Message",
                     Modifier.fillMaxWidth().clickable {
