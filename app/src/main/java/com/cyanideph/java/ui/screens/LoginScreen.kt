@@ -359,7 +359,7 @@ private fun LegacyNetworkLoginScreen(
             LegacyFormList(
                 fields = fields,
                 values = values,
-                onValueChanged = { key, value -> values = values + (key to value) },
+                onValueChange = { key, value -> values = values + (key to value) },
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
