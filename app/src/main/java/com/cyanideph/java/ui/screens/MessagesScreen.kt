@@ -43,7 +43,7 @@ fun MessagesScreen(onBack: () -> Unit) {
 
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
-            LegacyTitleBar("Instant Messaging", Modifier.fillMaxWidth())
+            LegacyTitleBar(when (selectedTab) {\n                1 -> "EM - Friend 1"\n                2 -> "Chat Room"\n                else -> "Instant Messaging"\n            }, Modifier.fillMaxWidth())
 
             LegacyTabStrip(
                 tabs = tabs.map { it.title },
