@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalDensity
 import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 
-private const val BarPath = "themes/uzzap/"
+private const val BarPath = "themes/default/"
 
 @Composable
 fun LegacyBitmapBar(left:String,middle:String,right:String,modifier:Modifier=Modifier){
