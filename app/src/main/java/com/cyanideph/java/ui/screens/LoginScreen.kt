@@ -327,7 +327,9 @@ private fun LegacyNetworkLoginScreen(
         )
     )
     val context = LocalContext.current
-    val prefs = remember { context.getSharedPreferences("uzzap_legacy", android.content.Context.MODE_PRIVATE) }
+    val prefs = remember {
+        context.getSharedPreferences("uzzap_legacy", android.content.Context.MODE_PRIVATE)
+    }
     var values by remember {
         mutableStateOf(
             mapOf(
@@ -337,69 +339,6 @@ private fun LegacyNetworkLoginScreen(
         )
     }
     var showAutoLogin by remember { mutableStateOf(false) }
-
-    if (showAutoLogin) {
-        Dialog(onDismissRequest = { showAutoLogin = false }) {
-            LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
-                Column(Modifier.fillMaxWidth().padding(10.dp)) {
-                    LegacyText("Would you like to log in automatically with your username/password when the application is started?")
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                        TextButton(onClick = {
-                            prefs.edit().putString("amazilia.username", values["username"].orEmpty().lowercase())
-                                .putString("amazilia.password", values["password"].orEmpty())
-                                .putString("kolipri.xmpp.autologin", "yes").apply()
-                            showAutoLogin = false
-                            onLogin()
-                        }) { LegacyText("Yes") }
-                        TextButton(onClick = {
-                            prefs.edit().putString("amazilia.username", values["username"].orEmpty().lowercase())
-                                .putString("amazilia.password", values["password"].orEmpty())
-                                .putString("kolipri.xmpp.autologin", "no").apply()
-                            showAutoLogin = false
-                            onLogin()
-                        }) { LegacyText("No") }
-                    }
-                }
-            }
-        }
-    }
-
-    LegacyBackground(Modifier.fillMaxSize(), ReptilianTheme.Surface) {
-        Dialog(onDismissRequest = { showAutoLogin = false }) {
-            Column(
-                modifier = Modifier
-                    .background(ReptilianTheme.Surface)
-                    .padding(10.dp)
-            ) {
-                LegacyText(
-                    "Would you like to log in automatically with your username/password when the application is started?"
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    TextButton(onClick = {
-                        prefs.edit()
-                            .putString("amazilia.username", values["username"].orEmpty().lowercase())
-                            .putString("amazilia.password", values["password"].orEmpty())
-                            .putString("kolipri.xmpp.autologin", "yes")
-                            .apply()
-                        showAutoLogin = false
-                        onLogin()
-                    }) { LegacyText("Yes") }
-                    TextButton(onClick = {
-                        prefs.edit()
-                            .putString("amazilia.username", values["username"].orEmpty().lowercase())
-                            .putString("amazilia.password", values["password"].orEmpty())
-                            .putString("kolipri.xmpp.autologin", "no")
-                            .apply()
-                        showAutoLogin = false
-                        onLogin()
-                    }) { LegacyText("No") }
-                }
-            }
-        }
-    }
 
     LegacyBackground(Modifier.fillMaxSize(), ReptilianTheme.Surface) {
         Column(Modifier.fillMaxSize()) {
@@ -416,12 +355,44 @@ private fun LegacyNetworkLoginScreen(
             LegacyFunctionBar(
                 leftLabel = "Login",
                 rightLabel = "Cancel",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        showAutoLogin = true
-                    }
+                modifier = Modifier.fillMaxWidth()
             )
+        }
+    }
+
+    if (showAutoLogin) {
+        Dialog(onDismissRequest = { showAutoLogin = false }) {
+            LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
+                Column(Modifier.fillMaxWidth().padding(10.dp)) {
+                    LegacyText(
+                        "Would you like to log in automatically with your username/password when the application is started?"
+                    )
+                    Row(
+                        Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        TextButton(onClick = {
+                            prefs.edit()
+                                .putString("amazilia.username", values["username"].orEmpty().lowercase())
+                                .putString("amazilia.password", values["password"].orEmpty())
+                                .putString("kolipri.xmpp.autologin", "yes")
+                                .apply()
+                            showAutoLogin = false
+                            onLogin()
+                        }) { LegacyText("Yes") }
+
+                        TextButton(onClick = {
+                            prefs.edit()
+                                .putString("amazilia.username", values["username"].orEmpty().lowercase())
+                                .putString("amazilia.password", values["password"].orEmpty())
+                                .putString("kolipri.xmpp.autologin", "no")
+                                .apply()
+                            showAutoLogin = false
+                            onLogin()
+                        }) { LegacyText("No") }
+                    }
+                }
+            }
         }
     }
 }
