@@ -24,7 +24,7 @@ fun ChatRoomsScreen(onBack: () -> Unit, onRoom: (String) -> Unit) {
             LegacyTitleBar("Chat Rooms", Modifier.fillMaxWidth())
             Column(Modifier.weight(1f).fillMaxWidth()) {
                 if (rooms.isEmpty()) {
-                    LegacyText("No chat rooms", Modifier.padding(6.dp))
+                    LegacyText("Getting Categories..", Modifier.padding(6.dp))
                 } else {
                     rooms.forEachIndexed { index, room ->
                         LegacyText(
