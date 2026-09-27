@@ -193,10 +193,10 @@ private fun LegacyEmoticonDialog(onPick: (String) -> Unit, onDismiss: () -> Unit
         ":)" to "emoticon-smile", ";)" to "emoticon-wink", ":(" to "emoticon-sad", ":D" to "emoticon-laugh",
         ":e" to "emoticon-e", "(:)" to "emoticon-love", ">|" to "emoticon-angry", ":o" to "emoticon-surprise",
         ":>" to "emoticon-tongue", ">(|" to "emoticon-cry", ":DD" to "emoticon-11", "o/" to "emoticon-12",
-        ":Oo" to "emoticon-13", " >," to "emoticon-14", ":|" to "emoticon-15", ":B," to "emoticon-16",
+        ":Oo" to "emoticon-13", ">," to "emoticon-14", ":|" to "emoticon-15", ":B," to "emoticon-16",
         ":OOo" to "emoticon-17", ":Zz." to "emoticon-18", "O:)" to "emoticon-19", "))(" to "emoticon-20",
         ">><)" to "emoticon-47", "<:D" to "emoticon-clown", "(cU)" to "emoticon-drink", "<:)" to "emoticon-party",
-        "(+)" to "emoticon-sick", ":-)" to "emoticon-smile", ":-(" to "emoticon-sad", "@};-" to "emoticon-rose"
+        "(+)" to "emoticon-sick", "@};-" to "emoticon-rose"
     )
     Dialog(onDismissRequest = onDismiss) {
         Column(Modifier.background(ReptilianTheme.Surface).padding(6.dp)) {
