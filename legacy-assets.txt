@@ -1,5 +1,8 @@
 alert.amr
 alert.wav
+battery.txt
+help.txt
+help0.txt
 themes/default/000-smart-large.png
 themes/default/000-smart-small.png
 themes/default/001-abm-large.png
@@ -16,6 +19,7 @@ themes/default/007-batteryinfo-large.png
 themes/default/007-batteryinfo-small.png
 themes/default/008-ringtone-large.png
 themes/default/008-ringtone-small.png
+themes/default/A.txt
 themes/default/background-pattern-white.png
 themes/default/background-pattern.png
 themes/default/battery-tab.png
@@ -113,6 +117,7 @@ themes/default/statusmessage.png
 themes/default/sync.png
 themes/default/tab-not-selected.png
 themes/default/tab-selected.png
+themes/default/theme.ini
 themes/default/tickbox-not-selected.png
 themes/default/tickbox-selected.png
 themes/default/titlebar-left.png
@@ -122,6 +127,7 @@ themes/default/unread-icon.png
 themes/default/unread-sending-icon.png
 themes/default/yahoo-offline.png
 themes/default/yahoo-online.png
+themes/uzzap/a.txt
 themes/uzzap/background-pattern.png
 themes/uzzap/functionbar-left.png
 themes/uzzap/functionbar-middle.png
