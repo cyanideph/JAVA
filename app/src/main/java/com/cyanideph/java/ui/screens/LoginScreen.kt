@@ -325,10 +325,18 @@ private fun LegacyNetworkLoginScreen(
                     horizontalArrangement = Arrangement.End
                 ) {
                     TextButton(onClick = {
+                        context.getSharedPreferences("uzzap_legacy", android.content.Context.MODE_PRIVATE)
+                            .edit()
+                            .putString("kolipri.xmpp.autologin", "yes")
+                            .apply()
                         showAutoLogin = false
                         onLogin()
                     }) { LegacyText("Yes") }
                     TextButton(onClick = {
+                        context.getSharedPreferences("uzzap_legacy", android.content.Context.MODE_PRIVATE)
+                            .edit()
+                            .putString("kolipri.xmpp.autologin", "no")
+                            .apply()
                         showAutoLogin = false
                         onLogin()
                     }) { LegacyText("No") }
@@ -355,11 +363,7 @@ private fun LegacyNetworkLoginScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        if (!values["username"].isNullOrBlank() && !values["password"].isNullOrBlank()) {
-                            showAutoLogin = true
-                        } else {
-                            onCancel()
-                        }
+                        showAutoLogin = true
                     }
             )
         }
