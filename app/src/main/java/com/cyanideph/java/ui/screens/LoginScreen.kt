@@ -46,7 +46,8 @@ fun LoginScreen(onLogin: () -> Unit) {
             onRegister = { page = "register" },
             onForgotPassword = { page = "forgot-password" },
             onHelp = { page = "help" },
-            onAbout = { page = "about" }
+            onAbout = { page = "about" },
+            onExit = onExit
         )
     }
 }
@@ -57,7 +58,8 @@ private fun LegacyLoginLandingScreen(
     onRegister: () -> Unit,
     onForgotPassword: () -> Unit = {},
     onHelp: () -> Unit = {},
-    onAbout: () -> Unit = {}
+    onAbout: () -> Unit = {},
+    onExit: () -> Unit = {}
 ) {
     val context = LocalContext.current
 
@@ -67,7 +69,7 @@ private fun LegacyLoginLandingScreen(
         "Forgotten Password" to "forgot-password",
         "Help" to "help",
         "About Uzzap" to "about",
-        "Exit Application" to "disabled"
+        "Exit Application" to "exit"
     )
 
     LegacyBackground(
@@ -105,6 +107,7 @@ private fun LegacyLoginLandingScreen(
                                 if (action == "forgot-password") onForgotPassword()
                                 if (action == "help") onHelp()
                                 if (action == "about") onAbout()
+                                if (action == "exit") onExit()
                             }
                             .padding(horizontal = 8.dp, vertical = 6.dp),
                         verticalAlignment = Alignment.CenterVertically
