@@ -81,7 +81,7 @@ fun EditBuddyScreen(onBack: () -> Unit) {
                 { key, value -> if (key == "custom-displayname") nickname = value else email = value },
                 Modifier.weight(1f).fillMaxWidth().padding(6.dp)
             )
-            LegacyFunctionBar(leftLabel = "OK", rightLabel = "Cancel", modifier = Modifier.fillMaxWidth().clickable { save() })
+            LegacyFunctionBar(leftLabel = "OK", rightLabel = "Cancel", modifier = Modifier.fillMaxWidth(), onLeftClick = { save() }, onRightClick = onBack)
         }
     }
     error?.let { LegacyDialogMessage(it) { error = null } }
@@ -165,7 +165,6 @@ fun ValidationScreen(mode: String, onBack: () -> Unit) {
                 leftLabel = "OK",
                 rightLabel = if (mode == "mobile") "Cancel" else "Exit",
                 modifier = Modifier.fillMaxWidth(), onLeftClick = { submit() }, onRightClick = onBack)
-            )
         }
     }
     error?.let { LegacyDialogMessage(it) { error = null } }
