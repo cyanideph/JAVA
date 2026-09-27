@@ -122,7 +122,7 @@ private fun BuddyOptionsPopup(
                         .fillMaxWidth()
                         .clickable {
                             when (label) {
-                                "Add/Invite Buddies" -> onAdd()
+                                "Contact" -> { onDismiss(); onContact() }\n                                "Add/Invite Buddies" -> onAdd()
                                 "Uzzap Help" -> onHelp()
                                 else -> onDismiss()
                             }
