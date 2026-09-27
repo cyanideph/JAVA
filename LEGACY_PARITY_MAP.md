@@ -49,6 +49,14 @@ Model the legacy toolkit instead of Material3: title bar, function/softkey bar, 
 - Main Menu ordering/assets and its five legacy application options are aligned with `an.java`.
 - Legacy asset inventory remains pinned to commit `4645532460a865a6196ab04091a46f0d33d381e7`.
 
+## Latest bulk UI pass
+
+- Received Contacts now opens its options popup from the legacy `Options` softkey instead of immediately closing.
+- Chat Rooms empty/service-wait state uses legacy `Getting Categories..` wording from `bm.java`.
+- Chat Room participant count follows `af.java`'s own-user-inclusive chatter count rather than inventing a visible `You` record.
+- Legacy menu popups now retain a selected row using the legacy `MenuSelected` color.
+- No backend implementation was added or counted.
+
 ## Remaining frontend gaps
 
 1. Exact toolkit popup geometry/focus/selection behavior still needs screenshot-level verification.
