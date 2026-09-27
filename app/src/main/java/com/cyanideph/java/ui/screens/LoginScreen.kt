@@ -359,7 +359,17 @@ private fun LegacyNetworkLoginScreen(
             LegacyFunctionBar(
                 leftLabel = "Login",
                 rightLabel = "Cancel",
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                onLeftClick = {
+                    val username = values["username"].orEmpty()
+                    val password = values["password"].orEmpty()
+                    prefs.edit()
+                        .putString("amazilia.username", username.lowercase())
+                        .putString("amazilia.password", password)
+                        .apply()
+                    showAutoLogin = true
+                },
+                onRightClick = onCancel
             )
         }
     }
