@@ -111,7 +111,7 @@ fun ChangeMobileScreen(onBack: () -> Unit) {
                 { _, value -> number = value },
                 Modifier.weight(1f).fillMaxWidth().padding(6.dp)
             )
-            LegacyFunctionBar("OK","Cancel",Modifier.fillMaxWidth())
+            LegacyFunctionBar("OK","Cancel",Modifier.fillMaxWidth(), onLeftClick = { /* legacy transport handled outside frontend */ }, onRightClick = onBack)
         }
     }
 }
