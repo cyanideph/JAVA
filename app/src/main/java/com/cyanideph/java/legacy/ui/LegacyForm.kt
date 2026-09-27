@@ -105,11 +105,7 @@ private fun LegacyFieldEditor(
                         .padding(horizontal = 4.dp, vertical = 3.dp),
                     decorationBox = { innerTextField ->
                         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterStart) {
-                            if (field.password && draft.isNotEmpty()) {
-                                LegacyText("*".repeat(draft.length))
-                            } else {
-                                innerTextField()
-                            }
+                            innerTextField()
                         }
                     }
                 )
