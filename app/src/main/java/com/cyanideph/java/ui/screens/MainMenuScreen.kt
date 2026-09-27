@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.IntOffset
 import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.ui.LegacyBackground
 import com.cyanideph.java.legacy.ui.LegacyText
+import com.cyanideph.java.legacy.ui.LegacyFunctionBar
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 
 private data class LegacyMenuItem(val label: String, val small: String, val large: String, val onClick: () -> Unit)
@@ -65,10 +66,12 @@ fun MainMenuScreen(
             val fontHeight = with(density) { ReptilianTheme.FontSize.toPx() }
             val textBarHeight = with(density) { (fontHeight + 8f).toDp() }
             val bottomBarHeight = with(density) { bottomBar.height.toDp() }
+            val functionBar = LegacyAssets.rememberBitmap(context, "themes/uzzap/functionbar-middle.png")
+            val functionBarHeight = with(density) { functionBar.height.toDp() }
             Column(Modifier.fillMaxSize()) {
                 Box(Modifier.weight(1f).fillMaxWidth()) {
                     val totalRows = (items.size + columnCount - 1) / columnCount
-                    val viewportHeight = maxHeight - textBarHeight - bottomBarHeight
+                    val viewportHeight = maxHeight - textBarHeight - bottomBarHeight - functionBarHeight
                     val visibleRows = maxOf(1, ((with(density) { viewportHeight.toPx() } + spacingPx) / (cellHeightPx + spacingPx)).toInt())
                     val needsScroll = totalRows > visibleRows
                     val maxFirstRow = (totalRows - visibleRows).coerceAtLeast(0)
@@ -103,6 +106,7 @@ fun MainMenuScreen(
                 }
                 Box(Modifier.fillMaxWidth().height(textBarHeight).background(ReptilianTheme.MainMenuBar).clickable { showOptions = true }, contentAlignment = Alignment.Center) { LegacyText(items.getOrNull(selected)?.label.orEmpty()) }
                 Image(bottomBar, contentDescription = null, Modifier.fillMaxWidth().height(bottomBarHeight), contentScale = ContentScale.Tile)
+                LegacyFunctionBar(leftLabel = "Options", rightLabel = "Exit", modifier = Modifier.fillMaxWidth().clickable { showOptions = true })
             }
             if (showOptions) LegacyOptionsPopup { showOptions = false }
         }
