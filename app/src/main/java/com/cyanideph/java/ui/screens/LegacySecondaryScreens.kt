@@ -71,7 +71,7 @@ Choose how your messages will be delivered when Uzzap is off.
 ",
                 Modifier.fillMaxWidth().padding(6.dp)
             )
-            listOf("" to "No option", "sms" to "Available SMS", "email" to "Email").forEach { (value, label) ->
+            listOf("sms" to "Available SMS", "email" to "Email").forEach { (value, label) ->
                 LegacyText(
                     label,
                     Modifier.fillMaxWidth()
