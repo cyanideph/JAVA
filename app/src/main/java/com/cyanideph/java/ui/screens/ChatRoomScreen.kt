@@ -14,7 +14,7 @@ fun ChatRoomScreen(room: String, onBack: () -> Unit) {
     var showParticipants by remember { mutableStateOf(false) }
     var joined by remember { mutableStateOf(true) }
     var status by remember { mutableStateOf("") }
-    var participants by remember { mutableStateOf(listOf("You")) }
+    var participants by remember { mutableStateOf(emptyList<String>()) }
 
     val actions = buildList {
         if (joined) {
@@ -36,8 +36,9 @@ fun ChatRoomScreen(room: String, onBack: () -> Unit) {
                     LegacyText(status)
                 }
                 Spacer(Modifier.height(6.dp))
-                LegacyText("- No of Chatters: " + participants.size)
-                participants.drop(1).forEach { LegacyText("- " + it) }
+                LegacyText("- No of Chatters: " + (participants.size + 1))
+                participants.forEach { LegacyText("- " + it) }
+                LegacyText("-")
             }
             LegacyFunctionBar(leftLabel = "Options", rightLabel = "Buddies", modifier = Modifier.fillMaxWidth().clickable { showOptions = true })
         }
@@ -54,7 +55,7 @@ fun ChatRoomScreen(room: String, onBack: () -> Unit) {
                             "Send Whisper" -> status = ""
                             "List Participants" -> showParticipants = true
                             "Invite Participants" -> status = ""
-                            "Leave Chatroom" -> { joined = false; participants = listOf("You"); onBack() }
+                            "Leave Chatroom" -> { joined = false; participants = emptyList() }
                         }
                     }.padding(horizontal = 8.dp, vertical = 7.dp))
                 }
@@ -63,6 +64,6 @@ fun ChatRoomScreen(room: String, onBack: () -> Unit) {
     }
 
     if (showParticipants) LegacyDialogMessage(
-        "- No of Chatters: " + participants.size + "\n" + participants.joinToString("\n") { "- " + it }
+        "- No of Chatters: " + (participants.size + 1) + "\n" + participants.joinToString("\n") { "- " + it } + "\n-"
     ) { showParticipants = false }
 }
