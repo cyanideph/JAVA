@@ -45,6 +45,7 @@ fun MessagesScreen(onBack: () -> Unit) {
     val tabs = remember { listOf(LegacyMessageTab("Buddy List"), LegacyMessageTab("Message"), LegacyMessageTab("Chat")) }
     var selectedTab by remember { mutableIntStateOf(0) }
     var showOptions by remember { mutableStateOf(false) }
+    var showMessengerOptions by remember { mutableStateOf(false) }
     var messageText by remember { mutableStateOf("") }
     var recipient by remember { mutableStateOf("") }
     var cc by remember { mutableStateOf("") }
@@ -79,8 +80,8 @@ fun MessagesScreen(onBack: () -> Unit) {
                 Box(Modifier.weight(1f).clickable { showOptions = true }) {
                     LegacyText("Options", Modifier.padding(8.dp))
                 }
-                Box(Modifier.weight(1f).clickable { onBack() }) {
-                    LegacyText("Menu", Modifier.padding(8.dp))
+                Box(Modifier.weight(1f).clickable { showMessengerOptions = true }) {
+                    LegacyText("Buddies", Modifier.padding(8.dp))
                 }
             }
             LegacyFunctionBar(Modifier.fillMaxWidth())
@@ -118,8 +119,43 @@ fun MessagesScreen(onBack: () -> Unit) {
             onDismiss = { showEmoticons = false }
         )
     }
+    if (showMessengerOptions) {
+        LegacyMessengerOptions(
+            messageType = messageType,
+            hasRecipient = recipient.isNotBlank(),
+            onClose = { showMessengerOptions = false },
+            onCloseTab = { showMessengerOptions = false; onBack() }
+        )
+    }
 }
 
+
+
+@Composable
+private fun LegacyMessengerOptions(
+    messageType: String,
+    hasRecipient: Boolean,
+    onClose: () -> Unit,
+    onCloseTab: () -> Unit
+) {
+    val options = buildList<Pair<String, () -> Unit>> {
+        add("Send New Message" to onClose)
+        if (hasRecipient) {
+            if (messageType != "yahoo" && messageType != "msn") add("Reply All" to onClose)
+            add("View History" to onClose)
+            add("Received Contacts" to onClose)
+            add("Profile" to onClose)
+        }
+        add("Close Tab" to onCloseTab)
+    }
+    Dialog(onDismissRequest = onClose) {
+        Column(Modifier.background(ReptilianTheme.Surface)) {
+            options.forEach { (label, action) ->
+                LegacyText(label, Modifier.fillMaxWidth().clickable(onClick = action).padding(horizontal = 18.dp, vertical = 9.dp))
+            }
+        }
+    }
+}
 @Composable
 private fun LegacyMessageList(messages: List<Message>, modifier: Modifier = Modifier) {
     LazyColumn(modifier.padding(horizontal = 4.dp), contentPadding = PaddingValues(vertical = 3.dp)) {
