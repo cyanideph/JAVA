@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.Alignment
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -65,6 +68,22 @@ private fun LegacyFieldEditor(
     onCancel: () -> Unit
 ) {
     var draft by remember(field.key, value) { mutableStateOf(value) }
+    val constraint = field.inputFlags and 0xFFFF
+    val isPassword = field.password || field.inputFlags == 65536
+    val keyboardType = when (constraint) {
+        2 -> KeyboardType.Number
+        3 -> KeyboardType.Phone
+        5 -> KeyboardType.Decimal
+        1 -> KeyboardType.Email
+        4 -> KeyboardType.Uri
+        else -> if (isPassword) KeyboardType.Password else KeyboardType.Text
+    }
+    fun acceptInput(input: String): String = when (constraint) {
+        2 -> input.filter { it.isDigit() }
+        3 -> input.filter { it.isDigit() || it == '+' || it == '*' || it == '#' || it == ' ' || it == '-' || it == '(' || it == ')' }
+        5 -> input.filter { it.isDigit() || it == '.' || it == '-' }
+        else -> input
+    }.take(field.maxLength)
     Dialog(onDismissRequest = onCancel) {
         LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
             Column(Modifier.fillMaxWidth().padding(10.dp)) {
@@ -76,8 +95,10 @@ private fun LegacyFieldEditor(
                 Spacer(Modifier.height(6.dp))
                 BasicTextField(
                     value = draft,
-                    onValueChange = { draft = it.take(field.maxLength) },
+                    onValueChange = { draft = acceptInput(it) },
                     singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+                    visualTransformation = if (isPassword) PasswordVisualTransformation() else androidx.compose.ui.text.input.VisualTransformation.None,
                     modifier = Modifier
                         .fillMaxWidth()
                         .border(BorderStroke(1.dp, androidx.compose.ui.graphics.Color.Black))
