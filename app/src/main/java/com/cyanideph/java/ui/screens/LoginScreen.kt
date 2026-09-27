@@ -1,5 +1,6 @@
 package com.cyanideph.java.ui.screens
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,7 +22,7 @@ import com.cyanideph.java.legacy.ui.*
  * Yahoo/MSN are deliberately absent here; they belong to IM -> Connections.
  */
 @Composable
-fun LoginScreen(onLogin: () -> Unit) {
+fun LoginScreen(onLogin: () -> Unit, onExit: () -> Unit) {
     var page by remember { mutableStateOf("landing") }
 
     when (page) {
