@@ -50,10 +50,10 @@ fun ChatRoomScreen(room: String, onBack: () -> Unit) {
                     LegacyText(action, Modifier.fillMaxWidth().clickable {
                         showOptions = false
                         when (action) {
-                            "Send Message" -> status = "- Message editor requires the legacy message transport."
-                            "Send Whisper" -> status = "- Whisper requires the legacy message transport."
+                            "Send Message" -> status = ""
+                            "Send Whisper" -> status = ""
                             "List Participants" -> showParticipants = true
-                            "Invite Participants" -> status = "- Invite Participants requires the legacy service transport."
+                            "Invite Participants" -> status = ""
                             "Leave Chatroom" -> { joined = false; participants = listOf("You"); onBack() }
                         }
                     }.padding(horizontal = 8.dp, vertical = 7.dp))
