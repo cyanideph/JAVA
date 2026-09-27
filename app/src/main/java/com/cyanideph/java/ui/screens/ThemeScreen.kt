@@ -11,10 +11,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.foundation.Image
-import androidx.compose.ui.layout.ContentScale
-import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.LegacyBackground
 import com.cyanideph.java.legacy.ui.LegacyFunctionBar
@@ -26,7 +22,6 @@ import com.cyanideph.java.legacy.ui.LegacyTitleBar
 fun ThemeScreen(onBack: () -> Unit) {
     val themes = listOf("black", "dolphins", "hearts", "roses", "uzzap")
     val selected = remember { mutableStateOf("uzzap") }
-    val context = LocalContext.current
 
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
