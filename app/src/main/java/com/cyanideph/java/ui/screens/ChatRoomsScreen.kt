@@ -1,8 +1,80 @@
 package com.cyanideph.java.ui.screens
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import com.cyanideph.java.legacy.theme.ReptilianTheme
+import com.cyanideph.java.legacy.ui.*
 import com.cyanideph.java.ui.model.ChatRoom
-@Composable fun ChatRoomsScreen(onBack:()->Unit,onRoom:(String)->Unit){val r=listOf(ChatRoom("General","Public",12),ChatRoom("Friends","Social",6),ChatRoom("Pinoy Chat","Public",31));Scaffold(topBar={TopAppBar(title={Text("Chat Rooms")},navigationIcon={TextButton(onClick=onBack){Text("Back")}})}){p->LazyColumn(Modifier.padding(p)){items(r){x->ListItem(headlineContent={Text(x.name)},supportingContent={Text(x.category+" • "+x.participants+" participants")},trailingContent={Button(onClick={onRoom(x.name)}){Text("Join")}})}}}}
+
+@Composable
+fun ChatRoomsScreen(onBack: () -> Unit, onRoom: (String) -> Unit) {
+    val rooms = listOf(
+        ChatRoom("General", "Public", 12),
+        ChatRoom("Friends", "Social", 6),
+        ChatRoom("Pinoy Chat", "Public", 31)
+    )
+    var selected by remember { mutableIntStateOf(0) }
+    var showOptions by remember { mutableStateOf(false) }
+
+    LegacyBackground(Modifier.fillMaxSize()) {
+        Column(Modifier.fillMaxSize()) {
+            LegacyTitleBar("Chat Rooms", Modifier.fillMaxWidth())
+            Column(Modifier.weight(1f).fillMaxWidth()) {
+                if (rooms.isEmpty()) {
+                    LegacyText("No chat rooms", Modifier.padding(6.dp))
+                } else {
+                    rooms.forEachIndexed { index, room ->
+                        LegacyText(
+                            room.name + " (" + room.participants + ")",
+                            Modifier.fillMaxWidth()
+                                .background(if (index == selected) ReptilianTheme.MenuSelected else ReptilianTheme.Surface)
+                                .clickable { selected = index }
+                                .padding(horizontal = 8.dp, vertical = 6.dp)
+                        )
+                    }
+                }
+            }
+            LegacyFunctionBar(
+                leftLabel = "Options",
+                rightLabel = if (rooms.isEmpty()) "Menu" else "Menu",
+                modifier = Modifier.fillMaxWidth().clickable { showOptions = true }
+            )
+        }
+    }
+
+    if (showOptions) {
+        Dialog(onDismissRequest = { showOptions = false }) {
+            Column(Modifier.background(ReptilianTheme.Surface)) {
+                LegacyText(
+                    if (rooms.isEmpty()) "Select Category" else "Join Room",
+                    Modifier.fillMaxWidth().clickable {
+                        showOptions = false
+                        if (rooms.isNotEmpty()) onRoom(rooms[selected].name)
+                    }.padding(horizontal = 18.dp, vertical = 9.dp)
+                )
+                LegacyText(
+                    if (rooms.isEmpty()) "Refresh Category List" else "Refresh Room List",
+                    Modifier.fillMaxWidth().clickable { showOptions = false }
+                        .padding(horizontal = 18.dp, vertical = 9.dp)
+                )
+                LegacyText(
+                    "Start Buddy Group Chat",
+                    Modifier.fillMaxWidth().clickable { showOptions = false }
+                        .padding(horizontal = 18.dp, vertical = 9.dp)
+                )
+                LegacyText(
+                    "Close Tab",
+                    Modifier.fillMaxWidth().clickable {
+                        showOptions = false
+                        onBack()
+                    }.padding(horizontal = 18.dp, vertical = 9.dp)
+                )
+            }
+        }
+    }
+}
