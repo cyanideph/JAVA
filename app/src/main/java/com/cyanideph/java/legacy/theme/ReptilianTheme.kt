@@ -17,4 +17,15 @@ object ReptilianTheme {
     val statusDisplaySize = 20.sp
     val statusErrorSize = 14.sp
     val standardSize = 14.sp
-}
+
+    // Compatibility aliases used by legacy-parity screens. Keep these mapped to the
+    // canonical theme values so screens cannot silently drift from the Java theme.
+    val Surface get() = panelBackground
+    val Text get() = text
+    val SpecialText get() = specialText
+    val OtherSpecialText get() = otherSpecialText
+    val MainMenuBar get() = mainMenuBar
+    val ScrollbarFill get() = scrollbarFill
+    val ScrollbarBackground get() = scrollbarBackground
+    val FontSize get() = standardSize
+}}
