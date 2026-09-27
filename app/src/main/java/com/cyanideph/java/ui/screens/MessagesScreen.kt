@@ -162,7 +162,7 @@ private fun LegacyMessengerOptions(
         }
         add("Close Tab" to onCloseTab)
     }
-    Dialog(onDismissRequest = onClose) {
+    Dialog(onDismissRequest = onCloseTab) {
         Column(Modifier.background(ReptilianTheme.Surface)) {
             options.forEach { (label, action) ->
                 LegacyText(label, Modifier.fillMaxWidth().clickable(onClick = action).padding(horizontal = 18.dp, vertical = 9.dp))
