@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -74,13 +75,15 @@ fun LegacyTabStrip(
     val indicatorUnreadSending = LegacyAssets.rememberBitmap(context, "unread-sending-icon")
     val indicatorSending = LegacyAssets.rememberBitmap(context, "sending-message-icon")
     val tabWidthPx = normalAsset.width.coerceAtLeast(1)
-    val visibleCount = (LocalDensity.current.run { 1000.dp.toPx() } / tabWidthPx).toInt().coerceAtLeast(1)
+    BoxWithConstraints(modifier) {
+    val availableWidthPx = with(density) { maxWidth.toPx() }
+    val visibleCount = (availableWidthPx / with(density) { normalAsset.width.toDp().toPx() }).toInt().coerceAtLeast(1)
     val start = when {
         tabs.isEmpty() -> 0
         selected < visibleCount -> 0
         else -> (selected - visibleCount + 1).coerceAtMost((tabs.size - visibleCount).coerceAtLeast(0))
     }
-    Row(modifier.height(with(density) { maxOf(selectedAsset.height, normalAsset.height).toDp() })) {
+    Row(Modifier.height(with(density) { maxOf(selectedAsset.height, normalAsset.height).toDp() })) {
         tabs.drop(start).take(visibleCount).forEachIndexed { localIndex, label ->
             val index = start + localIndex
             val bg = if (index == selected) selectedAsset else normalAsset
