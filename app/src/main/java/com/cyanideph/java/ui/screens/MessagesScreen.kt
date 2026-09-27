@@ -33,7 +33,6 @@ fun MessagesScreen(onBack: () -> Unit) {
     var hideRecipients by remember { mutableStateOf(false) }
     var showEditor by remember { mutableStateOf(false) }
     var recipientMode by remember { mutableStateOf(false) }
-    var ccMode by remember { mutableStateOf(false) }
     var showEmoticons by remember { mutableStateOf(false) }
 
     val messages = remember { listOf(
@@ -75,8 +74,8 @@ fun MessagesScreen(onBack: () -> Unit) {
         LegacyMessageOptions(
             onDismiss = { showOptions = false },
             onEdit = { showOptions = false; showEditor = true },
-            onRecipient = { showOptions = false; recipientMode = true; ccMode = false },
-''            onToggleRecipients = { hideRecipients = !hideRecipients; showOptions = false },
+            onRecipient = { showOptions = false; recipientMode = true },
+            onToggleRecipients = { hideRecipients = !hideRecipients; showOptions = false },
             onEmoticon = { showOptions = false; showEmoticons = true }
         )
     }
@@ -85,9 +84,8 @@ fun MessagesScreen(onBack: () -> Unit) {
     }
     if (recipientMode || ccMode) {
         LegacyRecipientDialog(
-            title = if (ccMode) "Cc Recipient" else "Recipient",
             onPick = {
-                if (ccMode) cc = it else recipient = it
+                recipient = it
                 recipientMode = false
                 ccMode = false
             },
@@ -131,24 +129,29 @@ private fun MessageRow(message: Message) {
 @Composable
 private fun LegacyMessageOptions(
     onDismiss: () -> Unit,
+    hasRecipient: Boolean,
     onEdit: () -> Unit,
     onRecipient: () -> Unit,
-    onCc: () -> Unit,
     onToggleRecipients: () -> Unit,
     onEmoticon: () -> Unit
 ) {
-    val options = listOf(
-        "Send Message" to onDismiss,
-        "Edit Message" to onEdit,
-        "Set Recipient" to onRecipient,
-        "Add Recipient" to onRecipient,
-        "Show/Hide Recipients" to onToggleRecipients,
-        "Add Emoticon" to onEmoticon
-    )
+    val options = buildList<Pair<String, () -> Unit>> {
+        add((if (hasRecipient) "Send Message" else "Set Recipient") to (if (hasRecipient) onDismiss else onRecipient))
+        add("Edit Message" to onEdit)
+        if (hasRecipient) add("Add Recipient" to onRecipient)
+        add("Show/Hide Recipients" to onToggleRecipients)
+        add("Add Emoticon" to onEmoticon)
+    }
     Dialog(onDismissRequest = onDismiss) {
         Column(Modifier.background(ReptilianTheme.Surface)) {
             options.forEach { (label, action) ->
-                LegacyText(label, Modifier.fillMaxWidth().clickable(onClick = action).padding(horizontal = 18.dp, vertical = 9.dp))
+                LegacyText(
+                    label,
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable(onClick = action)
+                        .padding(horizontal = 18.dp, vertical = 9.dp)
+                )
             }
         }
     }
@@ -168,7 +171,6 @@ private fun LegacyEditorDialog(value: String, onValue: (String) -> Unit, onClose
     }
 }
 
-@Composable
 private data class LegacyContact(val name: String, val statusAsset: String)
 
 @Composable
