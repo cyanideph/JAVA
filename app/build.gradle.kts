@@ -77,44 +77,21 @@ val syncLegacyAssets by tasks.registering {
             !out.exists() || gitBlobSha1(out.readBytes()) != expected[relative]
         }
         if (missing.isNotEmpty()) {
-            val archive = File.createTempFile("uzzap-legacy-source-", ".zip")
-            try {
-                val connection = URI("https://github.com/cyanideph/javauzzap/archive/$legacyAssetsSourceRef.zip")
-                    .toURL().openConnection() as HttpURLConnection
-                connection.connectTimeout = 20000
-                connection.readTimeout = 120000
-                connection.inputStream.use { input -> archive.outputStream().use { output -> input.copyTo(output) } }
-                connection.disconnect()
-
-                val wanted = missing.toSet()
-                ZipInputStream(archive.inputStream().buffered()).use { zip ->
-                    while (true) {
-                        val entry = zip.nextEntry ?: break
-                        if (entry.isDirectory) continue
-                        val marker = "/"
-                        val firstSlash = entry.name.indexOf(marker)
-                        if (firstSlash < 0) continue
-                        val relative = entry.name.substring(firstSlash + 1)
-                        if (relative !in wanted) continue
-
-                        val out = destination.resolve(relative)
-                        out.parentFile.mkdirs()
-                        val temp = File.createTempFile("uzzap-legacy-", ".asset", out.parentFile)
-                        try {
-                            temp.outputStream().use { output -> zip.copyTo(output) }
-                            val expectedSha = expected[relative] ?: error("Missing integrity fingerprint for legacy asset: $relative")
-                            val actualSha = gitBlobSha1(temp.readBytes())
-                            require(actualSha == expectedSha) {
-                                "Legacy asset integrity failure for $relative: expected $expectedSha but downloaded $actualSha"
-                            }
-                            temp.copyTo(out, overwrite = true)
-                        } finally {
-                            temp.delete()
-                        }
-                    }
+            val sourceDir = System.getenv("LEGACY_SOURCE_DIR")?.let(::File)
+            require(sourceDir != null && sourceDir.isDirectory) {
+                "LEGACY_SOURCE_DIR is not available; pinned legacy source checkout is required"
+            }
+            missing.forEach { relative ->
+                val source = sourceDir!!.resolve(relative)
+                require(source.isFile) { "Missing legacy source asset: $relative" }
+                val out = destination.resolve(relative)
+                out.parentFile.mkdirs()
+                val expectedSha = expected[relative] ?: error("Missing integrity fingerprint for legacy asset: $relative")
+                val actualSha = gitBlobSha1(source.readBytes())
+                require(actualSha == expectedSha) {
+                    "Legacy asset integrity failure for $relative: expected $expectedSha but found $actualSha"
                 }
-            } finally {
-                archive.delete()
+                source.copyTo(out, overwrite = true)
             }
         }
 
