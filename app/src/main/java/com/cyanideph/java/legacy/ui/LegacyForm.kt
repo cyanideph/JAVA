@@ -69,6 +69,10 @@ private fun LegacyFieldEditor(
         LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
             Column(Modifier.fillMaxWidth().padding(10.dp)) {
                 LegacyText(field.description)
+                if (field.help.isNotBlank()) {
+                    Spacer(Modifier.height(4.dp))
+                    LegacyText(field.help)
+                }
                 Spacer(Modifier.height(6.dp))
                 BasicTextField(
                     value = draft,
