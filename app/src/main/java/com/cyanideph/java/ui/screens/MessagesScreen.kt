@@ -6,7 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -278,7 +278,7 @@ private fun LegacyEditorDialog(value: String, onValue: (String) -> Unit, maxLeng
     Dialog(onDismissRequest = onClose) {
         Column(Modifier.background(ReptilianTheme.Surface).padding(10.dp)) {
             LegacyText("Type your message")
-            OutlinedTextField(value, onValue, Modifier.fillMaxWidth(), maxLines = 8)
+            BasicTextField(value = value, onValueChange = { onValue(it.take(maxLength)) }, modifier = Modifier.fillMaxWidth().padding(6.dp), maxLines = 8)
             LegacyText("Maximum $maxLength characters")
             Row {
                 LegacyText("OK", Modifier.clickable(onClick = onClose).padding(10.dp))
@@ -304,12 +304,7 @@ private fun LegacyRecipientDialog(
     Dialog(onDismissRequest = onDismiss) {
         Column(Modifier.background(ReptilianTheme.Surface).padding(6.dp)) {
             LegacyText("Recipient", Modifier.padding(6.dp))
-            OutlinedTextField(
-                value = query,
-                onValueChange = { query = it },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true
-            )
+            BasicTextField(value = query, onValueChange = { query = it }, modifier = Modifier.fillMaxWidth().padding(6.dp), singleLine = true)
             Row {
                 LegacyText("Select All", Modifier.clickable {
                     selected = filtered.map { it.id }.toSet()
