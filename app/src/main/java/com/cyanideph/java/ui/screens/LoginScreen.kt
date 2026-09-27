@@ -13,7 +13,6 @@ import androidx.compose.ui.window.Dialog
 import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
-import androidx.compose.material3.TextButton
 
 /**
  * Java Uzzap parity for dg.java (startup menu) and k.java (primary login form).
@@ -372,7 +371,7 @@ private fun LegacyNetworkLoginScreen(
                         Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
-                        TextButton(onClick = {
+                        LegacyText("Yes", Modifier.clickable {
                             prefs.edit()
                                 .putString("amazilia.username", values["username"].orEmpty().lowercase())
                                 .putString("amazilia.password", values["password"].orEmpty())
@@ -380,9 +379,10 @@ private fun LegacyNetworkLoginScreen(
                                 .apply()
                             showAutoLogin = false
                             onLogin()
-                        }) { LegacyText("Yes") }
+                        })
+                            .padding(8.dp))
 
-                        TextButton(onClick = {
+                        LegacyText("No", Modifier.clickable {
                             prefs.edit()
                                 .putString("amazilia.username", values["username"].orEmpty().lowercase())
                                 .putString("amazilia.password", values["password"].orEmpty())
@@ -390,7 +390,8 @@ private fun LegacyNetworkLoginScreen(
                                 .apply()
                             showAutoLogin = false
                             onLogin()
-                        }) { LegacyText("No") }
+                        })
+                            .padding(8.dp))
                     }
                 }
             }
