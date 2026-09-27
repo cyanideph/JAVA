@@ -17,7 +17,8 @@ data class LegacyFormField(
     val description: String,
     val help: String,
     val maxLength: Int = 700,
-    val password: Boolean = false
+    val password: Boolean = false,
+    val inputFlags: Int = 0
 )
 
 @Composable
