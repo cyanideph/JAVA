@@ -81,7 +81,7 @@ fun EditBuddyScreen(onBack: () -> Unit) {
                 { key, value -> if (key == "custom-displayname") nickname = value else email = value },
                 Modifier.weight(1f).fillMaxWidth().padding(6.dp)
             )
-            LegacyFunctionBar("OK", "Cancel", Modifier.fillMaxWidth().clickable { save() })
+            LegacyFunctionBar(leftLabel = "OK", rightLabel = "Cancel", modifier = Modifier.fillMaxWidth().clickable { save() })
         }
     }
     error?.let { LegacyDialogMessage(it) { error = null } }
@@ -122,7 +122,7 @@ fun EditSmsBuddyScreen(onBack: () -> Unit) {
                 },
                 Modifier.weight(1f).fillMaxWidth().padding(6.dp)
             )
-            LegacyFunctionBar("OK", "Cancel", Modifier.fillMaxWidth().clickable { save() })
+            LegacyFunctionBar(leftLabel = "OK", rightLabel = "Cancel", modifier = Modifier.fillMaxWidth().clickable { save() })
         }
     }
     error?.let { LegacyDialogMessage(it) { error = null } }
