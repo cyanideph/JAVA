@@ -19,7 +19,7 @@ composable(Routes.ROOM){e->ChatRoomScreen(java.net.URLDecoder.decode(e.arguments
 composable(Routes.SETTINGS){SettingsScreen(onBack={navController.popBackStack()},onProfile={navController.navigate(Routes.PROFILE)},onStatus={navController.navigate(Routes.STATUS)},onPassword={navController.navigate(Routes.PASSWORD)},onMobile={navController.navigate(Routes.CHANGE_MOBILE)},onOffline={navController.navigate(Routes.OFFLINE)},onChatroomTones={navController.navigate(Routes.CHATROOM_TONES)})}
 composable(Routes.HELP){HelpScreen{navController.popBackStack()}}
 composable(Routes.PROFILE){ProfileScreen{navController.popBackStack()}}
-composable(Routes.STATUS){StatusScreen{navController.popBackStack()}}
+composable(Routes.STATUS){StatusScreen(onBack={navController.popBackStack()},onSettings={navController.navigate(Routes.SETTINGS)})}
 composable(Routes.HISTORY){HistoryScreen{navController.popBackStack()}}
 composable(Routes.REGISTER){RegistrationScreen{navController.popBackStack()}}
 composable(Routes.ABOUT){AboutScreen{navController.popBackStack()}}
