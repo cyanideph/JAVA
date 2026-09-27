@@ -15,7 +15,7 @@ import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
 
 @Composable
-fun StatusScreen(onBack: () -> Unit) {
+fun StatusScreen(onBack: () -> Unit, onSettings: () -> Unit = {}) {
     val context = LocalContext.current
     var selected by remember { mutableStateOf("Available") }
     var message by remember { mutableStateOf("") }
@@ -26,7 +26,8 @@ fun StatusScreen(onBack: () -> Unit) {
         Item("Status Message..", "statusmessage") { showStatusMessage = true },
         Item("Available", "online") { selected = "Available" },
         Item("Not Available", "notavailable") { selected = "Not Available" },
-        Item("Invisible", "offline") { selected = "Invisible" }
+        Item("Invisible", "offline") { selected = "Invisible" },
+        Item("Settings..", "settings") { onSettings() }
     )
 
     LegacyBackground(Modifier.fillMaxSize()) {
