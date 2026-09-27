@@ -94,3 +94,39 @@ private fun LegacySelectableScreen(title: String, description: String, options: 
         LegacyFunctionBar(leftLabel = left, rightLabel = right)
     }
 }
+
+
+@Composable
+fun BuddyMatchingScreen(onBack: () -> Unit) {
+    LegacyBackground(Modifier.fillMaxSize()) {
+        Column(Modifier.fillMaxSize()) {
+            LegacyTitleBar("Buddy Matching", Modifier.fillMaxWidth())
+            LegacyText("Automatic Buddy Matching", Modifier.padding(8.dp))
+            LegacyText("Buddy matching is not supported on this device.", Modifier.padding(8.dp))
+            Spacer(Modifier.weight(1f))
+            LegacyFunctionBar(rightLabel = "Close", modifier = Modifier.clickable { onBack() })
+        }
+    }
+}
+
+@Composable
+fun AddInviteBuddiesScreen(onBack: () -> Unit, onBuddies: () -> Unit) {
+    var selected by remember { mutableIntStateOf(0) }
+    val options = listOf("Invite Friends to Uzzap","Add Buddy by Mobile","Add Buddy by User ID","Add Other Contact")
+    LegacyBackground(Modifier.fillMaxSize()) {
+        Column(Modifier.fillMaxSize()) {
+            LegacyTitleBar("Add or Invite Buddies", Modifier.fillMaxWidth())
+            Column(Modifier.weight(1f).fillMaxWidth()) {
+                options.forEachIndexed { i, label ->
+                    LegacyText(label, Modifier.fillMaxWidth().clickable { selected=i }
+                        .background(if(i==selected) ReptilianTheme.MenuSelected else ReptilianTheme.Surface)
+                        .padding(8.dp))
+                }
+            }
+            LegacyFunctionBar(leftLabel = "Select", rightLabel = "Close",
+                modifier = Modifier.fillMaxWidth().clickable {
+                    if (selected == 1 || selected == 2 || selected == 3) onBuddies() else onBack()
+                })
+        }
+    }
+}
