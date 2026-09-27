@@ -127,7 +127,8 @@ private fun LegacyLoginLandingScreen(
             LegacyFunctionBar(
                 leftLabel = "",
                 rightLabel = "Exit",
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                onRightClick = onExit
             )
         }
     }
@@ -176,7 +177,9 @@ private fun LegacyRegisterAccountScreen(onCancel: () -> Unit, onSubmit: () -> Un
             LegacyFunctionBar(
                 leftLabel = "Register",
                 rightLabel = "Cancel",
-                modifier = Modifier.fillMaxWidth().clickable { submit() }
+                modifier = Modifier.fillMaxWidth(),
+                onLeftClick = { submit() },
+                onRightClick = onCancel
             )
         }
     }
@@ -213,7 +216,8 @@ private fun LegacyAboutScreen(onCancel: () -> Unit) {
             LegacyFunctionBar(
                 leftLabel = "",
                 rightLabel = "Back",
-                modifier = Modifier.fillMaxWidth().clickable { onCancel() }
+                modifier = Modifier.fillMaxWidth(),
+                onRightClick = onCancel
             )
         }
     }
@@ -302,6 +306,40 @@ Copyright (c) 2007/2008 3rd Brand Pte Ltd. All Rights Reserved."""
                 leftLabel = "Options",
                 rightLabel = "Back",
                 modifier = Modifier.fillMaxWidth().clickable { onCancel() }
+            )
+        }
+    }
+}
+
+@Composable
+private fun LegacyForgotPasswordScreen(onCancel: () -> Unit) {
+    var value by remember { mutableStateOf("") }
+    LegacyBackground(Modifier.fillMaxSize(), ReptilianTheme.Surface) {
+        Column(Modifier.fillMaxSize()) {
+            LegacyTitleBar(
+                "Please enter your User ID or mobile number in full international format including country code(for example +63920___).",
+                Modifier.fillMaxWidth()
+            )
+            LegacyFormList(
+                fields = listOf(
+                    LegacyFormField(
+                        "username",
+                        "User ID / Mobile Number",
+                        "User ID/Mobile Number",
+                        "Your User ID and Password will be sent to the Email address on your account.\n",
+                        30
+                    )
+                ),
+                values = mapOf("username" to value),
+                onValueChange = { _, v -> value = v },
+                modifier = Modifier.weight(1f).fillMaxWidth().padding(8.dp)
+            )
+            LegacyFunctionBar(
+                leftLabel = "OK",
+                rightLabel = "Cancel",
+                modifier = Modifier.fillMaxWidth(),
+                onLeftClick = { if (value.isNotEmpty()) onCancel() },
+                onRightClick = onCancel
             )
         }
     }
