@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -138,112 +137,36 @@ private fun LegacyLoginLandingScreen(
 
 @Composable
 private fun LegacyRegisterAccountScreen(onCancel: () -> Unit) {
-    var firstName by remember { mutableStateOf("") }
-    var lastName by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var password2 by remember { mutableStateOf("") }
-    var credit by remember { mutableStateOf("") }
-
-    LegacyBackground(
-        modifier = Modifier.fillMaxSize(),
-        color = ReptilianTheme.Surface
-    ) {
+    val fields = listOf(
+        LegacyFormField("firstname", "First Name", "Your first name", "Please enter your first name as it will appear on your profile.", 60),
+        LegacyFormField("lastname", "Last Name", "Your last name", "Please enter your last (family) name as it will appear on your profile.", 60),
+        LegacyFormField("email", "Email Address", "Your email address", "Please enter your current email address. This will be used to send your password should you forget it."),
+        LegacyFormField("password", "Password", "Choose your password", "Please enter your desired password. Password should be at least 6 characters in length.", 30, true),
+        LegacyFormField("password2", "Re-enter password", "Password verification", "Please re-enter your desired password for verification", 30, true),
+        LegacyFormField("credit", "Credit", "Credit", "Optional.  Enter the Userid of a person who helped you register.", 12)
+    )
+    var values by remember { mutableStateOf(emptyMap<String, String>()) }
+    LegacyBackground(Modifier.fillMaxSize(), ReptilianTheme.Surface) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("* Register account", Modifier.fillMaxWidth())
-
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 8.dp)
-            ) {
-                LegacyText("First Name")
-                LegacyText("Your first name")
-                OutlinedTextField(firstName, { firstName = it.take(60) }, Modifier.fillMaxWidth(), singleLine = true)
-
-                Spacer(Modifier.height(6.dp))
-                LegacyText("Last Name")
-                LegacyText("Your last name")
-                OutlinedTextField(lastName, { lastName = it.take(60) }, Modifier.fillMaxWidth(), singleLine = true)
-
-                Spacer(Modifier.height(6.dp))
-                LegacyText("Email Address")
-                LegacyText("Your email address")
-                OutlinedTextField(email, { email = it }, Modifier.fillMaxWidth(), singleLine = true)
-
-                Spacer(Modifier.height(6.dp))
-                LegacyText("Password")
-                LegacyText("Choose your password")
-                OutlinedTextField(password, { password = it.take(30) }, Modifier.fillMaxWidth(), singleLine = true)
-
-                Spacer(Modifier.height(6.dp))
-                LegacyText("Re-enter password")
-                LegacyText("Password verification")
-                OutlinedTextField(password2, { password2 = it.take(30) }, Modifier.fillMaxWidth(), singleLine = true)
-
-                Spacer(Modifier.height(6.dp))
-                LegacyText("Credit")
-                LegacyText("Credit")
-                OutlinedTextField(credit, { credit = it.take(12) }, Modifier.fillMaxWidth(), singleLine = true)
-            }
-
-            LegacyFunctionBar(
-                leftLabel = "Register",
-                rightLabel = "Cancel",
-                modifier = Modifier.fillMaxWidth().clickable { onCancel() }
-            )
+            LegacyFormList(fields, values, { key, value -> values = values + (key to value) }, Modifier.weight(1f).fillMaxWidth().padding(8.dp))
+            LegacyFunctionBar("Register", "Cancel", Modifier.fillMaxWidth().clickable { onCancel() })
         }
     }
 }
-
 
 @Composable
 private fun LegacyForgotPasswordScreen(onCancel: () -> Unit) {
-    var value by remember { mutableStateOf("") }
-
-    LegacyBackground(
-        modifier = Modifier.fillMaxSize(),
-        color = ReptilianTheme.Surface
-    ) {
+    val fields = listOf(LegacyFormField("username", "User ID / Mobile Number", "User ID/Mobile Number", "Your User ID and Password will be sent to the Email address on your account.\n", 30))
+    var values by remember { mutableStateOf(emptyMap<String, String>()) }
+    LegacyBackground(Modifier.fillMaxSize(), ReptilianTheme.Surface) {
         Column(Modifier.fillMaxSize()) {
-            LegacyTitleBar(
-                "Forgotten Password",
-                Modifier.fillMaxWidth()
-            )
-
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 8.dp)
-            ) {
-                LegacyText("User ID / Mobile Number")
-                LegacyText("User ID/Mobile Number")
-                OutlinedTextField(
-                    value = value,
-                    onValueChange = { value = it.take(30) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
-                )
-                Spacer(Modifier.height(8.dp))
-                LegacyText(
-                    "Your User ID and Password will be sent to the Email address on your account."
-                )
-            }
-
-            LegacyFunctionBar(
-                leftLabel = "OK",
-                rightLabel = "Cancel",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onCancel() }
-            )
+            LegacyTitleBar("Forgotten Password", Modifier.fillMaxWidth())
+            LegacyFormList(fields, values, { key, value -> values = values + (key to value) }, Modifier.weight(1f).fillMaxWidth().padding(8.dp))
+            LegacyFunctionBar("OK", "Cancel", Modifier.fillMaxWidth().clickable { onCancel() })
         }
     }
 }
-
-
 
 @Composable
 private fun LegacyAboutScreen(onCancel: () -> Unit) {
