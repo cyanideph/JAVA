@@ -29,7 +29,7 @@ composable(Routes.OFFLINE){OfflineSettingsScreen{navController.popBackStack()}}
 composable(Routes.PURCHASE_HISTORY){PurchaseHistoryScreen{navController.popBackStack()}}
 composable(Routes.CHANGE_MOBILE){ChangeMobileScreen{navController.popBackStack()}}
 composable(Routes.STORED_MESSAGE){StoredMessageScreen{navController.popBackStack()}}
-composable(Routes.CHAT_INVITE){e->ChatInviteScreen(java.net.URLDecoder.decode(e.arguments?.getString("name")?:"Room","UTF-8")){navController.popBackStack()}}
+composable(Routes.CHAT_INVITE){e->ChatInviteScreen(java.net.URLDecoder.decode(e.arguments?.getString("name")?:"Room","UTF-8"),onBack={navController.popBackStack()},onMenu={navController.navigate(Routes.MAIN)})}
 composable(Routes.PASSWORD){ChangePasswordScreen{navController.popBackStack()}}
 composable(Routes.CHATROOM_TONES){ChatroomTonesScreen{navController.popBackStack()}}
 composable(Routes.SUBSCRIPTION){SubscriptionMenuScreen({navController.popBackStack()},{navController.navigate(Routes.PURCHASE_HISTORY)})}
