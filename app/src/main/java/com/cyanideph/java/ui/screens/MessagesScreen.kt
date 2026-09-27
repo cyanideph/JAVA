@@ -39,6 +39,7 @@ fun MessagesScreen(onBack: () -> Unit) {
     var showEditor by remember { mutableStateOf(false) }
     var recipientMode by remember { mutableStateOf(false) }
     var showEmoticons by remember { mutableStateOf(false) }
+    var recipientPickerMode by remember { mutableStateOf("to") }
     var messageType by remember { mutableStateOf(if (selectedTab == 2) "chatroom" else "im") }
     val editorLimit = if (messageType == "chatroom") 160 else 700
 
@@ -82,9 +83,10 @@ fun MessagesScreen(onBack: () -> Unit) {
             onDismiss = { showOptions = false },
             hasRecipient = recipient.isNotBlank(),
             onEdit = { showOptions = false; showEditor = true },
-            onRecipient = { showOptions = false; recipientMode = true },
+            onRecipient = { showOptions = false; recipientPickerMode = "to"; recipientMode = true },
             messageType = messageType,
             onToggleRecipients = { hideRecipients = !hideRecipients; showOptions = false },
+            onCcRecipient = { showOptions = false; recipientPickerMode = "cc"; recipientMode = true },
             onEmoticon = { showOptions = false; showEmoticons = true }
         )
     }
@@ -95,7 +97,7 @@ fun MessagesScreen(onBack: () -> Unit) {
         LegacyRecipientDialog(
             contacts = legacyMessageContacts(),
             onPick = {
-                recipient = it
+                if (recipientPickerMode == "cc") cc = it else recipient = it
                 recipientMode = false
             },
             onDismiss = { recipientMode = false }
@@ -143,14 +145,22 @@ private fun LegacyMessageOptions(
     onEdit: () -> Unit,
     onRecipient: () -> Unit,
     onToggleRecipients: () -> Unit,
+    onCcRecipient: () -> Unit,
     onEmoticon: () -> Unit
 ) {
     val options = buildList<Pair<String, () -> Unit>> {
         add((if (hasRecipient) "Send Message" else "Set Recipient") to (if (hasRecipient) onDismiss else onRecipient))
         add("Edit Message" to onEdit)
-        if (messageType != "chatroom") {
-            add("Add Recipient" to onRecipient)
-            add("Show/Hide Recipients" to onToggleRecipients)
+        when (messageType) {
+            "email" -> {
+                add("Add Recipient" to onRecipient)
+                add("Add Cc Recipient" to onCcRecipient)
+                add("Show/Hide CC Recipients" to onToggleRecipients)
+            }
+            "im", "smsr", "yahoo", "sms", "msn", "random" -> {
+                add("Add Recipient" to onRecipient)
+                add("Show/Hide Recipients" to onToggleRecipients)
+            }
         }
         add("Add Emoticon" to onEmoticon)
     }
