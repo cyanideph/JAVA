@@ -21,6 +21,7 @@ fun SettingsScreen(
     onChatroomTones: () -> Unit = {}
 ) {
     var showOptions by remember { mutableStateOf(false) }
+    var selected by remember { mutableIntStateOf(0) }
     val options = listOf("Edit My Profile", "Change Status", "Change Password", "Change Mobile Number", "Offline Settings", "Chatroom Tones")
     fun select(label: String) {
         showOptions = false
@@ -37,8 +38,14 @@ fun SettingsScreen(
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("Settings", Modifier.fillMaxWidth())
             Column(Modifier.weight(1f).fillMaxWidth()) {
-                options.forEach { label ->
-                    LegacyText(label, Modifier.fillMaxWidth().background(ReptilianTheme.Surface).clickable { select(label) }.padding(horizontal = 8.dp, vertical = 6.dp))
+                options.forEachIndexed { index, label ->
+                    LegacyText(
+                        label,
+                        Modifier.fillMaxWidth()
+                            .background(if (index == selected) ReptilianTheme.MenuSelected else ReptilianTheme.Surface)
+                            .clickable { selected = index; select(label) }
+                            .padding(horizontal = 8.dp, vertical = 6.dp)
+                    )
                 }
             }
             LegacyFunctionBar(leftLabel = "Options", rightLabel = "Menu", modifier = Modifier.fillMaxWidth().clickable { showOptions = true })
