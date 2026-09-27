@@ -44,7 +44,9 @@ fun LegacyTitleBar(title:String,modifier:Modifier=Modifier){
 fun LegacyFunctionBar(
     modifier: Modifier = Modifier,
     leftLabel: String = "",
-    rightLabel: String = ""
+    rightLabel: String = "",
+    onLeftClick: (() -> Unit)? = null,
+    onRightClick: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
     val density = LocalDensity.current
@@ -55,8 +57,8 @@ fun LegacyFunctionBar(
             Modifier.fillMaxWidth().height(with(density) { middle.height.toDp() }),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            BasicText(leftLabel, color = ReptilianTheme.FunctionBarText, fontSize = ReptilianTheme.FontSize, modifier = Modifier.padding(start = 6.dp))
-            BasicText(rightLabel, color = ReptilianTheme.FunctionBarText, fontSize = ReptilianTheme.FontSize, modifier = Modifier.padding(end = 6.dp))
+            BasicText(leftLabel, color = ReptilianTheme.FunctionBarText, fontSize = ReptilianTheme.FontSize, modifier = Modifier.padding(start = 6.dp).then(if (onLeftClick != null) Modifier.clickable { onLeftClick() } else Modifier))
+            BasicText(rightLabel, color = ReptilianTheme.FunctionBarText, fontSize = ReptilianTheme.FontSize, modifier = Modifier.padding(end = 6.dp).then(if (onRightClick != null) Modifier.clickable { onRightClick() } else Modifier))
         }
     }
 }
