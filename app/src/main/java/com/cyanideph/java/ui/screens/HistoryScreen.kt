@@ -5,8 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -85,13 +83,6 @@ fun HistoryScreen(
     }
 
     if (showMessage) {
-        AlertDialog(
-            onDismissRequest = { showMessage = false },
-            title = { LegacyText("Open Message") },
-            text = { LegacyText(messages.firstOrNull().orEmpty()) },
-            confirmButton = {
-                TextButton(onClick = { showMessage = false }) { LegacyText("OK") }
-            }
-        )
+        LegacyDialogMessage(messages.firstOrNull().orEmpty()) { showMessage = false }
     }
 }
