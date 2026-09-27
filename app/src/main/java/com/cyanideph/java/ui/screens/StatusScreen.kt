@@ -4,8 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,16 +14,6 @@ import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
 
-/**
- * Java parity:
- * an.java -> case 103 -> menu id "statuses":
- * 4 Status Message.. / statusmessage
- * 1 Available / online
- * 2 Not Available / notavailable
- * 3 Invisible / offline
- *
- * This is the main-menu status submenu. Settings/aa.java remains separate.
- */
 @Composable
 fun StatusScreen(onBack: () -> Unit) {
     val context = LocalContext.current
@@ -47,45 +35,39 @@ fun StatusScreen(onBack: () -> Unit) {
             Column(Modifier.weight(1f).fillMaxWidth()) {
                 items.forEach { item ->
                     Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .clickable { item.action() }
+                        Modifier.fillMaxWidth().clickable { item.action() }
                             .background(if (item.label == selected) ReptilianTheme.MenuSelected else ReptilianTheme.Surface)
                             .padding(horizontal = 8.dp, vertical = 7.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val bitmap = LegacyAssets.rememberBitmap(
-                            context,
-                            "themes/default/" + item.asset + ".png"
+                        Image(
+                            LegacyAssets.rememberBitmap(context, "themes/default/" + item.asset + ".png"),
+                            contentDescription = item.label,
+                            modifier = Modifier.size(24.dp)
                         )
-                        Image(bitmap, contentDescription = item.label, Modifier.size(24.dp))
                         Spacer(Modifier.width(8.dp))
                         LegacyText(item.label)
                     }
                 }
             }
-            LegacyFunctionBar(
-                leftLabel = "Options",
-                rightLabel = "Back",
-                modifier = Modifier.fillMaxWidth().clickable { onBack() }
-            )
+            LegacyFunctionBar("Options", "Back", Modifier.fillMaxWidth())
         }
     }
 
     if (showStatusMessage) {
         Dialog(onDismissRequest = { showStatusMessage = false }) {
-            Column(Modifier.background(ReptilianTheme.Surface).padding(10.dp)) {
-                LegacyText("Your status message")
-                OutlinedTextField(
-                    value = message,
-                    onValueChange = { message = it.take(100) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = false,
-                    maxLines = 4
-                )
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                    TextButton(onClick = { showStatusMessage = false }) { LegacyText("OK") }
-                    TextButton(onClick = { showStatusMessage = false }) { LegacyText("Cancel") }
+            LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
+                Column(Modifier.fillMaxWidth().padding(10.dp)) {
+                    LegacyText("Your status message")
+                    LegacyFormList(
+                        fields = listOf(
+                            LegacyFormField("message", "Status Message", "Status Message", "Enter your status message.", 100)
+                        ),
+                        values = mapOf("message" to message),
+                        onValueChange = { _, value -> message = value },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    LegacyFunctionBar("OK", "Cancel", Modifier.fillMaxWidth().clickable { showStatusMessage = false })
                 }
             }
         }
