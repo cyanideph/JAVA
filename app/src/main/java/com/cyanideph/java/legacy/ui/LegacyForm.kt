@@ -2,7 +2,10 @@ package com.cyanideph.java.legacy.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.ui.Alignment
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -65,11 +68,24 @@ private fun LegacyFieldEditor(
         LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
             Column(Modifier.fillMaxWidth().padding(10.dp)) {
                 LegacyText(field.description)
-                OutlinedTextField(
+                Spacer(Modifier.height(6.dp))
+                BasicTextField(
                     value = draft,
                     onValueChange = { draft = it.take(field.maxLength) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(BorderStroke(1.dp, androidx.compose.ui.graphics.Color.Black))
+                        .padding(horizontal = 4.dp, vertical = 3.dp),
+                    decorationBox = { innerTextField ->
+                        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterStart) {
+                            if (field.password && draft.isNotEmpty()) {
+                                LegacyText("*".repeat(draft.length))
+                            } else {
+                                innerTextField()
+                            }
+                        }
+                    }
                 )
                 Spacer(Modifier.height(6.dp))
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
