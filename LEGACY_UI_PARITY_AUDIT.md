@@ -81,7 +81,11 @@ Additional menus/states identified in the source audit:
 
 ## Current Android gap
 
-The Android repository has the legacy renderer foundation and asset manifest, but the existing feature screens are still mostly modern placeholder screens. MainMenuScreen was referenced by navigation but was not present during this audit. It must be implemented before claiming compile/UI parity.
+The Android repository now has the legacy renderer foundation plus implemented legacy-style screens for authentication, main menu, settings, profile, status, messaging, history, chat rooms, subscription, offline settings, battery saving, themes and related secondary flows.
+
+Recent parity passes restored legacy strings, menu ordering, asset usage, independent softkey actions, secondary-screen state presentation, Offline Settings explanatory content, Chatroom Tones selector behavior, profile help line breaks and History navigation behavior.
+
+Remaining work is primarily exact geometry/typography/interaction parity and screenshot/device validation. Backend/service transport is intentionally excluded from this frontend parity audit.
 
 ## Exact-copy rule
 
