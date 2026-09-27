@@ -90,7 +90,8 @@ Copyright (c) 2007/2008 3rd Brand Pte Ltd. All Rights Reserved."""
             LegacyFunctionBar(
                 leftLabel = "Options",
                 rightLabel = "Back",
-                modifier = Modifier.fillMaxWidth().clickable { onBack() }
+                modifier = Modifier.fillMaxWidth(),
+                onRightClick = onBack
             )
         }
     }
