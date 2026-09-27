@@ -1,5 +1,6 @@
 import java.net.HttpURLConnection
 import java.net.URI
+import java.util.zip.ZipInputStream
 import java.security.MessageDigest
 
 plugins {
@@ -67,34 +68,64 @@ val syncLegacyAssets by tasks.registering {
                 parts[1] to parts[0]
             }
 
-        legacyAssetsManifest.readLines().map(String::trim)
+        val required = legacyAssetsManifest.readLines()
+            .map(String::trim)
             .filter { it.isNotEmpty() && !it.startsWith("#") }
-            .forEach { relative ->
-                val expectedSha = expected[relative]
-                    ?: error("Missing integrity fingerprint for legacy asset: $relative")
-                val out = destination.resolve(relative)
-                out.parentFile.mkdirs()
 
-                if (out.exists() && gitBlobSha1(out.readBytes()) == expectedSha) return@forEach
+        val missing = required.filter { relative ->
+            val out = destination.resolve(relative)
+            !out.exists() || gitBlobSha1(out.readBytes()) != expected[relative]
+        }
+        if (missing.isNotEmpty()) {
+            val archive = File.createTempFile("uzzap-legacy-source-", ".zip")
+            try {
+                val connection = URI("https://github.com/cyanideph/javauzzap/archive/$legacyAssetsSourceRef.zip")
+                    .toURL().openConnection() as HttpURLConnection
+                connection.connectTimeout = 20000
+                connection.readTimeout = 120000
+                connection.inputStream.use { input -> archive.outputStream().use { output -> input.copyTo(output) } }
+                connection.disconnect()
 
-                val temp = File.createTempFile("uzzap-legacy-", ".asset", out.parentFile)
-                try {
-                    val connection = URI("https://raw.githubusercontent.com/cyanideph/javauzzap/$legacyAssetsSourceRef/$relative")
-                        .toURL().openConnection() as HttpURLConnection
-                    connection.connectTimeout = 20000
-                    connection.readTimeout = 60000
-                    connection.inputStream.use { input -> temp.outputStream().use { output -> input.copyTo(output) } }
-                    connection.disconnect()
+                val wanted = missing.toSet()
+                ZipInputStream(archive.inputStream().buffered()).use { zip ->
+                    while (true) {
+                        val entry = zip.nextEntry ?: break
+                        if (entry.isDirectory) continue
+                        val marker = "/"
+                        val firstSlash = entry.name.indexOf(marker)
+                        if (firstSlash < 0) continue
+                        val relative = entry.name.substring(firstSlash + 1)
+                        if (relative !in wanted) continue
 
-                    val actualSha = gitBlobSha1(temp.readBytes())
-                    require(actualSha == expectedSha) {
-                        "Legacy asset integrity failure for $relative: expected $expectedSha but downloaded $actualSha"
+                        val out = destination.resolve(relative)
+                        out.parentFile.mkdirs()
+                        val temp = File.createTempFile("uzzap-legacy-", ".asset", out.parentFile)
+                        try {
+                            temp.outputStream().use { output -> zip.copyTo(output) }
+                            val expectedSha = expected[relative] ?: error("Missing integrity fingerprint for legacy asset: $relative")
+                            val actualSha = gitBlobSha1(temp.readBytes())
+                            require(actualSha == expectedSha) {
+                                "Legacy asset integrity failure for $relative: expected $expectedSha but downloaded $actualSha"
+                            }
+                            temp.copyTo(out, overwrite = true)
+                        } finally {
+                            temp.delete()
+                        }
                     }
-                    temp.copyTo(out, overwrite = true)
-                } finally {
-                    temp.delete()
                 }
+            } finally {
+                archive.delete()
             }
+        }
+
+        required.forEach { relative ->
+            val out = destination.resolve(relative)
+            val expectedSha = expected[relative] ?: error("Missing integrity fingerprint for legacy asset: $relative")
+            require(out.exists()) { "Missing legacy asset after sync: $relative" }
+            require(gitBlobSha1(out.readBytes()) == expectedSha) {
+                "Legacy asset integrity failure for $relative"
+            }
+        }
     }
 }
 tasks.named("preBuild") { dependsOn(syncLegacyAssets) }
