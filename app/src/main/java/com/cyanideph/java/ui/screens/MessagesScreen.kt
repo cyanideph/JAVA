@@ -19,11 +19,12 @@ import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
 import com.cyanideph.java.ui.model.Buddy
+import com.cyanideph.java.ui.model.LegacyBuddyRepository
 import com.cyanideph.java.ui.model.Message
 
 private data class LegacyMessageTab(val title: String)
 
-private fun legacyMessageContacts(): List<Buddy> = emptyList()
+private fun legacyMessageContacts(): List<Buddy> = LegacyBuddyRepository.buddies
 
 
 @Composable
