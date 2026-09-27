@@ -36,7 +36,7 @@ fun LegacyBitmapBar(left:String,middle:String,right:String,modifier:Modifier=Mod
 fun LegacyTitleBar(title:String,modifier:Modifier=Modifier){
     Box(modifier){
         LegacyBitmapBar("${BarPath}titlebar-left.png","${BarPath}titlebar-middle.png","${BarPath}titlebar-right.png", Modifier.fillMaxWidth())
-        BasicText(title,color=ReptilianTheme.Text,fontSize=ReptilianTheme.FontSize,modifier=Modifier.padding(horizontal=8.dp))
+        BasicText(title,color=ReptilianTheme.TitleBarText,fontSize=ReptilianTheme.FontSize,modifier=Modifier.padding(horizontal=8.dp))
     }
 }
 
@@ -55,8 +55,8 @@ fun LegacyFunctionBar(
             Modifier.fillMaxWidth().height(with(density) { middle.height.toDp() }),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            LegacyText(leftLabel, Modifier.padding(start = 6.dp))
-            LegacyText(rightLabel, Modifier.padding(end = 6.dp))
+            BasicText(leftLabel, color = ReptilianTheme.FunctionBarText, fontSize = ReptilianTheme.FontSize, modifier = Modifier.padding(start = 6.dp))
+            BasicText(rightLabel, color = ReptilianTheme.FunctionBarText, fontSize = ReptilianTheme.FontSize, modifier = Modifier.padding(end = 6.dp))
         }
     }
 }
