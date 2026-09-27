@@ -23,12 +23,7 @@ import com.cyanideph.java.ui.model.Message
 
 private data class LegacyMessageTab(val title: String)
 
-private val legacyMessageContacts = listOf(
-    Buddy("cy", "cy", "Available", "buddies"),
-    Buddy("friend1", "Friend 1", "Available", "buddies"),
-    Buddy("friend2", "Friend 2", "Not Available", "buddies"),
-    Buddy("chatter", "Chatterbox", "Invisible", "chatterbox")
-)
+private fun legacyMessageContacts(): List<Buddy> = emptyList()
 
 
 @Composable
@@ -94,7 +89,7 @@ fun MessagesScreen(onBack: () -> Unit) {
     }
     if (recipientMode) {
         LegacyRecipientDialog(
-            contacts = legacyMessageContacts,
+            contacts = legacyMessageContacts(),
             onPick = {
                 recipient = it
                 recipientMode = false
