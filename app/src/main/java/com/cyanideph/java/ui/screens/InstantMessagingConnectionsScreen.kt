@@ -56,21 +56,21 @@ private fun ConnectionLoginDialog(provider: String, onLogin: () -> Unit, onCance
     Dialog(onDismissRequest = onCancel) {
         LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
             Column(Modifier.fillMaxWidth().padding(10.dp)) {
-                LegacyText(if (provider == "Yahoo") "* Connect to Yahoo\\n" else "* Connect to MSN\\n")
+                LegacyText(if (provider == "Yahoo") "* Connect to Yahoo\n" else "* Connect to MSN\n")
             LegacyFormList(
                 fields = listOf(
                     LegacyFormField(
                         "username",
                         if (provider == "Yahoo") "Yahoo ID" else "MSN ID",
                         "Your " + provider + " ID",
-                        "* " + provider + " ID\\n\\nYour " + provider + " ID " + if (provider == "Yahoo") "(eg. abs)" else "(eg. abs@hotmail.com)",
+                        "* " + provider + " ID\n\nYour " + provider + " ID " + if (provider == "Yahoo") "(eg. abs)" else "(eg. abs@hotmail.com)",
                         50
                     ),
                     LegacyFormField(
                         "password",
                         "Password",
                         "Your " + provider + " Password",
-                        "* " + provider + " password\\n\\nPlease enter the password for your " + provider + " account here.",
+                        "* " + provider + " password\n\nPlease enter the password for your " + provider + " account here.",
                         50,
                         password = true,
                         inputFlags = 65536
