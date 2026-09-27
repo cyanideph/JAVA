@@ -25,7 +25,7 @@ object LegacyThemeState {
 
     fun select(context: Context, theme: String) {
         current = theme
-        context.getSharedPreferences("legacy_theme", Context.MODE_PRIVATE)
+        context.getSharedPreferences("kalypte.theme", Context.MODE_PRIVATE)
             .edit().putString("kalypte.theme", theme).apply()
     }
 }
@@ -39,7 +39,17 @@ object LegacyAssets {
     }
 
     fun bitmap(context: Context, path: String) =
-        context.assets.open("legacy/" + themedPath(context, path)).use { BitmapFactory.decodeStream(it) }
+        openThemed(context, path).use { BitmapFactory.decodeStream(it) }
+
+    private fun openThemed(context: Context, path: String): java.io.InputStream {
+        val resolved = "legacy/" + themedPath(context, path)
+        return try {
+            context.assets.open(resolved)
+        } catch (_: java.io.IOException) {
+            val fallback = if (path.startsWith("themes/default/")) "legacy/" + path else resolved
+            context.assets.open(fallback)
+        }
+    }
 
     @Composable
     fun rememberBitmap(context: Context, path: String) = run {
