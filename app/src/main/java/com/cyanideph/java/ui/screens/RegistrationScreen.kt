@@ -59,7 +59,9 @@ fun RegistrationScreen(onBack: () -> Unit) {
             LegacyFunctionBar(
                 leftLabel = "Register",
                 rightLabel = "Cancel",
-                modifier = Modifier.fillMaxWidth().clickable { submit() }
+                modifier = Modifier.fillMaxWidth(),
+                onLeftClick = { submit() },
+                onRightClick = onBack
             )
         }
     }
