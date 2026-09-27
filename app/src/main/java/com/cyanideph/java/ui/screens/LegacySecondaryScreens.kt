@@ -25,22 +25,7 @@ You can also try turning off WiFi when not in use, lowering your screen’s brig
 
 Contact your local Smart Wireless Center for more information or help on changing the settings of your phone."""
 
-@Composable
-fun BatterySavingScreen(onBack: () -> Unit) {
-    LegacyBackground(Modifier.fillMaxSize()) {
-        Column(Modifier.fillMaxSize()) {
-            LegacyTitleBar("Battery Saving Mode", Modifier.fillMaxWidth())
-            LegacyText(legacyBatteryText, Modifier.weight(1f).fillMaxWidth().padding(6.dp))
-            LegacyFunctionBar("","",Modifier.fillMaxWidth())
-        }
-    }
-}
-
-@Composable
-fun OfflineSettingsScreen(onBack: () -> Unit) {
-    var selected by remember { mutableIntStateOf(0) }
-    val options = listOf("Available SMS", "Email")
-    val description = """* Offline Settings
+private const val legacyOfflineText = """* Offline Settings
 
 Allows you to set how your messages will be delivered when UZZAP is off:
 
@@ -50,28 +35,43 @@ Choose " Email " to have your messages forwarded to Email when off.
 
 If no options are selected, your messages will be stored for up to 14 days until you next Login to Uzzap."""
 
+@Composable
+fun BatterySavingScreen(onBack: () -> Unit) {
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
-            LegacyTitleBar("* Offline Settings", Modifier.fillMaxWidth())
-            LegacyText(description, Modifier.weight(1f).fillMaxWidth().padding(6.dp))
-            Column(Modifier.fillMaxWidth()) {
-                options.forEachIndexed { index, label ->
-                    LegacyText(
-                        label,
-                        Modifier.fillMaxWidth()
-                            .background(if (selected == index) ReptilianTheme.MenuSelected else ReptilianTheme.Surface)
-                            .clickable { selected = index }
-                            .padding(horizontal = 8.dp, vertical = 5.dp)
-                    )
-                }
-            }
+            LegacyTitleBar("Battery Saving Mode", Modifier.fillMaxWidth())
+            LegacyText(legacyBatteryText, Modifier.weight(1f).fillMaxWidth().padding(6.dp))
             LegacyFunctionBar(
-                leftLabel = "Select",
-                rightLabel = "Close Tab",
-                modifier = Modifier.fillMaxWidth().clickable { onBack() }
+                leftLabel = "Close Tab",
+                rightLabel = "Menu",
+                modifier = Modifier.fillMaxWidth(),
+                onLeftClick = onBack,
+                onRightClick = onBack
             )
         }
     }
+}
+
+@Composable
+fun OfflineSettingsScreen(onBack: () -> Unit) {
+    var showOptions by remember { mutableStateOf(false) }
+    LegacyBackground(Modifier.fillMaxSize()) {
+        Column(Modifier.fillMaxSize()) {
+            LegacyTitleBar("Offline Settings", Modifier.fillMaxWidth())
+            LegacyText(
+                legacyOfflineText,
+                Modifier.weight(1f).fillMaxWidth().padding(6.dp)
+            )
+            LegacyFunctionBar(
+                leftLabel = "Options",
+                rightLabel = "Save",
+                modifier = Modifier.fillMaxWidth(),
+                onLeftClick = { showOptions = true },
+                onRightClick = onBack
+            )
+        }
+    }
+    if (showOptions) LegacyDialogMessage("Help\n\nClose Tab") { showOptions = false }
 }
 
 @Composable
@@ -86,11 +86,13 @@ fun PurchaseHistoryScreen(onBack: () -> Unit) {
             else if (hasHistory) LegacyText("* Your last transactions\n", Modifier.padding(6.dp))
             Spacer(Modifier.weight(1f))
             LegacyFunctionBar(
-                if (hasHistory) "Options" else "Refresh",
-                if (hasHistory) "Scroll >" else "Close",
-                Modifier.fillMaxWidth().clickable {
+                leftLabel = if (hasHistory) "Options" else "Refresh",
+                rightLabel = if (hasHistory) "Scroll >" else "Close",
+                modifier = Modifier.fillMaxWidth(),
+                onLeftClick = {
                     if (hasHistory) showOptions = true else loading = true
-                }
+                },
+                onRightClick = onBack
             )
         }
     }
@@ -111,7 +113,7 @@ fun ChangeMobileScreen(onBack: () -> Unit) {
                 { _, value -> number = value },
                 Modifier.weight(1f).fillMaxWidth().padding(6.dp)
             )
-            LegacyFunctionBar("OK","Cancel",Modifier.fillMaxWidth(), onLeftClick = { /* legacy transport handled outside frontend */ }, onRightClick = onBack)
+            LegacyFunctionBar("OK","Cancel",Modifier.fillMaxWidth(), onLeftClick = { }, onRightClick = onBack)
         }
     }
 }
@@ -119,29 +121,50 @@ fun ChangeMobileScreen(onBack: () -> Unit) {
 @Composable
 fun ChatInviteScreen(room: String, onBack: () -> Unit) {
     var accepted by remember { mutableStateOf(false) }
+    var showOptions by remember { mutableStateOf(false) }
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
-            LegacyTitleBar("Chat Invite - $room", Modifier.fillMaxWidth())
+            LegacyTitleBar(if (accepted) "Chat - $room" else "Chat Invite - $room", Modifier.fillMaxWidth())
             if (!accepted) {
-                LegacyText("You have been invited to join the Chatroom '$room'. Do you accept this invitation?\n", Modifier.padding(6.dp))
-                Spacer(Modifier.weight(1f))
-                LegacyFunctionBar("Yes","No",Modifier.fillMaxWidth().clickable { accepted = true })
-            } else {
-                Spacer(Modifier.weight(1f))
-                LegacyFunctionBar("Options","Menu",Modifier.fillMaxWidth())
+                LegacyText(
+                    "You have been invited to join the Chatroom '$room'. Do you accept this invitation?\n",
+                    Modifier.padding(6.dp)
+                )
             }
+            Spacer(Modifier.weight(1f))
+            LegacyFunctionBar(
+                leftLabel = if (accepted) "Options" else "Options ",
+                rightLabel = "Menu",
+                modifier = Modifier.fillMaxWidth(),
+                onLeftClick = { showOptions = true },
+                onRightClick = onBack
+            )
         }
+    }
+    if (showOptions) {
+        LegacyDialogMessage(if (!accepted) "Yes\n\nNo\n\nClose Tab" else "Options") { showOptions = false }
+    }
+    if (!accepted && !showOptions) {
+        // Invitation actions are exposed through the legacy Options popup.
     }
 }
 
 @Composable
 fun StoredMessageScreen(onBack: () -> Unit) {
+    var showOptions by remember { mutableStateOf(false) }
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("Stored Message", Modifier.fillMaxWidth())
             Spacer(Modifier.weight(1f))
-            LegacyFunctionBar("Options","Buddies",Modifier.fillMaxWidth())
+            LegacyFunctionBar(
+                "Options","Buddies",Modifier.fillMaxWidth(),
+                onLeftClick = { showOptions = true },
+                onRightClick = onBack
+            )
         }
+    }
+    if (showOptions) {
+        LegacyDialogMessage("Send Reply\n\nForward Message\n\nClose Tab") { showOptions = false }
     }
 }
 
@@ -165,7 +188,7 @@ fun BuddyMatchingScreen(onBack: () -> Unit) {
             LegacyText("Automatic Buddy Matching", Modifier.padding(6.dp))
             LegacyText("Not supported on this device.", Modifier.padding(6.dp))
             Spacer(Modifier.weight(1f))
-            LegacyFunctionBar(rightLabel="Close",modifier=Modifier.fillMaxWidth().clickable{onBack()})
+            LegacyFunctionBar(rightLabel="Close",modifier=Modifier.fillMaxWidth(),onRightClick=onBack)
         }
     }
 }
@@ -184,9 +207,13 @@ fun AddInviteBuddiesScreen(onBack: () -> Unit, onBuddies: () -> Unit, onAddOther
                         .padding(8.dp))
                 }
             }
-            LegacyFunctionBar("Select","Close",Modifier.fillMaxWidth().clickable{
-                when(selected){1,2->onBuddies();3->onAddOther();else->onBack()}
-            })
+            LegacyFunctionBar(
+                "Select","Close",Modifier.fillMaxWidth(),
+                onLeftClick={
+                    when(selected){1,2->onBuddies();3->onAddOther();else->onBack()}
+                },
+                onRightClick=onBack
+            )
         }
     }
 }
