@@ -71,7 +71,7 @@ fun OfflineSettingsScreen(onBack: () -> Unit) {
             )
         }
     }
-    if (showOptions) LegacyDialogMessage("Help\n\nClose Tab") { showOptions = false }
+    if (showOptions) LegacyDialogMessage("* Offline Settings\n\nAllows you to set how your messages will be delivered when UZZAP is off:\n\nChoose \" Available SMS \" to receive messages via SMS when Uzzap is off - Only available for some networks.\n\nChoose \" Email \" to have your messages forwarded to Email when off.\n\nIf no options are selected, your messages will be stored for up to 14 days until you next Login to Uzzap.") { showOptions = false }
 }
 
 @Composable
