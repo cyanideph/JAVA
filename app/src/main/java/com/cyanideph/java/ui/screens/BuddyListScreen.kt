@@ -41,7 +41,7 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
 
     val buddies = LegacyBuddyRepository.buddiesFor(context)
 
-    val visible = buddies.filter { it.group == legacyGroups[selectedGroup].first && it.displayName.contains(search, ignoreCase = true) }
+    val visible = buddies.filter { it.group == legacyGroups[selectedGroup].first && it.displayName.contains(search, ignoreCase = true) }.sortedBy { it.displayName.lowercase() }
 
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
