@@ -26,7 +26,7 @@ import com.cyanideph.java.legacy.ui.LegacyTitleBar
 /** Legacy c.java theme selector: exact theme catalogue exposed by the original client. */
 @Composable
 fun ThemeScreen(onBack: () -> Unit) {
-    val themes = listOf("black", "dolphins", "hearts", "roses", "uzzap")
+    val themes = listOf("default", "uzzap")
     val selected = remember { mutableStateOf("uzzap") }
 
     LegacyBackground(Modifier.fillMaxSize()) {
