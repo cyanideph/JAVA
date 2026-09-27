@@ -44,7 +44,10 @@ fun ThemeScreen(onBack: () -> Unit) {
                     androidx.compose.foundation.layout.Row(
                         Modifier.fillMaxWidth()
                             .background(if (theme == selected.value) ReptilianTheme.MenuSelected else ReptilianTheme.Surface)
-                            .clickable {\n                                selected.value = theme\n                                LegacyThemeState.select(context, theme)\n                            }
+                            .clickable {
+                                selected.value = theme
+                                LegacyThemeState.select(context, theme)
+                            }
                             .padding(horizontal = 4.dp, vertical = 2.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
