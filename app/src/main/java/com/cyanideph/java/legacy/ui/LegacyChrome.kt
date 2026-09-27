@@ -35,7 +35,7 @@ fun LegacyBitmapBar(left:String,middle:String,right:String,modifier:Modifier=Mod
 @Composable
 fun LegacyTitleBar(title:String,modifier:Modifier=Modifier){
     Box(modifier){
-        LegacyBitmapBar("${BarPath}titlebar-left.png","${BarPath}titlebar-middle.png","${BarPath}titlebar-right.png")
+        LegacyBitmapBar("${BarPath}titlebar-left.png","${BarPath}titlebar-middle.png","${BarPath}titlebar-right.png", Modifier.fillMaxWidth())
         BasicText(title,color=ReptilianTheme.Text,fontSize=ReptilianTheme.FontSize,modifier=Modifier.padding(horizontal=8.dp))
     }
 }
@@ -101,10 +101,10 @@ fun LegacyFrame(
             Image(tr, null, Modifier.align(androidx.compose.ui.Alignment.TopEnd).size(r, t), contentScale = ContentScale.None)
             Image(bl, null, Modifier.align(androidx.compose.ui.Alignment.BottomStart).size(l, b), contentScale = ContentScale.None)
             Image(br, null, Modifier.align(androidx.compose.ui.Alignment.BottomEnd).size(r, b), contentScale = ContentScale.None)
-            Image(top, null, Modifier.fillMaxWidth().height(t).padding(horizontal = l).align(androidx.compose.ui.Alignment.TopCenter), contentScale = ContentScale.Tile)
-            Image(bottom, null, Modifier.fillMaxWidth().height(b).padding(horizontal = l).align(androidx.compose.ui.Alignment.BottomCenter), contentScale = ContentScale.Tile)
-            Image(left, null, Modifier.fillMaxHeight().width(l).padding(vertical = t).align(androidx.compose.ui.Alignment.CenterStart), contentScale = ContentScale.Tile)
-            Image(right, null, Modifier.fillMaxHeight().width(r).padding(vertical = t).align(androidx.compose.ui.Alignment.CenterEnd), contentScale = ContentScale.Tile)
+            Image(top, null, Modifier.fillMaxWidth().height(t).padding(start = l, end = r).align(androidx.compose.ui.Alignment.TopCenter), contentScale = ContentScale.Tile)
+            Image(bottom, null, Modifier.fillMaxWidth().height(b).padding(start = l, end = r).align(androidx.compose.ui.Alignment.BottomCenter), contentScale = ContentScale.Tile)
+            Image(left, null, Modifier.fillMaxHeight().width(l).padding(top = t, bottom = b).align(androidx.compose.ui.Alignment.CenterStart), contentScale = ContentScale.Tile)
+            Image(right, null, Modifier.fillMaxHeight().width(r).padding(top = t, bottom = b).align(androidx.compose.ui.Alignment.CenterEnd), contentScale = ContentScale.Tile)
         }
     }
 }
