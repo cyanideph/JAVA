@@ -39,11 +39,23 @@ Model the legacy toolkit instead of Material3: title bar, function/softkey bar, 
 - `dd.java` Yahoo/MSN: username max `50`; password flag `65536`, max `50`; provider-specific labels/help and Login/Cancel softkeys now flow through `LegacyFormList`.
 - Legacy form password rendering was normalized so `PasswordVisualTransformation` is the single masking path rather than double-rendering masked text.
 
-## Remaining gaps
+## Bulk frontend parity status
 
-1. Real authentication/transport is not implemented; do not fake success.
-2. Full theme.ini parsing and exact metrics remain incomplete.
-3. Form input flags/editor semantics remain incomplete.
-4. Chatroom/message/history backends remain placeholders.
-5. Screenshot-based visual parity verification remains required.
-6. Assets are build-time synchronized, not yet fully vendored for offline builds.
+- Backend/auth/transport is intentionally excluded from the frontend parity target.
+- Theme catalogue is source-derived from legacy `kt.aj.a()`: black, dolphins, hearts, roses, uzzap.
+- Chat Rooms option labels and empty-state text are aligned with legacy `bm.java`.
+- Received Contacts softkeys/options are aligned with legacy `ac.java`.
+- Buddy List chrome no longer renders invented group-navigation arrows; buddy options are sourced against legacy `bo.java` conditions.
+- Main Menu ordering/assets and its five legacy application options are aligned with `an.java`.
+- Legacy asset inventory remains pinned to commit `4645532460a865a6196ab04091a46f0d33d381e7`.
+
+## Remaining frontend gaps
+
+1. Exact toolkit popup geometry/focus/selection behavior still needs screenshot-level verification.
+2. Exact Main Menu grid/scrollbar pixel geometry still needs screenshot comparison against the legacy toolkit.
+3. Buddy List group switching/row geometry needs source-level and screenshot verification.
+4. Chat Rooms category/room rendering is service-driven and requires legacy data to verify populated rows; the empty state is source-aligned.
+5. Form editor keyboard/caret/selection semantics need device-level verification.
+6. Full asset-usage mapping (every legacy bitmap -> exact Android call site) remains to be completed.
+7. Full end-to-end screenshot regression across every reachable frontend screen remains to be completed.
+8. Assets are build-time synchronized, not yet fully vendored for offline builds.
