@@ -92,7 +92,7 @@ fun MessagesScreen(
             )
             if (isBuddyInvite) {
                 LegacyText(
-                    "[This user has invited you to their buddy list. To accept the invitation, choose "Accept Buddy Invite" from the options menu]\nYou can chat with the user in this window before you accept to confirm who they are.]",
+                    "[This user has invited you to their buddy list. To accept the invitation, choose \"Accept Buddy Invite\" from the options menu]\nYou can chat with the user in this window before you accept to confirm who they are.]",
                     Modifier.padding(horizontal = 5.dp, vertical = 4.dp)
                 )
             }
