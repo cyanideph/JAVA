@@ -82,14 +82,14 @@ fun LegacyFrame(
 ) {
     val context = LocalContext.current
     val density = LocalDensity.current
-    val tl = LegacyAssets.rememberBitmap(context, "frame-topleft")
-    val top = LegacyAssets.rememberBitmap(context, "frame-top")
-    val tr = LegacyAssets.rememberBitmap(context, "frame-topright")
-    val left = LegacyAssets.rememberBitmap(context, "frame-left")
-    val right = LegacyAssets.rememberBitmap(context, "frame-right")
-    val bl = LegacyAssets.rememberBitmap(context, "frame-bottomleft")
-    val bottom = LegacyAssets.rememberBitmap(context, "frame-bottom")
-    val br = LegacyAssets.rememberBitmap(context, "frame-bottomright")
+    val tl = LegacyAssets.rememberBitmap(context, "themes/default/frame-topleft.png")
+    val top = LegacyAssets.rememberBitmap(context, "themes/default/frame-top.png")
+    val tr = LegacyAssets.rememberBitmap(context, "themes/default/frame-topright.png")
+    val left = LegacyAssets.rememberBitmap(context, "themes/default/frame-left.png")
+    val right = LegacyAssets.rememberBitmap(context, "themes/default/frame-right.png")
+    val bl = LegacyAssets.rememberBitmap(context, "themes/default/frame-bottomleft.png")
+    val bottom = LegacyAssets.rememberBitmap(context, "themes/default/frame-bottom.png")
+    val br = LegacyAssets.rememberBitmap(context, "themes/default/frame-bottomright.png")
     BoxWithConstraints(modifier) {
         val l = with(density) { tl.width.toDp() }
         val r = with(density) { tr.width.toDp() }
@@ -119,12 +119,12 @@ fun LegacyTabStrip(
 ) {
     val context = LocalContext.current
     val density = LocalDensity.current
-    val selectedAsset = LegacyAssets.rememberBitmap(context, "tab-selected")
-    val normalAsset = LegacyAssets.rememberBitmap(context, "tab-not-selected")
-    val indicatorUnread = LegacyAssets.rememberBitmap(context, "unread-icon")
-    val indicatorChat = LegacyAssets.rememberBitmap(context, "chat-icon")
-    val indicatorUnreadSending = LegacyAssets.rememberBitmap(context, "unread-sending-icon")
-    val indicatorSending = LegacyAssets.rememberBitmap(context, "sending-message-icon")
+    val selectedAsset = LegacyAssets.rememberBitmap(context, "themes/default/tab-selected.png")
+    val normalAsset = LegacyAssets.rememberBitmap(context, "themes/default/tab-not-selected.png")
+    val indicatorUnread = LegacyAssets.rememberBitmap(context, "themes/default/unread-icon.png")
+    val indicatorChat = LegacyAssets.rememberBitmap(context, "themes/default/chat-icon.png")
+    val indicatorUnreadSending = LegacyAssets.rememberBitmap(context, "themes/default/unread-sending-icon.png")
+    val indicatorSending = LegacyAssets.rememberBitmap(context, "themes/default/sending-message-icon.png")
     BoxWithConstraints(modifier) {
     val availableWidthPx = with(density) { maxWidth.toPx() }
     val visibleCount = (availableWidthPx / with(density) { selectedAsset.width.toDp().toPx() }).toInt().coerceAtLeast(1)
@@ -170,7 +170,7 @@ fun LegacyCheckbox(
     val context = LocalContext.current
     val asset = LegacyAssets.rememberBitmap(
         context,
-        if (checked) "tickbox-selected" else "tickbox-not-selected"
+        if (checked) "themes/default/tickbox-selected.png" else "themes/default/tickbox-not-selected.png"
     )
     val density = LocalDensity.current
     Image(
