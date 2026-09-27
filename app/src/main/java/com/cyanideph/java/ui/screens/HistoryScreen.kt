@@ -17,11 +17,7 @@ fun HistoryScreen(
     onBack: () -> Unit,
     contactName: String = "Friend 1"
 ) {
-    val messages = listOf(
-        "- $contactName (12:00): Message history is displayed here.",
-        "- $contactName (12:05): Legacy history uses the message renderer.",
-        "* $contactName (12:10): Older messages remain in chronological history."
-    )
+    // Do not invent history records. The legacy screen is populated by the message store.\n    val messages = emptyList<String>()
     var showOptions by remember { mutableStateOf(false) }
     var showMessage by remember { mutableStateOf(false) }
 
@@ -82,7 +78,7 @@ fun HistoryScreen(
         }
     }
 
-    if (showMessage) {
+    if (showMessage && messages.isNotEmpty()) {
         LegacyDialogMessage(messages.firstOrNull().orEmpty()) { showMessage = false }
     }
 }
