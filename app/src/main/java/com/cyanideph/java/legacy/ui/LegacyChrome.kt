@@ -48,9 +48,9 @@ fun LegacyFunctionBar(
 ) {
     val context = LocalContext.current
     val density = LocalDensity.current
-    val middle = LegacyAssets.rememberBitmap(context, "themes/uzzap/functionbar-middle.png")
+    val middle = LegacyAssets.rememberBitmap(context, "themes/default/functionbar-middle.png")
     Box(modifier) {
-        LegacyBitmapBar("themes/uzzap/functionbar-left.png", "themes/uzzap/functionbar-middle.png", "themes/uzzap/functionbar-right.png", Modifier.fillMaxWidth())
+        LegacyBitmapBar("themes/default/functionbar-left.png", "themes/default/functionbar-middle.png", "themes/default/functionbar-right.png", Modifier.fillMaxWidth())
         Row(
             Modifier.fillMaxWidth().height(with(density) { middle.height.toDp() }),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -64,7 +64,7 @@ fun LegacyFunctionBar(
 @Composable
 fun LegacyBackground(modifier: Modifier = Modifier, color: Color = Color.White, content: @Composable BoxScope.() -> Unit){
     val c=LocalContext.current
-    val bg=LegacyAssets.rememberBitmap(c,"themes/uzzap/background-pattern.png")
+    val bg=LegacyAssets.rememberBitmap(c,"themes/default/background-pattern.png")
     Box(modifier.background(color)){
         Image(bg,null,Modifier.fillMaxSize(),contentScale=ContentScale.Tile)
         content()
