@@ -26,7 +26,8 @@ fun StatusScreen(onBack: () -> Unit) {
         Item("Status Message..", "statusmessage") { showStatusMessage = true },
         Item("Available", "online") { selected = "Available" },
         Item("Not Available", "notavailable") { selected = "Not Available" },
-        Item("Invisible", "offline") { selected = "Invisible" }
+        Item("Invisible", "offline") { selected = "Invisible" },
+        Item("Settings..", "settings") { onBack() }
     )
 
     LegacyBackground(Modifier.fillMaxSize()) {
@@ -50,7 +51,7 @@ fun StatusScreen(onBack: () -> Unit) {
                     }
                 }
             }
-            LegacyFunctionBar("Options", "Back", Modifier.fillMaxWidth())
+            LegacyFunctionBar(leftLabel = "Options", rightLabel = "Back", modifier = Modifier.fillMaxWidth())
         }
     }
 
