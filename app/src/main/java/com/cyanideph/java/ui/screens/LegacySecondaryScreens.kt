@@ -78,13 +78,17 @@ fun OfflineSettingsScreen(onBack: () -> Unit) {
 @Composable
 fun PurchaseHistoryScreen(onBack: () -> Unit) {
     var hasHistory by remember { mutableStateOf(false) }
-    var loading by remember { mutableStateOf(false) }
+    var loading by remember { mutableStateOf(true) }
     var showOptions by remember { mutableStateOf(false) }
+
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("Purchase History", Modifier.fillMaxWidth())
-            if (loading) LegacyText("  Fetching your last 14 transactions.Please wait..\n", Modifier.padding(6.dp))
-            else if (hasHistory) LegacyText("* Your last transactions\n", Modifier.padding(6.dp))
+            if (loading) {
+                LegacyText("  Fetching your last 14 transactions.Please wait..\n", Modifier.padding(6.dp))
+            } else if (hasHistory) {
+                LegacyText("* Your last 0 transactions\n", Modifier.padding(6.dp))
+            }
             Spacer(Modifier.weight(1f))
             LegacyFunctionBar(
                 leftLabel = if (hasHistory) "Options" else "Refresh",
@@ -97,7 +101,26 @@ fun PurchaseHistoryScreen(onBack: () -> Unit) {
             )
         }
     }
-    if (showOptions) LegacyDialogMessage("Refresh\n\nClose") { showOptions = false }
+
+    if (showOptions) {
+        Dialog(onDismissRequest = { showOptions = false }) {
+            LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
+                Column(Modifier.fillMaxWidth()) {
+                    listOf("Refresh", "Close").forEach { action ->
+                        LegacyText(
+                            action,
+                            Modifier.fillMaxWidth()
+                                .clickable {
+                                    showOptions = false
+                                    if (action == "Refresh") loading = true else onBack()
+                                }
+                                .padding(horizontal = 8.dp, vertical = 7.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Composable
