@@ -43,7 +43,7 @@ fun SettingsScreen(
                         label,
                         Modifier.fillMaxWidth()
                             .background(if (index == selected) ReptilianTheme.MenuSelected else ReptilianTheme.Surface)
-                            .clickable { selected = index; select(label) }
+                            .clickable { selected = index }
                             .padding(horizontal = 8.dp, vertical = 6.dp)
                     )
                 }
@@ -54,7 +54,6 @@ fun SettingsScreen(
     if (showOptions) Dialog(onDismissRequest = { showOptions = false }) {
         Column(Modifier.background(ReptilianTheme.Surface)) {
             options.forEach { label -> LegacyText(label, Modifier.fillMaxWidth().clickable { select(label) }.padding(horizontal = 18.dp, vertical = 9.dp)) }
-            LegacyText("Close", Modifier.fillMaxWidth().clickable { showOptions = false; onBack() }.padding(horizontal = 18.dp, vertical = 9.dp))
         }
     }
 }
