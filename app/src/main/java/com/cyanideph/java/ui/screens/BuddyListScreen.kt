@@ -85,7 +85,14 @@ fun BuddyListScreen(onBack: () -> Unit) {
             }
             LegacyFunctionBar(Modifier.fillMaxWidth())
             if (showOptions) {
-                BuddyOptionsPopup(\n                    hasBuddy = selectedBuddy >= 0,\n                    onDismiss = { showOptions = false },\n                    onAdd = { showOptions = false },\n                    onHelp = { showOptions = false }\n                )\n            }
+                BuddyOptionsPopup(
+                    hasBuddy = selectedBuddy >= 0,
+                    isActionRequired = legacyGroups[selectedGroup].first == "action_required",
+                    onDismiss = { showOptions = false },
+                    onAdd = { showOptions = false },
+                    onHelp = { showOptions = false }
+                )
+            }
         }
     }
 }
