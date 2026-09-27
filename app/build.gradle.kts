@@ -53,9 +53,9 @@ fun gitBlobSha1(bytes: ByteArray): String {
 }
 
 val syncLegacyAssets by tasks.registering {
-    outputs.dir(layout.projectDirectory.dir("app/src/main/assets/legacy"))
+    outputs.dir(layout.projectDirectory.dir("src/main/assets/legacy"))
     doLast {
-        val destination = layout.projectDirectory.dir("app/src/main/assets/legacy").asFile
+        val destination = layout.projectDirectory.dir("src/main/assets/legacy").asFile
         destination.mkdirs()
 
         val expected = legacyAssetsIntegrity.readLines()
