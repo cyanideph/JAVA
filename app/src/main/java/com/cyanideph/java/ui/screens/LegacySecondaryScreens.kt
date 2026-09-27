@@ -243,8 +243,19 @@ fun ChatInviteScreen(room: String, onBack: () -> Unit, onMenu: () -> Unit) {
     }
 }
 @Composable
-fun StoredMessageScreen(onBack: () -> Unit) {
+fun StoredMessageScreen(
+    onBack: () -> Unit,
+    sender: String? = null,
+    messageType: String? = null
+) {
     var showOptions by remember { mutableStateOf(false) }
+    val currentUser: String? = null
+    val options = buildList {
+        if (sender != null && sender != currentUser) add("Send Reply")
+        if (messageType == "im") add("Reply All")
+        add("Forward Message")
+        add("Close Tab")
+    }
 
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
@@ -261,7 +272,7 @@ fun StoredMessageScreen(onBack: () -> Unit) {
         Dialog(onDismissRequest = { showOptions = false }) {
             LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
                 Column(Modifier.fillMaxWidth()) {
-                    listOf("Send Reply", "Reply All", "Forward Message", "Close Tab").forEach { action ->
+                    options.forEach { action ->
                         LegacyText(
                             action,
                             Modifier.fillMaxWidth().clickable {
