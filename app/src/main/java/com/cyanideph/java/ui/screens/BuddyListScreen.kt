@@ -34,7 +34,8 @@ fun BuddyListScreen(onBack: () -> Unit) {
     val context = LocalContext.current
     val density = LocalDensity.current
     var selectedGroup by remember { mutableIntStateOf(1) }
-    var selectedBuddy by remember { mutableIntStateOf(-1) }\n    var showOptions by remember { mutableStateOf(false) }
+    var selectedBuddy by remember { mutableIntStateOf(-1) }
+    var showOptions by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
 
     val buddies = LegacyBuddyRepository.buddies
@@ -74,7 +75,17 @@ fun BuddyListScreen(onBack: () -> Unit) {
                 }
             }
 
-            Row(Modifier.fillMaxWidth()) {\n                Box(Modifier.weight(1f).clickable { showOptions = true }) {\n                    LegacyText("Options", Modifier.padding(8.dp))\n                }\n                Box(Modifier.weight(1f).clickable { onBack() }) {\n                    LegacyText("Menu", Modifier.padding(8.dp))\n                }\n            }\n            LegacyFunctionBar(Modifier.fillMaxWidth())\n            if (showOptions) {\n                BuddyOptionsPopup(\n                    hasBuddy = selectedBuddy >= 0,\n                    onDismiss = { showOptions = false },\n                    onAdd = { showOptions = false },\n                    onHelp = { showOptions = false }\n                )\n            }
+            Row(Modifier.fillMaxWidth()) {
+                Box(Modifier.weight(1f).clickable { showOptions = true }) {
+                    LegacyText("Options", Modifier.padding(8.dp))
+                }
+                Box(Modifier.weight(1f).clickable { onBack() }) {
+                    LegacyText("Menu", Modifier.padding(8.dp))
+                }
+            }
+            LegacyFunctionBar(Modifier.fillMaxWidth())
+            if (showOptions) {
+                BuddyOptionsPopup(\n                    hasBuddy = selectedBuddy >= 0,\n                    onDismiss = { showOptions = false },\n                    onAdd = { showOptions = false },\n                    onHelp = { showOptions = false }\n                )\n            }
         }
     }
 }
