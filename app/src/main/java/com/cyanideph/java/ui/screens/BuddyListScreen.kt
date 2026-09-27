@@ -45,18 +45,13 @@ fun BuddyListScreen(onBack: () -> Unit) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("EM - Buddy List", Modifier.fillMaxWidth())
 
-            Row(
+            LegacyText(
+                legacyGroups[selectedGroup].second,
                 Modifier
                     .fillMaxWidth()
                     .background(ReptilianTheme.Surface)
-                    .padding(horizontal = 6.dp, vertical = 4.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                LegacyText(legacyGroups[selectedGroup].second)
-                LegacyText("‹  ›", Modifier.clickable {
-                    selectedGroup = (selectedGroup + 1) % legacyGroups.size
-                })
-            }
+                    .padding(horizontal = 6.dp, vertical = 4.dp)
+            )
 
             LazyColumn(
                 state = listState,
@@ -112,7 +107,7 @@ private fun BuddyOptionsPopup(
     val options = buildList {
         if (!hasAuthorizedContact) add("Authorize as Buddy")
         if (!hasBuddy) add("Request to Authorize")
-        if (hasYahoo || (buddyType == "amazilia" && hasAuthorizedContact)) add("Send Message")
+        if (hasYahoo || hasMsn || (buddyType == "amazilia" && hasAuthorizedContact)) add("Send Message")
         if (hasEmail) add("Send Email")
         if (hasMobile) add("Send SMS")
         if (!hasBuddy) {
