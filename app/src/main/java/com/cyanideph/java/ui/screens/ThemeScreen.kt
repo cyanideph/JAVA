@@ -60,7 +60,8 @@ fun ThemeScreen(onBack: () -> Unit) {
             LegacyFunctionBar(
                 leftLabel = "",
                 rightLabel = "Close",
-                modifier = Modifier.fillMaxWidth().clickable { onBack() }
+                modifier = Modifier.fillMaxWidth(),
+                onRightClick = onBack
             )
         }
     }
