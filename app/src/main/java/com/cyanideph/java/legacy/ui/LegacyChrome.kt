@@ -55,3 +55,62 @@ fun LegacyBackground(modifier:Modifier=Modifier,content:@Composable BoxScope.()-
 @Composable
 fun LegacyText(text:String,modifier:Modifier=Modifier)=
     Text(text,color=ReptilianTheme.Text,fontSize=ReptilianTheme.FontSize,modifier=modifier)
+
+@Composable
+fun LegacyTabStrip(
+    tabs: List<String>,
+    selected: Int,
+    onSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    val density = LocalDensity.current
+    val selectedAsset = LegacyAssets.rememberBitmap(context, "tab-selected")
+    val normalAsset = LegacyAssets.rememberBitmap(context, "tab-not-selected")
+    val tabHeight = maxOf(selectedAsset.height, normalAsset.height)
+    Row(
+        modifier.height(with(density) { tabHeight.toDp() }),
+        horizontalArrangement = Arrangement.Start
+    ) {
+        tabs.forEachIndexed { index, label ->
+            val bg = if (index == selected) selectedAsset else normalAsset
+            Box(
+                Modifier
+                    .width(with(density) { bg.width.toDp() })
+                    .fillMaxHeight()
+                    .clickable { onSelected(index) }
+            ) {
+                Image(bg, null, Modifier.fillMaxSize(), contentScale = ContentScale.FillBounds)
+                LegacyText(
+                    label,
+                    Modifier.align(androidx.compose.ui.Alignment.Center)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun LegacyCheckbox(
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    val asset = LegacyAssets.rememberBitmap(
+        context,
+        if (checked) "tickbox-selected" else "tickbox-not-selected"
+    )
+    val density = LocalDensity.current
+    Image(
+        asset,
+        contentDescription = if (checked) "Selected" else "Not selected",
+        modifier
+            .size(
+                with(density) { asset.width.toDp() },
+                with(density) { asset.height.toDp() }
+            )
+            .clickable { onCheckedChange(!checked) },
+        contentScale = ContentScale.None
+    )
+}
