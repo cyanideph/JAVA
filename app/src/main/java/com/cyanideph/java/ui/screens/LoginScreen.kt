@@ -38,11 +38,15 @@ fun LoginScreen(onLogin: () -> Unit) {
         "help" -> LegacyHelpScreen(
             onCancel = { page = "landing" }
         )
+        "about" -> LegacyAboutScreen(
+            onCancel = { page = "landing" }
+        )
         else -> LegacyLoginLandingScreen(
             onLogin = { page = "login" },
             onRegister = { page = "register" },
             onForgotPassword = { page = "forgot-password" },
-            onHelp = { page = "help" }
+            onHelp = { page = "help" },
+            onAbout = { page = "about" }
         )
     }
 }
@@ -52,7 +56,8 @@ private fun LegacyLoginLandingScreen(
     onLogin: () -> Unit,
     onRegister: () -> Unit,
     onForgotPassword: () -> Unit = {},
-    onHelp: () -> Unit = {}
+    onHelp: () -> Unit = {},
+    onAbout: () -> Unit = {}
 ) {
     val context = LocalContext.current
 
@@ -61,7 +66,7 @@ private fun LegacyLoginLandingScreen(
         "Register a New Account" to "register",
         "Forgotten Password" to "forgot-password",
         "Help" to "help",
-        "About Uzzap" to "disabled",
+        "About Uzzap" to "about",
         "Exit Application" to "disabled"
     )
 
@@ -99,6 +104,7 @@ private fun LegacyLoginLandingScreen(
                                 if (action == "register") onRegister()
                                 if (action == "forgot-password") onForgotPassword()
                                 if (action == "help") onHelp()
+                                if (action == "about") onAbout()
                             }
                             .padding(horizontal = 8.dp, vertical = 6.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -233,6 +239,34 @@ private fun LegacyForgotPasswordScreen(onCancel: () -> Unit) {
     }
 }
 
+
+
+@Composable
+private fun LegacyAboutScreen(onCancel: () -> Unit) {
+    LegacyBackground(
+        modifier = Modifier.fillMaxSize(),
+        color = ReptilianTheme.Surface
+    ) {
+        Column(Modifier.fillMaxSize()) {
+            LegacyTitleBar("* About Uzzap", Modifier.fillMaxWidth())
+            Column(
+                Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                LegacyText(
+                    "* About Uzzap \nVersion: 1.0.14\n\nCopyright (c) 2008 3rd Brand Pte Ltd.\nAll Rights Reserved.\n"
+                )
+            }
+            LegacyFunctionBar(
+                leftLabel = "",
+                rightLabel = "Back",
+                modifier = Modifier.fillMaxWidth().clickable { onCancel() }
+            )
+        }
+    }
+}
 
 @Composable
 private fun LegacyHelpScreen(onCancel: () -> Unit) {
