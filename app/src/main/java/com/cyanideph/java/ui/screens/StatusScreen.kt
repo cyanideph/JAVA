@@ -26,8 +26,7 @@ fun StatusScreen(onBack: () -> Unit) {
         Item("Status Message..", "statusmessage") { showStatusMessage = true },
         Item("Available", "online") { selected = "Available" },
         Item("Not Available", "notavailable") { selected = "Not Available" },
-        Item("Invisible", "offline") { selected = "Invisible" },
-        Item("Settings..", "settings") { onBack() }
+        Item("Invisible", "offline") { selected = "Invisible" }
     )
 
     LegacyBackground(Modifier.fillMaxSize()) {
