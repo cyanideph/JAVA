@@ -30,6 +30,15 @@ Model the legacy toolkit instead of Material3: title bar, function/softkey bar, 
 - Status order: Status Message, Available, Not Available, Invisible.
 - Settings rows: Edit My Profile, Change Status, Change Password, Change Mobile Number, Offline Settings, Chatroom Tones.
 
+## Latest bulk form audit (legacy commit `4645532460a865a6196ab04091a46f0d33d381e7`)
+
+- `co.java` Change Password: `old`, `new1`, `new2`; password flag `65536`; max length `30`; exact validation order and error strings are now represented in the Android form pipeline.
+- `r.java` Add/Edit Other Contact: `custom-displayname` max `50`, `custom-mobile` constraint `3` max `13`, `custom-email` max `50`; OK/Cancel softkeys and validation strings are represented.
+- `s.java` Edit Buddy: `custom-displayname` max `50`, `custom-email` max `50`; OK/Cancel and nickname/email validation are represented.
+- `ai.java` mobile/PIN validation: mobile constraint `3` max `13`; PIN max `6`; mobile uses OK/Cancel, PIN uses OK/Exit; validation screens/routes are now represented without pretending the legacy transport exists.
+- `dd.java` Yahoo/MSN: username max `50`; password flag `65536`, max `50`; provider-specific labels/help and Login/Cancel softkeys now flow through `LegacyFormList`.
+- Legacy form password rendering was normalized so `PasswordVisualTransformation` is the single masking path rather than double-rendering masked text.
+
 ## Remaining gaps
 
 1. Real authentication/transport is not implemented; do not fake success.
