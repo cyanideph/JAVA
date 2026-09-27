@@ -48,7 +48,7 @@ fun AddOtherContactScreen(onBack: () -> Unit) {
                 },
                 Modifier.weight(1f).fillMaxWidth().padding(6.dp)
             )
-            LegacyFunctionBar("OK", "Cancel", Modifier.fillMaxWidth().clickable { save() })
+            LegacyFunctionBar(leftLabel = "OK", rightLabel = "Cancel", modifier = Modifier.fillMaxWidth().clickable { save() })
         }
     }
     error?.let { LegacyDialogMessage(it) { error = null } }
@@ -162,9 +162,9 @@ fun ValidationScreen(mode: String, onBack: () -> Unit) {
                 Modifier.weight(1f).fillMaxWidth().padding(6.dp)
             )
             LegacyFunctionBar(
-                if (mode == "mobile") "OK" else "OK",
-                if (mode == "mobile") "Cancel" else "Exit",
-                Modifier.fillMaxWidth().clickable { submit() }
+                leftLabel = "OK",
+                rightLabel = if (mode == "mobile") "Cancel" else "Exit",
+                modifier = Modifier.fillMaxWidth().clickable { submit() }
             )
         }
     }
