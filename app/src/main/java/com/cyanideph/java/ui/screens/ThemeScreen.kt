@@ -1,5 +1,6 @@
 package com.cyanideph.java.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -10,7 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.LegacyBackground
 import com.cyanideph.java.legacy.ui.LegacyFunctionBar
@@ -27,18 +33,32 @@ fun ThemeScreen(onBack: () -> Unit) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("* Change theme", Modifier.fillMaxWidth())
             Column(Modifier.weight(1f).fillMaxWidth()) {
+                val context = LocalContext.current
+                val density = LocalDensity.current
+                val arrow = LegacyAssets.rememberBitmap(context, "small-arrow")
                 themes.forEach { theme ->
-                    LegacyText(
-                        theme,
+                    androidx.compose.foundation.layout.Row(
                         Modifier.fillMaxWidth()
                             .background(if (theme == selected.value) ReptilianTheme.MenuSelected else ReptilianTheme.Surface)
                             .clickable { selected.value = theme }
-                            .padding(horizontal = 8.dp, vertical = 6.dp)
-                    )
+                            .padding(horizontal = 4.dp, vertical = 2.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            arrow,
+                            contentDescription = null,
+                            modifier = Modifier.size(
+                                with(density) { arrow.width.toDp() },
+                                with(density) { arrow.height.toDp() }
+                            ),
+                            contentScale = ContentScale.None
+                        )
+                        LegacyText(theme, Modifier.padding(start = 4.dp))
+                    }
                 }
             }
             LegacyFunctionBar(
-                leftLabel = "Select",
+                leftLabel = "",
                 rightLabel = "Close",
                 modifier = Modifier.fillMaxWidth().clickable { onBack() }
             )
