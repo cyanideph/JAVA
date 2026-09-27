@@ -184,7 +184,7 @@ fun ChangeMobileScreen(onBack: () -> Unit) {
             LegacyFormList(
                 listOf(LegacyFormField("mobile","Mobile number","Your mobile number",
                     "Please enter your mobile phone number in full international format including country code (for example +63918_____)",
-                    13,inputFlags=3)),
+                    50,inputFlags=3)),
                 mapOf("mobile" to number),
                 { _, value -> number = value },
                 Modifier.weight(1f).fillMaxWidth().padding(6.dp)
