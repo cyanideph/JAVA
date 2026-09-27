@@ -92,11 +92,13 @@ fun ChatroomTonesScreen(onBack: () -> Unit) {
             )
         }
     }
+    if (processing) LegacyDialogMessage("Your request is being processed. Please wait...") { processing = false }
 }
 @Composable
 fun SubscriptionMenuScreen(onBack: () -> Unit, onPurchaseHistory: () -> Unit) {
     val options = listOf("Current Billing Status", "Purchase a Package", "Auto-Renew", "View Purchase History")
-    var selected by remember { mutableIntStateOf(0) }\n    var processing by remember { mutableStateOf(false) }
+    var selected by remember { mutableIntStateOf(0) }
+    var processing by remember { mutableStateOf(false) }
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("Subscription Menu", Modifier.fillMaxWidth())
@@ -115,9 +117,12 @@ fun SubscriptionMenuScreen(onBack: () -> Unit, onPurchaseHistory: () -> Unit) {
                 leftLabel = "Select",
                 rightLabel = "Cancel",
                 modifier = Modifier.fillMaxWidth(),
-                onLeftClick = {\n                    if (options[selected] == "View Purchase History") onPurchaseHistory() else processing = true\n                },
+                onLeftClick = {
+                    if (options[selected] == "View Purchase History") onPurchaseHistory() else processing = true
+                },
                 onRightClick = onBack
             )
         }
     }
+    if (processing) LegacyDialogMessage("Your request is being processed. Please wait...") { processing = false }
 }
