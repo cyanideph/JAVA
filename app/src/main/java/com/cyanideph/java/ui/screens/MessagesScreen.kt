@@ -314,9 +314,9 @@ private fun LegacyRecipientDialog(
             filtered.forEach { contact ->
                 val checked = contact.id in selected
                 val statusAsset = when (contact.status) {
-                    "Available", "freeforchat" -> "online"
-                    "Not Available" -> "notavailable"
-                    else -> "offline"
+                    "Available", "freeforchat" -> "themes/default/online.png"
+                    "Not Available" -> "themes/default/notavailable.png"
+                    else -> "themes/default/offline.png"
                 }
                 Row(
                     Modifier
