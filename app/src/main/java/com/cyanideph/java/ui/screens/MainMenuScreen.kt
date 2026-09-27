@@ -56,10 +56,13 @@ fun MainMenuScreen(
     LegacyBackground(Modifier.fillMaxSize()) {
         BoxWithConstraints(Modifier.fillMaxSize()) {
             val availableWidthPx = with(density) { maxWidth.toPx() }
-            val maxIconWidth = items.maxOf { LegacyAssets.bitmap(context, it.large).width.toFloat() }
-            val columnCount = maxOf(1, (availableWidthPx / (maxIconWidth + 16f)).toInt())
-            val spacingPx = ((availableWidthPx - columnCount * maxIconWidth) / (columnCount + 1f)).coerceAtLeast(4f)
+            val cellWidthPx = items.maxOf { LegacyAssets.bitmap(context, it.large).width.toFloat() }
+            val cellHeightPx = items.maxOf { LegacyAssets.bitmap(context, it.large).height.toFloat() }
+            val columnCount = maxOf(1, (availableWidthPx / cellWidthPx).toInt())
+            val spacingPx = ((availableWidthPx - columnCount * cellWidthPx) / (columnCount + 1f)).coerceAtLeast(0f)
             val spacing = with(density) { spacingPx.toDp() }
+            val cellWidth = with(density) { cellWidthPx.toDp() }
+            val cellHeight = with(density) { cellHeightPx.toDp() }
 
             Column(Modifier.fillMaxSize()) {
                 Column(
@@ -79,23 +82,22 @@ fun MainMenuScreen(
                                 val bitmap = LegacyAssets.rememberBitmap(context, path)
                                 val w = with(density) { bitmap.width.toDp() }
                                 val h = with(density) { bitmap.height.toDp() }
-                                Column(
+                                Box(
                                     Modifier
-                                        .width(w)
+                                        .width(cellWidth)
+                                        .height(cellHeight)
                                         .clickable {
                                             selected = index
                                             item.onClick()
                                         },
-                                    horizontalAlignment = Alignment.CenterHorizontally
+                                    contentAlignment = Alignment.Center
                                 ) {
-                                    Spacer(Modifier.height(4.dp))
                                     Image(
                                         bitmap,
                                         contentDescription = item.label,
                                         Modifier.size(w, h),
                                         contentScale = ContentScale.None
                                     )
-                                    Spacer(Modifier.height(2.dp))
                                 }
                             }
                         }
@@ -119,7 +121,7 @@ fun MainMenuScreen(
                         .height(with(density) {
                             LegacyAssets.bitmap(context, "themes/uzzap/menu-bottombar.png").height.toDp()
                         }),
-                    contentScale = ContentScale.FillBounds
+                    contentScale = ContentScale.Tile
                 )
             }
 
