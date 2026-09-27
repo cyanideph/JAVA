@@ -67,7 +67,7 @@ fun StatusScreen(onBack: () -> Unit) {
                         onValueChange = { _, value -> message = value },
                         modifier = Modifier.fillMaxWidth()
                     )
-                    LegacyFunctionBar("OK", "Cancel", Modifier.fillMaxWidth().clickable { showStatusMessage = false })
+                    LegacyFunctionBar(modifier = Modifier.fillMaxWidth().clickable { showStatusMessage = false }, leftLabel = "OK", rightLabel = "Cancel")
                 }
             }
         }
