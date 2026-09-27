@@ -76,8 +76,7 @@ fun MessagesScreen(onBack: () -> Unit) {
             onDismiss = { showOptions = false },
             onEdit = { showOptions = false; showEditor = true },
             onRecipient = { showOptions = false; recipientMode = true; ccMode = false },
-            onCc = { showOptions = false; recipientMode = false; ccMode = true },
-            onToggleRecipients = { hideRecipients = !hideRecipients; showOptions = false },
+''            onToggleRecipients = { hideRecipients = !hideRecipients; showOptions = false },
             onEmoticon = { showOptions = false; showEmoticons = true }
         )
     }
@@ -143,7 +142,6 @@ private fun LegacyMessageOptions(
         "Edit Message" to onEdit,
         "Set Recipient" to onRecipient,
         "Add Recipient" to onRecipient,
-        "Add Cc Recipient" to onCc,
         "Show/Hide Recipients" to onToggleRecipients,
         "Add Emoticon" to onEmoticon
     )
@@ -241,7 +239,7 @@ private fun LegacyRecipientDialog(
                 LegacyText(
                     "OK",
                     Modifier.clickable {
-                        selected.firstOrNull()?.let(onPick) ?: onDismiss()
+                        if (selected.isNotEmpty()) onPick(selected.take(3).joinToString(", ")) else onDismiss()
                     }.padding(10.dp)
                 )
                 LegacyText(
