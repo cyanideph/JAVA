@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
 import com.cyanideph.java.ui.model.LegacyBuddyRepository
@@ -57,7 +58,7 @@ fun ReceivedContactsScreen(onBack: () -> Unit) {
     }
 
     if (showOptions) {
-        Dialog(onDismissRequest = { showOptions = false }) {
+        Dialog(onDismissRequest = { showOptions = false }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
             Column(Modifier.background(ReptilianTheme.Surface)) {
                 LegacyText("Save selected contacts", Modifier.fillMaxWidth().clickable {
                     showOptions = false
