@@ -232,8 +232,8 @@ private fun BuddyContactOptionsPopup(
     buddy: Buddy,
     onDismiss: () -> Unit
 ) {
-    val eligible = buddy.authorized && buddy.status != "unknown"
-    val usernamePresent = buddy.type == "amazilia" || (buddy.type != "yahoo" && buddy.type != "msn" && !buddy.isOtherContact)
+    val usernamePresent = buddy.type == "amazilia" && !buddy.isOtherContact
+    val eligible = !usernamePresent || (buddy.authorized && buddy.status != "unknown")
     val options = buildList {
         if (usernamePresent && !buddy.authorized) add("Authorize as Buddy")
         if (usernamePresent && buddy.status == "unknown") add("Request to Authorize")
