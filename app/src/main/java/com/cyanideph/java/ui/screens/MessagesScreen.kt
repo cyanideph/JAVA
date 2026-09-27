@@ -24,7 +24,13 @@ import com.cyanideph.java.ui.model.Message
 
 private data class LegacyMessageTab(val title: String)
 
-private fun legacyMessageContacts(): List<Buddy> = LegacyBuddyRepository.buddies
+private fun legacyMessageContacts(messageType: String): List<Buddy> = when (messageType) {
+    "yahoo" -> LegacyBuddyRepository.buddies.filter { it.yahooId != null }
+    "msn" -> LegacyBuddyRepository.buddies.filter { it.msnId != null }
+    "email" -> LegacyBuddyRepository.buddies.filter { it.email != null }
+    "sms", "smsr", "random" -> LegacyBuddyRepository.buddies.filter { it.mobile != null }
+    else -> LegacyBuddyRepository.buddies
+}
 
 private fun legacyMessengerTitle(messageType: String, recipient: String): String {
     val display = recipient.ifBlank { "Friend 1" }
@@ -111,7 +117,7 @@ fun MessagesScreen(
     }
     if (recipientMode) {
         LegacyRecipientDialog(
-            contacts = legacyMessageContacts(),
+            contacts = legacyMessageContacts(messageType),
             onPick = {
                 if (recipientPickerMode == "cc") cc = it else recipient = it
                 recipientMode = false
