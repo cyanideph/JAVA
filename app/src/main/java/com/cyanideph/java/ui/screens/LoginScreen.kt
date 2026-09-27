@@ -32,9 +32,13 @@ fun LoginScreen(onLogin: () -> Unit) {
         "register" -> LegacyRegisterAccountScreen(
             onCancel = { page = "landing" }
         )
+        "forgot-password" -> LegacyForgotPasswordScreen(
+            onCancel = { page = "landing" }
+        )
         else -> LegacyLoginLandingScreen(
             onLogin = { page = "login" },
-            onRegister = { page = "register" }
+            onRegister = { page = "register" },
+            onForgotPassword = { page = "forgot-password" }
         )
     }
 }
@@ -42,14 +46,15 @@ fun LoginScreen(onLogin: () -> Unit) {
 @Composable
 private fun LegacyLoginLandingScreen(
     onLogin: () -> Unit,
-    onRegister: () -> Unit
+    onRegister: () -> Unit,
+    onForgotPassword: () -> Unit = {}
 ) {
     val context = LocalContext.current
 
     val items = listOf(
         "Login to Network" to "login",
         "Register a New Account" to "register",
-        "Forgotten Password" to "disabled",
+        "Forgotten Password" to "forgot-password",
         "Help" to "disabled",
         "About Uzzap" to "disabled",
         "Exit Application" to "disabled"
@@ -87,6 +92,7 @@ private fun LegacyLoginLandingScreen(
                             .clickable(enabled = action != "disabled") {
                                 if (action == "login") onLogin()
                                 if (action == "register") onRegister()
+                                if (action == "forgot-password") onForgotPassword()
                             }
                             .padding(horizontal = 8.dp, vertical = 6.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -170,6 +176,52 @@ private fun LegacyRegisterAccountScreen(onCancel: () -> Unit) {
                 leftLabel = "Register",
                 rightLabel = "Cancel",
                 modifier = Modifier.fillMaxWidth().clickable { onCancel() }
+            )
+        }
+    }
+}
+
+
+@Composable
+private fun LegacyForgotPasswordScreen(onCancel: () -> Unit) {
+    var value by remember { mutableStateOf("") }
+
+    LegacyBackground(
+        modifier = Modifier.fillMaxSize(),
+        color = ReptilianTheme.Surface
+    ) {
+        Column(Modifier.fillMaxSize()) {
+            LegacyTitleBar(
+                "Forgotten Password",
+                Modifier.fillMaxWidth()
+            )
+
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 8.dp)
+            ) {
+                LegacyText("User ID / Mobile Number")
+                LegacyText("User ID/Mobile Number")
+                OutlinedTextField(
+                    value = value,
+                    onValueChange = { value = it.take(30) },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+                Spacer(Modifier.height(8.dp))
+                LegacyText(
+                    "Your User ID and Password will be sent to the Email address on your account."
+                )
+            }
+
+            LegacyFunctionBar(
+                leftLabel = "OK",
+                rightLabel = "Cancel",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onCancel() }
             )
         }
     }
