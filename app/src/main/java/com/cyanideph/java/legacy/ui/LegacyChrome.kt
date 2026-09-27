@@ -27,7 +27,7 @@ fun LegacyBitmapBar(left:String,middle:String,right:String,modifier:Modifier=Mod
     val h=maxOf(l.height,m.height,rr.height)
     Row(modifier.height(with(d){h.toDp()})){
         Image(l,null,Modifier.width(with(d){l.width.toDp()}).fillMaxHeight(),contentScale=ContentScale.FillBounds)
-        Image(m,null,Modifier.weight(1f).fillMaxHeight(),contentScale=ContentScale.FillBounds)
+        Image(m,null,Modifier.weight(1f).fillMaxHeight(),contentScale=ContentScale.Tile)
         Image(rr,null,Modifier.width(with(d){rr.width.toDp()}).fillMaxHeight(),contentScale=ContentScale.FillBounds)
     }
 }
@@ -74,7 +74,6 @@ fun LegacyTabStrip(
     val indicatorChat = LegacyAssets.rememberBitmap(context, "chat-icon")
     val indicatorUnreadSending = LegacyAssets.rememberBitmap(context, "unread-sending-icon")
     val indicatorSending = LegacyAssets.rememberBitmap(context, "sending-message-icon")
-    val tabWidthPx = normalAsset.width.coerceAtLeast(1)
     BoxWithConstraints(modifier) {
     val availableWidthPx = with(density) { maxWidth.toPx() }
     val visibleCount = (availableWidthPx / with(density) { normalAsset.width.toDp().toPx() }).toInt().coerceAtLeast(1)
