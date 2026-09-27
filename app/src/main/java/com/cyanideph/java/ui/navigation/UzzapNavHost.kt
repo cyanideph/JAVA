@@ -1,14 +1,15 @@
 package com.cyanideph.java.ui.navigation
 import android.app.Activity
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import com.cyanideph.java.ui.screens.*
+private object LegacySoundController { private var muted = false; fun setMuted(enabled: Boolean) { muted = enabled } }
 object Routes{const val LOGIN="login";const val REGISTER="register";const val MAIN="main";const val BUDDIES="buddies";const val MESSAGES="messages";const val ROOMS="rooms";const val ROOM="room/{name}";const val SETTINGS="settings";const val HELP="help";const val PROFILE="profile";const val STATUS="status";const val HISTORY="history";const val MENUS="menus";const val RECEIVED_CONTACTS="received-contacts";const val BATTERY="battery";const val OFFLINE="offline";const val PURCHASE_HISTORY="purchase-history";const val CHANGE_MOBILE="change-mobile";const val STORED_MESSAGE="stored-message";const val CHAT_INVITE="chat-invite/{name}";const val PASSWORD="password";const val CHATROOM_TONES="chatroom-tones";const val SUBSCRIPTION="subscription";const val THEMES="themes";const val BUDDY_MATCHING="buddy-matching";const val ADD_INVITE="add-invite";const val IM_CONNECTIONS="im-connections"}
 @Composable fun UzzapNavHost(navController:NavHostController){NavHost(navController,startDestination=Routes.LOGIN){
 composable(Routes.LOGIN){val activity=LocalContext.current as? Activity;LoginScreen(onLogin={navController.navigate(Routes.MAIN){popUpTo(Routes.LOGIN){inclusive=true}}},onExit={activity?.finish()})}
-composable(Routes.MAIN){MainMenuScreen(onBuddies={navController.navigate(Routes.BUDDIES)},onMessages={navController.navigate(Routes.MESSAGES)},onInstantMessaging={navController.navigate(Routes.IM_CONNECTIONS)},onRooms={navController.navigate(Routes.ROOMS)},onSettings={navController.navigate(Routes.SETTINGS)},onHelp={navController.navigate(Routes.HELP)},onSubscription={navController.navigate(Routes.SUBSCRIPTION)},onBuddyMatching={navController.navigate(Routes.BUDDY_MATCHING)},onAddInvite={navController.navigate(Routes.ADD_INVITE)},onThemes={navController.navigate(Routes.THEMES)},onBatterySaving={navController.navigate(Routes.BATTERY)},onStatus={navController.navigate(Routes.STATUS)},onSilentMode={ _ -> })}
+composable(Routes.MAIN){MainMenuScreen(onBuddies={navController.navigate(Routes.BUDDIES)},onMessages={navController.navigate(Routes.MESSAGES)},onInstantMessaging={navController.navigate(Routes.IM_CONNECTIONS)},onRooms={navController.navigate(Routes.ROOMS)},onSettings={navController.navigate(Routes.SETTINGS)},onHelp={navController.navigate(Routes.HELP)},onSubscription={navController.navigate(Routes.SUBSCRIPTION)},onBuddyMatching={navController.navigate(Routes.BUDDY_MATCHING)},onAddInvite={navController.navigate(Routes.ADD_INVITE)},onThemes={navController.navigate(Routes.THEMES)},onBatterySaving={navController.navigate(Routes.BATTERY)},onStatus={navController.navigate(Routes.STATUS)},onSilentMode={ enabled -> LegacySoundController.setMuted(enabled) })}
 composable(Routes.BUDDIES){BuddyListScreen{navController.popBackStack()}}
 composable(Routes.RECEIVED_CONTACTS){ReceivedContactsScreen{navController.popBackStack()}}
 composable(Routes.IM_CONNECTIONS){InstantMessagingConnectionsScreen{navController.popBackStack()}}
