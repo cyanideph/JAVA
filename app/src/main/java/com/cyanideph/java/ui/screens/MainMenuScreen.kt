@@ -17,12 +17,7 @@ import com.cyanideph.java.legacy.ui.LegacyBackground
 import com.cyanideph.java.legacy.ui.LegacyText
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 
-private data class LegacyMenuItem(
-    val label: String,
-    val small: String,
-    val large: String,
-    val onClick: () -> Unit
-)
+private data class LegacyMenuItem(val label: String, val small: String, val large: String, val onClick: () -> Unit)
 
 @Composable
 fun MainMenuScreen(
@@ -30,29 +25,32 @@ fun MainMenuScreen(
     onMessages: () -> Unit,
     onRooms: () -> Unit,
     onSettings: () -> Unit,
-    onHelp: () -> Unit
+    onHelp: () -> Unit,
+    onSubscription: () -> Unit = {},
+    onThemes: () -> Unit = {},
+    onBatterySaving: () -> Unit = {},
+    onStatus: () -> Unit = {},
+    onSilentMode: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val density = LocalDensity.current
     var selected by remember { mutableIntStateOf(0) }
     var firstRow by remember { mutableIntStateOf(0) }
     var showOptions by remember { mutableStateOf(false) }
-
     val items = listOf(
-        LegacyMenuItem("Subscription", "000-smart-small", "000-smart-large") { },
-        LegacyMenuItem("Buddy Matching", "001-abm-small", "001-abm-large") { },
+        LegacyMenuItem("Subscription", "000-smart-small", "000-smart-large", onSubscription),
+        LegacyMenuItem("Buddy Matching", "001-abm-small", "001-abm-large") {},
         LegacyMenuItem("Add or Invite Buddies", "002-buddies-small", "002-buddies-large", onBuddies),
         LegacyMenuItem("Settings", "003-settings-small", "003-settings-large", onSettings),
-        LegacyMenuItem("Silent Mode", "008-ringtone-small", "008-ringtone-large") { },
-        LegacyMenuItem("Themes", "005-themes-small", "005-themes-large") { },
+        LegacyMenuItem("Silent Mode", "008-ringtone-small", "008-ringtone-large", onSilentMode),
+        LegacyMenuItem("Themes", "005-themes-small", "005-themes-large", onThemes),
         LegacyMenuItem("Help", "006-help-small", "006-help-large", onHelp),
-        LegacyMenuItem("Battery Saving", "007-batteryinfo-small", "007-batteryinfo-large") { },
+        LegacyMenuItem("Battery Saving", "007-batteryinfo-small", "007-batteryinfo-large", onBatterySaving),
         LegacyMenuItem("Extended Messaging", "d000-em-small", "d000-em-large", onMessages),
         LegacyMenuItem("Instant Messaging", "d001-im-small", "d001-im-large", onMessages),
         LegacyMenuItem("Chat Rooms", "d002-chat-small", "d002-chat-large", onRooms),
-        LegacyMenuItem("Change Status", "d003-status-small", "d003-status-large") { }
+        LegacyMenuItem("Change Status", "d003-status-small", "d003-status-large", onStatus)
     )
-
     LegacyBackground(Modifier.fillMaxSize()) {
         BoxWithConstraints(Modifier.fillMaxSize()) {
             val availableWidthPx = with(density) { maxWidth.toPx() }
@@ -63,18 +61,12 @@ fun MainMenuScreen(
             val spacing = with(density) { spacingPx.toDp() }
             val cellWidth = with(density) { cellWidthPx.toDp() }
             val cellHeight = with(density) { cellHeightPx.toDp() }
-
             val bottomBar = LegacyAssets.rememberBitmap(context, "themes/uzzap/menu-bottombar.png")
             val fontHeight = with(density) { ReptilianTheme.FontSize.toPx() }
             val textBarHeight = with(density) { (fontHeight + 8f).toDp() }
             val bottomBarHeight = with(density) { bottomBar.height.toDp() }
-
             Column(Modifier.fillMaxSize()) {
-                Box(
-                    Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
-                ) {
+                Box(Modifier.weight(1f).fillMaxWidth()) {
                     val totalRows = (items.size + columnCount - 1) / columnCount
                     val viewportHeight = maxHeight - textBarHeight - bottomBarHeight
                     val visibleRows = maxOf(1, ((with(density) { viewportHeight.toPx() } + spacingPx) / (cellHeightPx + spacingPx)).toInt())
@@ -86,119 +78,43 @@ fun MainMenuScreen(
                         if (selectedRow < firstRow) firstRow = selectedRow
                         else if (selectedRow >= firstRow + visibleRows) firstRow = (selectedRow - visibleRows + 1).coerceAtMost(maxFirstRow)
                     }
-
                     val visibleItems = items.drop(firstRow * columnCount).take(visibleRows * columnCount)
-                    Column(
-                        Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.spacedBy(spacing)
-                    ) {
+                    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(spacing)) {
                         visibleItems.chunked(columnCount).forEach { row ->
-                            Row(
-                                Modifier.fillMaxWidth().height(cellHeight),
-                                horizontalArrangement = Arrangement.spacedBy(spacing, Alignment.CenterHorizontally)
-                            ) {
+                            Row(Modifier.fillMaxWidth().height(cellHeight), horizontalArrangement = Arrangement.spacedBy(spacing, Alignment.CenterHorizontally)) {
                                 row.forEach { item ->
                                     val index = items.indexOf(item)
                                     val path = if (index == selected) item.large else item.small
                                     val bitmap = LegacyAssets.rememberBitmap(context, path)
-                                    Box(
-                                        Modifier
-                                            .width(cellWidth)
-                                            .fillMaxHeight()
-                                            .clickable {
-                                                selected = index
-                                                item.onClick()
-                                            },
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Image(
-                                            bitmap,
-                                            contentDescription = item.label,
-                                            Modifier.size(
-                                                with(density) { bitmap.width.toDp() },
-                                                with(density) { bitmap.height.toDp() }
-                                            ),
-                                            contentScale = ContentScale.None
-                                        )
+                                    Box(Modifier.width(cellWidth).fillMaxHeight().clickable { selected = index; item.onClick() }, contentAlignment = Alignment.Center) {
+                                        Image(bitmap, contentDescription = item.label, Modifier.size(with(density) { bitmap.width.toDp() }, with(density) { bitmap.height.toDp() }), contentScale = ContentScale.None)
                                     }
                                 }
                             }
                         }
                     }
-
                     if (needsScroll) {
                         val trackHeightPx = with(density) { viewportHeight.toPx() }.coerceAtLeast(1f)
                         val thumbHeight = (trackHeightPx * visibleRows / totalRows).coerceAtLeast(with(density) { 12.dp.toPx() })
                         val thumbOffset = (trackHeightPx - thumbHeight) * firstRow / maxFirstRow.coerceAtLeast(1)
-                        Box(
-                            Modifier
-                                .align(Alignment.TopEnd)
-                                .width(8.dp)
-                                .fillMaxHeight()
-                                .background(ReptilianTheme.ScrollbarBackground)
-                        )
-                        Box(
-                            Modifier
-                                .align(Alignment.TopEnd)
-                                .offset { IntOffset(with(density) { 1.dp.roundToPx() }, thumbOffset.toInt()) }
-                                .width(6.dp)
-                                .height(with(density) { thumbHeight.toDp() })
-                                .background(ReptilianTheme.ScrollbarFill)
-                        )
+                        Box(Modifier.align(Alignment.TopEnd).width(8.dp).fillMaxHeight().background(ReptilianTheme.ScrollbarBackground))
+                        Box(Modifier.align(Alignment.TopEnd).offset { IntOffset(with(density) { 1.dp.roundToPx() }, thumbOffset.toInt()) }.width(6.dp).height(with(density) { thumbHeight.toDp() }).background(ReptilianTheme.ScrollbarFill))
                     }
                 }
-
-                Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(textBarHeight)
-                        .background(ReptilianTheme.MainMenuBar)
-                        .clickable { showOptions = true },
-                    contentAlignment = Alignment.Center
-                ) {
-                    LegacyText(items.getOrNull(selected)?.label.orEmpty())
-                }
-
-                Image(
-                    bottomBar,
-                    contentDescription = null,
-                    Modifier.fillMaxWidth().height(bottomBarHeight),
-                    contentScale = ContentScale.Tile
-                )
+                Box(Modifier.fillMaxWidth().height(textBarHeight).background(ReptilianTheme.MainMenuBar).clickable { showOptions = true }, contentAlignment = Alignment.Center) { LegacyText(items.getOrNull(selected)?.label.orEmpty()) }
+                Image(bottomBar, contentDescription = null, Modifier.fillMaxWidth().height(bottomBarHeight), contentScale = ContentScale.Tile)
             }
-            if (showOptions) {
-                LegacyOptionsPopup(
-                    onDismiss = { showOptions = false }
-                )
-            }
+            if (showOptions) LegacyOptionsPopup { showOptions = false }
         }
     }
 }
 
 @Composable
 private fun LegacyOptionsPopup(onDismiss: () -> Unit) {
-    val options = listOf(
-        "Lock Keypad",
-        "Log Off",
-        "Intro Help Screen",
-        "About Uzzap",
-        "Exit Application"
-    )
-    Box(
-        Modifier
-            .fillMaxSize()
-            .clickable { onDismiss() },
-        contentAlignment = Alignment.Center
-    ) {
-        androidx.compose.foundation.layout.Column(
-            Modifier
-                .wrapContentWidth()
-                .clickable { }
-                .background(ReptilianTheme.Surface)
-        ) {
-            options.forEach {
-                LegacyText(it, Modifier.padding(horizontal = 18.dp, vertical = 9.dp))
-            }
+    val options = listOf("Lock Keypad", "Log Off", "Intro Help Screen", "About Uzzap", "Exit Application")
+    Box(Modifier.fillMaxSize().clickable { onDismiss() }, contentAlignment = Alignment.Center) {
+        Column(Modifier.wrapContentWidth().clickable { }.background(ReptilianTheme.Surface)) {
+            options.forEach { LegacyText(it, Modifier.padding(horizontal = 18.dp, vertical = 9.dp)) }
         }
     }
 }
