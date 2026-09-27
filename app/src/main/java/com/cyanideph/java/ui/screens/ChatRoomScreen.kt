@@ -9,17 +9,17 @@ import androidx.compose.ui.window.Dialog
 import com.cyanideph.java.legacy.ui.*
 
 @Composable
-fun ChatRoomScreen(room: String, onBack: () -> Unit) {
+fun ChatRoomScreen(room: String, onBack: () -> Unit, onBuddies: () -> Unit) {
     var showOptions by remember { mutableStateOf(false) }
     var showParticipants by remember { mutableStateOf(false) }
-    var joined by remember { mutableStateOf(true) }
+    var joined by remember { mutableStateOf(false) }
     var status by remember { mutableStateOf("") }
     var participants by remember { mutableStateOf(emptyList<String>()) }
 
     val actions = buildList {
         if (joined) {
             add("Send Message")
-            if (participants.size > 1) add("Send Whisper")
+            if (participants.isNotEmpty()) add("Send Whisper")
             add("List Participants")
             add("Invite Participants")
         }
@@ -45,7 +45,7 @@ fun ChatRoomScreen(room: String, onBack: () -> Unit) {
                 rightLabel = "Buddies",
                 modifier = Modifier.fillMaxWidth(),
                 onLeftClick = { showOptions = true },
-                onRightClick = onBack
+                onRightClick = onBuddies
             )
         }
     }
