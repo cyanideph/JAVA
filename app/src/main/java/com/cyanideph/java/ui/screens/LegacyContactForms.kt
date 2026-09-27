@@ -122,7 +122,7 @@ fun EditSmsBuddyScreen(onBack: () -> Unit) {
                 },
                 Modifier.weight(1f).fillMaxWidth().padding(6.dp)
             )
-            LegacyFunctionBar(leftLabel = "OK", rightLabel = "Cancel", modifier = Modifier.fillMaxWidth().clickable { save() })
+            LegacyFunctionBar(leftLabel = "OK", rightLabel = "Cancel", modifier = Modifier.fillMaxWidth(), onLeftClick = { save() }, onRightClick = onBack)
         }
     }
     error?.let { LegacyDialogMessage(it) { error = null } }
