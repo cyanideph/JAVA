@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.background
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,9 +23,9 @@ import com.cyanideph.java.ui.model.LegacyBuddyRepository
 
 private val legacyGroups = listOf(
     "most_frequent" to "Most Frequent",
-    "buddies" to "Buddies",
+    "buddies" to "All Buddies",
     "chatterbox" to "My Friends",
-    "action_required" to "Action Required",
+    "action_required" to "Pending Buddies",
     "other_contacts" to "Other Contacts"
 )
 
@@ -37,6 +38,7 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
     var search by remember { mutableStateOf("") }
     var showOptions by remember { mutableStateOf(false) }
     var showContactOptions by remember { mutableStateOf(false) }
+    var showGroups by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
 
     val buddies = LegacyBuddyRepository.buddiesFor(context)
@@ -47,13 +49,22 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("Buddy List", Modifier.fillMaxWidth())
 
-            LegacyText(
-                legacyGroups[selectedGroup].second,
-                Modifier
-                    .fillMaxWidth()
-                    .background(ReptilianTheme.Surface)
-                    .padding(horizontal = 6.dp, vertical = 4.dp)
-            )
+            Row(
+                Modifier.fillMaxWidth().background(ReptilianTheme.Surface).padding(horizontal = 6.dp, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                BasicTextField(
+                    value = search,
+                    onValueChange = { search = it },
+                    modifier = Modifier.weight(1f),
+                    singleLine = true,
+                    decorationBox = { inner -> if (search.isBlank()) LegacyText("Search") else inner() }
+                )
+                LegacyText(
+                    legacyGroups[selectedGroup].second,
+                    Modifier.clickable { showGroups = true }.padding(start = 10.dp)
+                )
+            }
 
             LazyColumn(
                 state = listState,
@@ -88,14 +99,33 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
                 BuddyOptionsPopup(
                     hasBuddy = selectedBuddy >= 0,
                     isActionRequired = legacyGroups[selectedGroup].first == "action_required",
+                    searchActive = search.isNotBlank(),
                     onDismiss = { showOptions = false },
                     onAdd = { showOptions = false; onAddInvite() },
                     onHelp = { showOptions = false; onHelp() },
                     onContact = { showOptions = false; showContactOptions = true },
-                    onManageGroups = { showOptions = false }
+                    onManageGroups = { showOptions = false; showGroups = true },
+                    onClearSearch = { search = ""; selectedBuddy = -1; showOptions = false }
                 )
             }
         }
+            if (showGroups) {
+                Dialog(onDismissRequest = { showGroups = false }) {
+                    Column(Modifier.background(ReptilianTheme.Surface)) {
+                        legacyGroups.forEachIndexed { index, group ->
+                            LegacyText(
+                                group.second,
+                                Modifier.fillMaxWidth().clickable {
+                                    selectedGroup = index
+                                    selectedBuddy = -1
+                                    showContactOptions = false
+                                    showGroups = false
+                                }.padding(horizontal = 18.dp, vertical = 9.dp)
+                            )
+                        }
+                    }
+                }
+            }
     }
 }
 
@@ -103,6 +133,7 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
 private fun BuddyOptionsPopup(
     hasBuddy: Boolean,
     isActionRequired: Boolean,
+    searchActive: Boolean,
     buddyType: String? = "amazilia",
     hasEmail: Boolean = false,
     hasMobile: Boolean = false,
@@ -114,15 +145,17 @@ private fun BuddyOptionsPopup(
     onAdd: () -> Unit,
     onHelp: () -> Unit,
     onContact: () -> Unit,
-    onManageGroups: () -> Unit
+    onManageGroups: () -> Unit,
+    onClearSearch: () -> Unit
 ) {
     val options = buildList {
         if (hasBuddy) add("Contact")
         if (!hasBuddy && !isActionRequired) add("Send Group Message")
-        if (!hasBuddy && !isActionRequired) add("Manage Groups")
+        if (!hasBuddy) add("Manage Groups")
         add("New Group")
         add("Add/Invite Buddies")
         add("Clear Message History")
+        if (searchActive) add("Clear Search Bar")
         add("Uzzap Help")
     }
     androidx.compose.ui.window.Dialog(onDismissRequest = onDismiss) {
