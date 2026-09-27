@@ -37,7 +37,7 @@ fun BuddyListScreen(onBack: () -> Unit) {
     var showOptions by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
 
-    val buddies = LegacyBuddyRepository.buddies
+    val buddies = LegacyBuddyRepository.buddiesFor(context)
 
     val visible = buddies.filter { it.group == legacyGroups[selectedGroup].first }
 
@@ -72,9 +72,9 @@ fun BuddyListScreen(onBack: () -> Unit) {
             LegacyFunctionBar(
                 leftLabel = "Options",
                 rightLabel = "Menu",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { showOptions = true }
+                modifier = Modifier.fillMaxWidth(),
+                onLeftClick = { showOptions = true },
+                onRightClick = onBack
             )
             if (showOptions) {
                 BuddyOptionsPopup(
