@@ -28,6 +28,8 @@ fun MainMenuScreen(
     onSettings: () -> Unit,
     onHelp: () -> Unit,
     onSubscription: () -> Unit = {},
+    onBuddyMatching: () -> Unit = {},
+    onAddInvite: () -> Unit = {},
     onThemes: () -> Unit = {},
     onBatterySaving: () -> Unit = {},
     onStatus: () -> Unit = {},
@@ -40,8 +42,8 @@ fun MainMenuScreen(
     var showOptions by remember { mutableStateOf(false) }
     val items = listOf(
         LegacyMenuItem("Subscription", "000-smart-small", "000-smart-large", onSubscription),
-        LegacyMenuItem("Buddy Matching", "001-abm-small", "001-abm-large") {},
-        LegacyMenuItem("Add or Invite Buddies", "002-buddies-small", "002-buddies-large", onBuddies),
+        LegacyMenuItem("Buddy Matching", "001-abm-small", "001-abm-large", onBuddyMatching),
+        LegacyMenuItem("Add or Invite Buddies", "002-buddies-small", "002-buddies-large", onAddInvite),
         LegacyMenuItem("Settings", "003-settings-small", "003-settings-large", onSettings),
         LegacyMenuItem("Silent Mode", "008-ringtone-small", "008-ringtone-large", onSilentMode),
         LegacyMenuItem("Themes", "005-themes-small", "005-themes-large", onThemes),
