@@ -17,14 +17,7 @@ import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
 
-/**
- * Java parity:
- * an.java -> case 101 -> menu id "connections":
- * 100 = Connect/Disconnect to Yahoo, asset yahoo-online
- * 101 = Connect/Disconnect to MSN, asset msn-online
- *
- * dd.java owns the connection form: provider ID, password, Login/Cancel.
- */
+/** Java parity: an.java case 101 -> connections; dd.java owns the Login/Cancel form. */
 @Composable
 fun InstantMessagingConnectionsScreen(onBack: () -> Unit) {
     val context = LocalContext.current
@@ -32,57 +25,30 @@ fun InstantMessagingConnectionsScreen(onBack: () -> Unit) {
     var msnConnected by remember { mutableStateOf(false) }
     var selected by remember { mutableIntStateOf(0) }
     var loginProvider by remember { mutableStateOf<String?>(null) }
-
-    val rows = listOf(
-        Triple("Yahoo", "yahoo-online", yahooConnected),
-        Triple("MSN", "msn-online", msnConnected)
-    )
-
+    val rows = listOf(Triple("Yahoo", "yahoo-online", yahooConnected), Triple("MSN", "msn-online", msnConnected))
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("Connections", Modifier.fillMaxWidth())
             Column(Modifier.weight(1f).fillMaxWidth()) {
                 rows.forEachIndexed { index, row ->
                     val label = if (row.third) "Disconnect from " + row.first else "Connect to " + row.first
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                selected = index
-                                if (row.third) {
-                                    if (index == 0) yahooConnected = false else msnConnected = false
-                                } else {
-                                    loginProvider = row.first
-                                }
-                            }
-                            .background(if (index == selected) ReptilianTheme.MenuSelected else ReptilianTheme.Surface)
-                            .padding(horizontal = 8.dp, vertical = 7.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        val bitmap = LegacyAssets.rememberBitmap(context, "themes/uzzap/" + row.second + ".png")
+                    Row(Modifier.fillMaxWidth().clickable {
+                        selected = index
+                        if (row.third) { if (index == 0) yahooConnected = false else msnConnected = false }
+                        else loginProvider = row.first
+                    }.background(if (index == selected) ReptilianTheme.MenuSelected else ReptilianTheme.Surface).padding(horizontal = 8.dp, vertical = 7.dp), verticalAlignment = Alignment.CenterVertically) {
+                        val bitmap = LegacyAssets.rememberBitmap(context, "themes/default/" + row.second + ".png")
                         Image(bitmap, contentDescription = label, Modifier.size(24.dp))
                         Spacer(Modifier.width(8.dp))
                         LegacyText(label)
                     }
                 }
             }
-            LegacyFunctionBar(
-                leftLabel = "Select",
-                rightLabel = "Back",
-                modifier = Modifier.fillMaxWidth().clickable { onBack() }
-            )
+            LegacyFunctionBar(leftLabel = "Select", rightLabel = "Back", modifier = Modifier.fillMaxWidth().clickable { onBack() })
         }
     }
-
     loginProvider?.let { provider ->
-        ConnectionLoginDialog(
-            provider = provider,
-            onLogin = {
-                if (provider == "Yahoo") yahooConnected = true else msnConnected = true
-                loginProvider = null
-            },
-            onCancel = { loginProvider = null }
-        )
+        ConnectionLoginDialog(provider, { if (provider == "Yahoo") yahooConnected = true else msnConnected = true; loginProvider = null }, { loginProvider = null })
     }
 }
 
@@ -90,27 +56,16 @@ fun InstantMessagingConnectionsScreen(onBack: () -> Unit) {
 private fun ConnectionLoginDialog(provider: String, onLogin: () -> Unit, onCancel: () -> Unit) {
     var username by remember(provider) { mutableStateOf("") }
     var password by remember(provider) { mutableStateOf("") }
-
     Dialog(onDismissRequest = onCancel) {
         Column(Modifier.background(ReptilianTheme.Surface).padding(10.dp)) {
-            LegacyText(if (provider == "Yahoo") "* Connect to Yahoo" else "* Connect to MSN")
+            LegacyText(if (provider == "Yahoo") "* Connect to Yahoo\n" else "* Connect to MSN\n")
             Spacer(Modifier.height(6.dp))
-            LegacyText(if (provider == "Yahoo") "Your Yahoo! ID" else "Your MSN ID")
-            OutlinedTextField(
-                value = username,
-                onValueChange = { username = it },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true
-            )
+            LegacyText(if (provider == "Yahoo") "Yahoo ID" else "MSN ID")
+            LegacyText(if (provider == "Yahoo") "(eg. abs)" else "(eg. abs@hotmail.com)")
+            OutlinedTextField(value = username, onValueChange = { username = it.take(50) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
             Spacer(Modifier.height(4.dp))
             LegacyText("Password")
-            OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                visualTransformation = PasswordVisualTransformation()
-            )
+            OutlinedTextField(value = password, onValueChange = { password = it.take(50) }, modifier = Modifier.fillMaxWidth(), singleLine = true, visualTransformation = PasswordVisualTransformation())
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                 TextButton(onClick = onLogin) { LegacyText("Login") }
                 TextButton(onClick = onCancel) { LegacyText("Cancel") }
