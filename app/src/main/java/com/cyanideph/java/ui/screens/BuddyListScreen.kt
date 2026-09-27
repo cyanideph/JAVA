@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.unit.dp
 import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.theme.ReptilianTheme
@@ -40,6 +41,9 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
     var showContactOptions by remember { mutableStateOf(false) }
     var showGroups by remember { mutableStateOf(false) }
     var showManageGroups by remember { mutableStateOf(false) }
+    var showNewGroup by remember { mutableStateOf(false) }
+    var newGroupName by remember { mutableStateOf("") }
+    var groupSort by remember { mutableStateOf(mapOf("chatterbox" to 1)) }
     val listState = rememberLazyListState()
 
     val buddies = LegacyBuddyRepository.buddiesFor(context)
@@ -106,6 +110,7 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
                     onHelp = { showOptions = false; onHelp() },
                     onContact = { showOptions = false; showContactOptions = true },
                     onManageGroups = { showOptions = false; showManageGroups = true },
+                    onNewGroup = { showOptions = false; newGroupName = ""; showNewGroup = true },
                     onClearSearch = { search = ""; selectedBuddy = -1; showOptions = false }
                 )
             }
@@ -128,6 +133,15 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
                 }
             }
     }
+            if (showNewGroup) {
+                Dialog(onDismissRequest = { showNewGroup = false }) {
+                    Column(Modifier.background(ReptilianTheme.Surface).padding(12.dp)) {
+                        LegacyText("New Group", Modifier.padding(bottom = 8.dp))
+                        BasicTextField(value = newGroupName, onValueChange = { newGroupName = it.take(50) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                        LegacyFunctionBar(modifier = Modifier.fillMaxWidth(), leftLabel = "OK", rightLabel = "Cancel", onLeftClick = { showNewGroup = false }, onRightClick = { showNewGroup = false })
+                    }
+                }
+            }
             if (showManageGroups) {
                 Dialog(onDismissRequest = { showManageGroups = false }) {
                     Column(Modifier.background(ReptilianTheme.Surface)) {
@@ -140,8 +154,17 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
                             LegacyText("Delete Group", Modifier.fillMaxWidth().clickable { showManageGroups = false }.padding(horizontal = 18.dp, vertical = 9.dp))
                         }
                         if (group != "buddies" && group != "action_required" && group != "other_contacts") {
-                            LegacyText("Change Sort to Online First", Modifier.fillMaxWidth().clickable { showManageGroups = false }.padding(horizontal = 18.dp, vertical = 9.dp))
-                            LegacyText("Change Sort to Alphabetical", Modifier.fillMaxWidth().clickable { showManageGroups = false }.padding(horizontal = 18.dp, vertical = 9.dp))
+                            if ((groupSort[group] ?: 1) == 0) {
+                                LegacyText("Change Sort to Alphabetical", Modifier.fillMaxWidth().clickable {
+                                    groupSort = groupSort + (group to 1)
+                                    showManageGroups = false
+                                }.padding(horizontal = 18.dp, vertical = 9.dp))
+                            } else {
+                                LegacyText("Change Sort to Online First", Modifier.fillMaxWidth().clickable {
+                                    groupSort = groupSort + (group to 0)
+                                    showManageGroups = false
+                                }.padding(horizontal = 18.dp, vertical = 9.dp))
+                            }
                         }
                         LegacyText("Return Groups to Defaults", Modifier.fillMaxWidth().clickable { showManageGroups = false }.padding(horizontal = 18.dp, vertical = 9.dp))
                     }
@@ -167,6 +190,7 @@ private fun BuddyOptionsPopup(
     onHelp: () -> Unit,
     onContact: () -> Unit,
     onManageGroups: () -> Unit,
+    onNewGroup: () -> Unit,
     onClearSearch: () -> Unit
 ) {
     val options = buildList {
@@ -191,6 +215,7 @@ private fun BuddyOptionsPopup(
                                 "Contact" -> onContact()
                                 "Add/Invite Buddies" -> onAdd()
                                 "Manage Groups" -> onManageGroups()
+                                "New Group" -> onNewGroup()
                                 "Uzzap Help" -> onHelp()
                                 else -> onDismiss()
                             }
