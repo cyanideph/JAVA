@@ -18,9 +18,18 @@ import androidx.compose.ui.window.Dialog
 import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
+import com.cyanideph.java.ui.model.Buddy
 import com.cyanideph.java.ui.model.Message
 
 private data class LegacyMessageTab(val title: String)
+
+private val legacyMessageContacts = listOf(
+    Buddy("cy", "cy", "Available", "buddies"),
+    Buddy("friend1", "Friend 1", "Available", "buddies"),
+    Buddy("friend2", "Friend 2", "Not Available", "buddies"),
+    Buddy("chatter", "Chatterbox", "Invisible", "chatterbox")
+)
+
 
 @Composable
 fun MessagesScreen(onBack: () -> Unit) {
@@ -28,7 +37,7 @@ fun MessagesScreen(onBack: () -> Unit) {
     var selectedTab by remember { mutableIntStateOf(0) }
     var showOptions by remember { mutableStateOf(false) }
     var messageText by remember { mutableStateOf("") }
-    var recipient by remember { mutableStateOf("Friend 1") }
+    var recipient by remember { mutableStateOf("") }
     var cc by remember { mutableStateOf("") }
     var hideRecipients by remember { mutableStateOf(false) }
     var showEditor by remember { mutableStateOf(false) }
@@ -73,6 +82,7 @@ fun MessagesScreen(onBack: () -> Unit) {
     if (showOptions) {
         LegacyMessageOptions(
             onDismiss = { showOptions = false },
+            hasRecipient = recipient.isNotBlank(),
             onEdit = { showOptions = false; showEditor = true },
             onRecipient = { showOptions = false; recipientMode = true },
             onToggleRecipients = { hideRecipients = !hideRecipients; showOptions = false },
@@ -82,14 +92,14 @@ fun MessagesScreen(onBack: () -> Unit) {
     if (showEditor) {
         LegacyEditorDialog(messageText, { messageText = it.take(700) }) { showEditor = false }
     }
-    if (recipientMode || ccMode) {
+    if (recipientMode) {
         LegacyRecipientDialog(
+            contacts = legacyMessageContacts,
             onPick = {
                 recipient = it
                 recipientMode = false
-                ccMode = false
             },
-            onDismiss = { recipientMode = false; ccMode = false }
+            onDismiss = { recipientMode = false }
         )
     }
     if (showEmoticons) {
@@ -175,20 +185,14 @@ private data class LegacyContact(val name: String, val statusAsset: String)
 
 @Composable
 private fun LegacyRecipientDialog(
+    contacts: List<Buddy>,
     onPick: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val contacts = remember {
-        listOf(
-            LegacyContact("cy", "online"),
-            LegacyContact("Friend 1", "online"),
-            LegacyContact("Friend 2", "offline"),
-            LegacyContact("Friend 3", "notavailable")
-        ).sortedBy { it.name.lowercase() }
-    }
     var query by remember { mutableStateOf("") }
     var selected by remember { mutableStateOf<Set<String>>(emptySet()) }
-    val filtered = contacts.filter { it.name.contains(query.trim(), ignoreCase = true) }
+    val sorted = remember(contacts) { contacts.sortedBy { it.displayName.lowercase() } }
+    val filtered = sorted.filter { it.displayName.contains(query.trim(), ignoreCase = true) }
 
     Dialog(onDismissRequest = onDismiss) {
         Column(Modifier.background(ReptilianTheme.Surface).padding(6.dp)) {
@@ -200,27 +204,30 @@ private fun LegacyRecipientDialog(
                 singleLine = true
             )
             Row {
-                LegacyText(
-                    "Select All",
-                    Modifier.clickable { selected = filtered.map { it.name }.toSet() }.padding(8.dp)
-                )
-                LegacyText(
-                    "Clear",
-                    Modifier.clickable { selected = emptySet() }.padding(8.dp)
-                )
+                LegacyText("Select All", Modifier.clickable {
+                    selected = filtered.map { it.id }.toSet()
+                }.padding(8.dp))
+                LegacyText("Clear", Modifier.clickable {
+                    selected = emptySet()
+                }.padding(8.dp))
             }
             filtered.forEach { contact ->
-                val checked = contact.name in selected
+                val checked = contact.id in selected
+                val statusAsset = when (contact.status) {
+                    "Available", "freeforchat" -> "online"
+                    "Not Available" -> "notavailable"
+                    else -> "offline"
+                }
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .clickable {
-                            selected = if (checked) selected - contact.name else selected + contact.name
+                            selected = if (checked) selected - contact.id else selected + contact.id
                         }
                         .padding(6.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    val bitmap = LegacyAssets.rememberBitmap(LocalContext.current, contact.statusAsset)
+                    val bitmap = LegacyAssets.rememberBitmap(LocalContext.current, statusAsset)
                     val density = LocalDensity.current
                     Image(
                         bitmap,
@@ -234,20 +241,18 @@ private fun LegacyRecipientDialog(
                     Spacer(Modifier.width(5.dp))
                     LegacyCheckbox(checked)
                     Spacer(Modifier.width(5.dp))
-                    LegacyText(contact.name)
+                    LegacyText(contact.displayName)
                 }
             }
             Row {
-                LegacyText(
-                    "OK",
-                    Modifier.clickable {
-                        if (selected.isNotEmpty()) onPick(selected.take(3).joinToString(", ")) else onDismiss()
-                    }.padding(10.dp)
-                )
-                LegacyText(
-                    "Cancel",
-                    Modifier.clickable(onClick = onDismiss).padding(10.dp)
-                )
+                LegacyText("OK", Modifier.clickable {
+                    val names = sorted
+                        .filter { it.id in selected }
+                        .take(3)
+                        .map { it.displayName }
+                    if (names.isNotEmpty()) onPick(names.joinToString(", ")) else onDismiss()
+                }.padding(10.dp))
+                LegacyText("Cancel", Modifier.clickable(onClick = onDismiss).padding(10.dp))
             }
         }
     }
