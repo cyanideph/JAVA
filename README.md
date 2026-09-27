@@ -4,14 +4,14 @@ This repository is the Android reconstruction workspace for the recovered Uzzap 
 
 ## Goal
 
-Rebuild the observable Uzzap frontend as a modern Android application while preserving the historical screen, menu, navigation, messaging, buddy, chatroom, settings, theme, help, and asset behavior documented from the recovered Java ME client.
+Rebuild the observable Uzzap frontend as an Android reconstruction while preserving the historical screen, menu, navigation, messaging, buddy, chatroom, settings, theme, help, and asset behavior documented from the recovered Java ME client.
 
 ## Current foundation
 
 - Kotlin + Jetpack Compose
 - Android API 24+ / target 36
 - Compose Navigation
-- Material 3 base layer
+- Legacy renderer and Compose primitives; Material 3 is not part of the legacy UI layer
 - Screen architecture ready for incremental parity work
 
 ## Reconstruction scope
@@ -33,4 +33,4 @@ The legacy client remains the behavioral reference. Obsolete Java ME transport i
 
 ## Status
 
-Phase 0: Android project foundation created.
+Active parity reconstruction: legacy frontend/source parity is the current priority; backend transport is intentionally deferred.
