@@ -55,7 +55,9 @@ fun ChangePasswordScreen(onBack: () -> Unit) {
             LegacyFunctionBar(
                 leftLabel = "Update",
                 rightLabel = "Cancel",
-                modifier = Modifier.fillMaxWidth().clickable { update() }
+                modifier = Modifier.fillMaxWidth(),
+                onLeftClick = { update() },
+                onRightClick = onBack
             )
         }
     }
@@ -111,9 +113,9 @@ fun SubscriptionMenuScreen(onBack: () -> Unit, onPurchaseHistory: () -> Unit) {
             LegacyFunctionBar(
                 leftLabel = "Select",
                 rightLabel = "Cancel",
-                modifier = Modifier.fillMaxWidth().clickable {
-                    if (options[selected] == "View Purchase History") onPurchaseHistory() else onBack()
-                }
+                modifier = Modifier.fillMaxWidth(),
+                onLeftClick = { if (options[selected] == "View Purchase History") onPurchaseHistory() },
+                onRightClick = onBack
             )
         }
     }
