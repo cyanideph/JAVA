@@ -34,13 +34,15 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
     val density = LocalDensity.current
     var selectedGroup by remember { mutableIntStateOf(1) }
     var selectedBuddy by remember { mutableIntStateOf(-1) }
+    var search by remember { mutableStateOf("") }
+    var showGroups by remember { mutableStateOf(false) }
     var showOptions by remember { mutableStateOf(false) }
     var showContactOptions by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
 
     val buddies = LegacyBuddyRepository.buddiesFor(context)
 
-    val visible = buddies.filter { it.group == legacyGroups[selectedGroup].first }
+    val visible = buddies.filter { it.group == legacyGroups[selectedGroup].first && it.displayName.contains(search, ignoreCase = true) }
 
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
@@ -88,8 +90,9 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
                     hasBuddy = selectedBuddy >= 0,
                     isActionRequired = legacyGroups[selectedGroup].first == "action_required",
                     onDismiss = { showOptions = false },
-                    onAdd = { showOptions = false },
-                    onHelp = { showOptions = false }
+                    onAdd = { showOptions = false; onAddInvite() },
+                    onHelp = { showOptions = false; onHelp() },
+                    onManageGroups = { showOptions = false; showGroups = true }
                 )
             }
         }
@@ -109,7 +112,8 @@ private fun BuddyOptionsPopup(
     hasAuthorizedContact: Boolean = hasBuddy,
     onDismiss: () -> Unit,
     onAdd: () -> Unit,
-    onHelp: () -> Unit
+    onHelp: () -> Unit,
+    onManageGroups: () -> Unit
 ) {
     val options = buildList {
         if (hasBuddy) add("Contact")
@@ -129,8 +133,9 @@ private fun BuddyOptionsPopup(
                         .fillMaxWidth()
                         .clickable {
                             when (label) {
-                                "Contact" -> { onDismiss(); onContact() }
+                                "Contact" -> onDismiss()
                                 "Add/Invite Buddies" -> onAdd()
+                                "Manage Groups" -> onManageGroups()
                                 "Uzzap Help" -> onHelp()
                                 else -> onDismiss()
                             }
