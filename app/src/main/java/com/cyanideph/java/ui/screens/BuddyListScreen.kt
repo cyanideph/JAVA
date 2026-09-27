@@ -19,6 +19,7 @@ import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
 import com.cyanideph.java.ui.model.Buddy
+import com.cyanideph.java.ui.model.LegacyBuddyRepository
 
 private val legacyGroups = listOf(
     "most_frequent" to "Most Frequent",
@@ -36,12 +37,7 @@ fun BuddyListScreen(onBack: () -> Unit) {
     var selectedBuddy by remember { mutableIntStateOf(-1) }\n    var showOptions by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
 
-    val buddies = listOf(
-        Buddy("cy", "cy", "Available", "buddies"),
-        Buddy("friend1", "Friend 1", "Available", "buddies"),
-        Buddy("friend2", "Friend 2", "Not Available", "buddies"),
-        Buddy("chatter", "Chatterbox", "Invisible", "chatterbox")
-    )
+    val buddies = LegacyBuddyRepository.buddies
 
     val visible = buddies.filter { it.group == legacyGroups[selectedGroup].first }
 
