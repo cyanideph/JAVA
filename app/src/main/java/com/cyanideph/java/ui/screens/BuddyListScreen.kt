@@ -23,7 +23,7 @@ import com.cyanideph.java.ui.model.LegacyBuddyRepository
 private val legacyGroups = listOf(
     "most_frequent" to "Most Frequent",
     "buddies" to "Buddies",
-    "chatterbox" to "Chatterbox",
+    "chatterbox" to "My Friends",
     "action_required" to "Action Required",
     "other_contacts" to "Other Contacts"
 )
@@ -43,7 +43,7 @@ fun BuddyListScreen(onBack: () -> Unit) {
 
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
-            LegacyTitleBar("EM - Buddy List", Modifier.fillMaxWidth())
+            LegacyTitleBar("Buddy List", Modifier.fillMaxWidth())
 
             LegacyText(
                 legacyGroups[selectedGroup].second,
