@@ -214,7 +214,7 @@ private fun LegacyMessageList(messages: List<Message>, modifier: Modifier = Modi
 private fun MessageRow(message: Message) {
     val context = LocalContext.current
     val density = LocalDensity.current
-    val icon = LegacyAssets.rememberBitmap(context, if (message.outgoing) "sending-message-icon" else "message")
+    val icon = LegacyAssets.rememberBitmap(context, if (message.outgoing) "themes/default/sending-message-icon.png" else "themes/default/message.png")
     Row(
         Modifier.fillMaxWidth().background(ReptilianTheme.Surface).padding(horizontal = 5.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -366,13 +366,13 @@ private fun LegacyRecipientDialog(
 @Composable
 private fun LegacyEmoticonDialog(onPick: (String) -> Unit, onDismiss: () -> Unit) {
     val entries = listOf(
-        ":)" to "emoticon-smile", ";)" to "emoticon-wink", ":(" to "emoticon-sad", ":D" to "emoticon-laugh",
-        ":e" to "emoticon-e", "(:)" to "emoticon-love", ">|" to "emoticon-angry", ":o" to "emoticon-surprise",
-        ":>" to "emoticon-tongue", ">(|" to "emoticon-cry", ":DD" to "emoticon-11", "o/" to "emoticon-12",
-        ":Oo" to "emoticon-13", ">," to "emoticon-14", ":|" to "emoticon-15", ":B," to "emoticon-16",
-        ":OOo" to "emoticon-17", ":Zz." to "emoticon-18", "O:)" to "emoticon-19", "))(" to "emoticon-20",
-        ">><)" to "emoticon-47", "<:D" to "emoticon-clown", "(cU)" to "emoticon-drink", "<:)" to "emoticon-party",
-        "(+)" to "emoticon-sick", "@};-" to "emoticon-rose"
+        ":)" to "themes/default/emoticon-smile.png", ";)" to "themes/default/emoticon-wink.png", ":(" to "themes/default/emoticon-sad.png", ":D" to "themes/default/emoticon-laugh.png",
+        ":e" to "themes/default/emoticon-e.png", "(:)" to "themes/default/emoticon-love.png", ">|" to "themes/default/emoticon-angry.png", ":o" to "themes/default/emoticon-surprise.png",
+        ":>" to "themes/default/emoticon-tongue.png", ">(|" to "themes/default/emoticon-cry.png", ":DD" to "themes/default/emoticon-11.png", "o/" to "themes/default/emoticon-12.png",
+        ":Oo" to "themes/default/emoticon-13.png", ">," to "themes/default/emoticon-14.png", ":|" to "themes/default/emoticon-15.png", ":B," to "themes/default/emoticon-16.png",
+        ":OOo" to "themes/default/emoticon-17.png", ":Zz." to "themes/default/emoticon-18.png", "O:)" to "themes/default/emoticon-19.png", "))(" to "themes/default/emoticon-20.png",
+        ">><)" to "themes/default/emoticon-47.png", "<:D" to "themes/default/emoticon-clown.png", "(cU)" to "themes/default/emoticon-drink.png", "<:)" to "themes/default/emoticon-party.png",
+        "(+)" to "themes/default/emoticon-sick.png", "@};-" to "themes/default/emoticon-rose.png"
     )
     Dialog(onDismissRequest = onDismiss) {
         Column(Modifier.background(ReptilianTheme.Surface).padding(6.dp)) {
