@@ -41,12 +41,12 @@ jobs:
         with:
           repository: cyanideph/javauzzap
           ref: 4645532460a865a6196ab04091a46f0d33d381e7
-          path: ../javauzzap-source
+          path: javauzzap-source
           fetch-depth: 1
 
       - name: Build debug APK
         env:
-          LEGACY_SOURCE_DIR: ${{ github.workspace }}/../javauzzap-source
+          LEGACY_SOURCE_DIR: ${{ github.workspace }}/javauzzap-source
         run: gradle --no-daemon --stacktrace :app:assembleDebug
 
       - name: Verify APK
