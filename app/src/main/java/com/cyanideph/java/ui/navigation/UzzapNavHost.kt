@@ -21,7 +21,8 @@ composable(Routes.HELP){HelpScreen{navController.popBackStack()}}
 composable(Routes.PROFILE){ProfileScreen{navController.popBackStack()}}
 composable(Routes.STATUS){StatusScreen{navController.popBackStack()}}
 composable(Routes.HISTORY){HistoryScreen{navController.popBackStack()}}
-composable(Routes.REGISTER){RegistrationScreen{navController.popBackStack()}}\ncomposable(Routes.ABOUT){AboutScreen{navController.popBackStack()}}
+composable(Routes.REGISTER){RegistrationScreen{navController.popBackStack()}}
+composable(Routes.ABOUT){AboutScreen{navController.popBackStack()}}
 composable(Routes.MENUS){LegacyMenusScreen({navController.popBackStack()},{})}
 composable(Routes.BATTERY){BatterySavingScreen{navController.popBackStack()}}
 composable(Routes.OFFLINE){OfflineSettingsScreen{navController.popBackStack()}}
