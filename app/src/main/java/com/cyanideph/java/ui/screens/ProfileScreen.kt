@@ -42,7 +42,7 @@ fun ProfileScreen(onBack: () -> Unit) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("* Update profile", Modifier.fillMaxWidth())
             LegacyFormList(fields, values, { key, value -> values = values + (key to value) }, Modifier.weight(1f).fillMaxWidth().padding(8.dp))
-            LegacyFunctionBar("Update", "Cancel", Modifier.fillMaxWidth().clickable { submit() })
+            LegacyFunctionBar("Update", "Cancel", Modifier.fillMaxWidth(), onLeftClick = { submit() }, onRightClick = onBack)
         }
     }
     error?.let { message -> LegacyDialogMessage(message) { error = null } }
