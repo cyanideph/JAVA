@@ -122,7 +122,12 @@ fun MessagesScreen(
         )
     }
     if (showEditor) {
-        LegacyEditorDialog(messageText, { messageText = it.take(editorLimit) }, editorLimit) { showEditor = false }
+        LegacyEditorDialog(
+            value = messageText,
+            maxLength = editorLimit,
+            onCommit = { value -> messageText = value.take(editorLimit); showEditor = false },
+            onCancel = { showEditor = false }
+        )
     }
     if (recipientMode) {
         LegacyRecipientDialog(
@@ -272,20 +277,30 @@ private fun LegacyMessageOptions(
 }
 
 @Composable
-private fun LegacyEditorDialog(value: String, onValue: (String) -> Unit, maxLength: Int, onClose: () -> Unit) {
-    Dialog(onDismissRequest = onClose) {
+private fun LegacyEditorDialog(
+    value: String,
+    maxLength: Int,
+    onCommit: (String) -> Unit,
+    onCancel: () -> Unit
+) {
+    var draft by remember(value) { mutableStateOf(value) }
+    Dialog(onDismissRequest = onCancel) {
         Column(Modifier.background(ReptilianTheme.Surface).padding(10.dp)) {
             LegacyText("Type your message")
-            BasicTextField(value = value, onValueChange = { onValue(it.take(maxLength)) }, modifier = Modifier.fillMaxWidth().padding(6.dp), maxLines = 8)
+            BasicTextField(
+                value = draft,
+                onValueChange = { draft = it.take(maxLength) },
+                modifier = Modifier.fillMaxWidth().padding(6.dp),
+                maxLines = 8
+            )
             LegacyText("Maximum $maxLength characters")
             Row {
-                LegacyText("OK", Modifier.clickable(onClick = onClose).padding(10.dp))
-                LegacyText("Cancel", Modifier.clickable(onClick = onClose).padding(10.dp))
+                LegacyText("OK", Modifier.clickable { onCommit(draft) }.padding(10.dp))
+                LegacyText("Cancel", Modifier.clickable(onClick = onCancel).padding(10.dp))
             }
         }
     }
 }
-
 private data class LegacyContact(val name: String, val statusAsset: String)
 
 @Composable
