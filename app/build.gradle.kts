@@ -43,6 +43,7 @@ dependencies {
 
 
 val legacyAssetsManifest = rootProject.file("legacy-assets.txt")
+val legacyAssetsSourceRef = "4645532460a865a6196ab04091a46f0d33d381e7"
 val syncLegacyAssets by tasks.registering {
     outputs.dir(layout.projectDirectory.dir("app/src/main/assets/legacy"))
     doLast {
@@ -54,7 +55,7 @@ val syncLegacyAssets by tasks.registering {
                 val out = destination.resolve(relative)
                 out.parentFile.mkdirs()
                 if (out.exists() && out.length() > 0) return@forEach
-                val connection = URI("https://raw.githubusercontent.com/cyanideph/javauzzap/main/$relative").toURL().openConnection() as HttpURLConnection
+                val connection = URI("https://raw.githubusercontent.com/cyanideph/javauzzap/$legacyAssetsSourceRef/$relative").toURL().openConnection() as HttpURLConnection
                 connection.connectTimeout = 20000
                 connection.readTimeout = 60000
                 connection.inputStream.use { input -> out.outputStream().use { output -> input.copyTo(output) } }
