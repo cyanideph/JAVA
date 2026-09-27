@@ -323,7 +323,8 @@ private fun LegacyNetworkLoginScreen(
             "Your password",
             "* Password\n\nEnter the personal password currently registered for your user account.",
             31,
-            true
+            true,
+            65536
         )
     )
     val context = LocalContext.current
