@@ -4,8 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,6 +11,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.IntOffset
 import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.ui.LegacyBackground
 import com.cyanideph.java.legacy.ui.LegacyText
@@ -36,6 +35,7 @@ fun MainMenuScreen(
     val context = LocalContext.current
     val density = LocalDensity.current
     var selected by remember { mutableIntStateOf(0) }
+    var firstRow by remember { mutableIntStateOf(0) }
     var showOptions by remember { mutableStateOf(false) }
 
     val items = listOf(
@@ -64,67 +64,109 @@ fun MainMenuScreen(
             val cellWidth = with(density) { cellWidthPx.toDp() }
             val cellHeight = with(density) { cellHeightPx.toDp() }
 
+            val bottomBar = LegacyAssets.rememberBitmap(context, "themes/uzzap/menu-bottombar.png")
+            val fontHeight = with(density) { ReptilianTheme.FontSize.toPx() }
+            val textBarHeight = with(density) { (fontHeight + 8f).toDp() }
+            val bottomBarHeight = with(density) { bottomBar.height.toDp() }
+
             Column(Modifier.fillMaxSize()) {
-                Column(
+                Box(
                     Modifier
                         .weight(1f)
                         .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
                 ) {
-                    items.chunked(columnCount).forEach { row ->
-                        Row(
-                            Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(spacing, Alignment.CenterHorizontally)
-                        ) {
-                            row.forEach { item ->
-                                val index = items.indexOf(item)
-                                val path = if (index == selected) item.large else item.small
-                                val bitmap = LegacyAssets.rememberBitmap(context, path)
-                                val w = with(density) { bitmap.width.toDp() }
-                                val h = with(density) { bitmap.height.toDp() }
-                                Box(
-                                    Modifier
-                                        .width(cellWidth)
-                                        .height(cellHeight)
-                                        .clickable {
-                                            selected = index
-                                            item.onClick()
-                                        },
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Image(
-                                        bitmap,
-                                        contentDescription = item.label,
-                                        Modifier.size(w, h),
-                                        contentScale = ContentScale.None
-                                    )
+                    val totalRows = (items.size + columnCount - 1) / columnCount
+                    val rowStep = cellHeight + spacing
+                    val viewportHeight = maxHeight - textBarHeight - bottomBarHeight
+                    val visibleRows = maxOf(1, ((with(density) { viewportHeight.toPx() } + spacingPx) / (cellHeightPx + spacingPx)).toInt())
+                    val needsScroll = totalRows > visibleRows
+                    val maxFirstRow = (totalRows - visibleRows).coerceAtLeast(0)
+                    firstRow = firstRow.coerceIn(0, maxFirstRow)
+                    val selectedRow = selected / columnCount
+                    LaunchedEffect(selectedRow, visibleRows, totalRows) {
+                        if (selectedRow < firstRow) firstRow = selectedRow
+                        else if (selectedRow >= firstRow + visibleRows) firstRow = (selectedRow - visibleRows + 1).coerceAtMost(maxFirstRow)
+                    }
+
+                    val visibleItems = items.drop(firstRow * columnCount).take(visibleRows * columnCount)
+                    Column(
+                        Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.spacedBy(spacing)
+                    ) {
+                        visibleItems.chunked(columnCount).forEach { row ->
+                            Row(
+                                Modifier.fillMaxWidth().height(cellHeight),
+                                horizontalArrangement = Arrangement.spacedBy(spacing, Alignment.CenterHorizontally)
+                            ) {
+                                row.forEach { item ->
+                                    val index = items.indexOf(item)
+                                    val path = if (index == selected) item.large else item.small
+                                    val bitmap = LegacyAssets.rememberBitmap(context, path)
+                                    Box(
+                                        Modifier
+                                            .width(cellWidth)
+                                            .fillMaxHeight()
+                                            .clickable {
+                                                selected = index
+                                                item.onClick()
+                                            },
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Image(
+                                            bitmap,
+                                            contentDescription = item.label,
+                                            Modifier.size(
+                                                with(density) { bitmap.width.toDp() },
+                                                with(density) { bitmap.height.toDp() }
+                                            ),
+                                            contentScale = ContentScale.None
+                                        )
+                                    }
                                 }
                             }
                         }
                     }
+
+                    if (needsScroll) {
+                        val trackHeightPx = with(density) { viewportHeight.toPx() }.coerceAtLeast(1f)
+                        val thumbHeight = (trackHeightPx * visibleRows / totalRows).coerceAtLeast(with(density) { 12.dp.toPx() })
+                        val thumbOffset = (trackHeightPx - thumbHeight) * firstRow / maxFirstRow.coerceAtLeast(1)
+                        Box(
+                            Modifier
+                                .align(Alignment.TopEnd)
+                                .width(8.dp)
+                                .fillMaxHeight()
+                                .background(ReptilianTheme.ScrollbarBackground)
+                        )
+                        Box(
+                            Modifier
+                                .align(Alignment.TopEnd)
+                                .offset { IntOffset(1.dp.roundToPx(), thumbOffset.toInt()) }
+                                .width(6.dp)
+                                .height(with(density) { thumbHeight.toDp() })
+                                .background(ReptilianTheme.ScrollbarFill)
+                        )
+                    }
                 }
 
-                LegacyText(
-                    text = items.getOrNull(selected)?.label.orEmpty(),
+                Box(
                     Modifier
                         .fillMaxWidth()
-                        .clickable { showOptions = true }
-                        .wrapContentHeight()
-                        .padding(vertical = 8.dp),
-                )
+                        .height(textBarHeight)
+                        .background(ReptilianTheme.MainMenuBar)
+                        .clickable { showOptions = true },
+                    contentAlignment = Alignment.Center
+                ) {
+                    LegacyText(items.getOrNull(selected)?.label.orEmpty())
+                }
 
                 Image(
-                    LegacyAssets.rememberBitmap(context, "themes/uzzap/menu-bottombar.png"),
+                    bottomBar,
                     contentDescription = null,
-                    Modifier
-                        .fillMaxWidth()
-                        .height(with(density) {
-                            LegacyAssets.bitmap(context, "themes/uzzap/menu-bottombar.png").height.toDp()
-                        }),
+                    Modifier.fillMaxWidth().height(bottomBarHeight),
                     contentScale = ContentScale.Tile
                 )
             }
-
             if (showOptions) {
                 LegacyOptionsPopup(
                     onDismiss = { showOptions = false }
