@@ -16,10 +16,10 @@ fun AboutScreen(onBack: () -> Unit) {
             LegacyFrame(Modifier.fillMaxWidth().weight(1f).padding(8.dp)) {
                 Column(Modifier.fillMaxWidth().padding(8.dp)) {
                     LegacyText("Version: 1.0.14")
-                    LegacyText("Copyright (c) 2008 3rd Brand Pte Ltd.")
+                    LegacyText("Copyright (c) 2008 3rd Brand Pte Ltd.\nAll Rights Reserved.")
                 }
             }
-            LegacyFunctionBar(modifier = Modifier.fillMaxWidth().clickable { onBack() }, leftLabel = "Options", rightLabel = "Back")
+            LegacyFunctionBar(modifier = Modifier.fillMaxWidth(), leftLabel = "Options", rightLabel = "Back", onRightClick = onBack)
         }
     }
 }
