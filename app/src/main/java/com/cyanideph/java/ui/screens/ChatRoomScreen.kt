@@ -30,15 +30,15 @@ fun ChatRoomScreen(room: String, onBack: () -> Unit, onBuddies: () -> Unit) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("Chat - $room", Modifier.fillMaxWidth())
             Column(Modifier.weight(1f).fillMaxWidth().padding(6.dp)) {
-                LegacyText(if (joined) "" else "- Failed to join the chatroom (chat service not available)")
                 if (status.isNotEmpty()) {
-                    Spacer(Modifier.height(4.dp))
                     LegacyText(status)
+                    Spacer(Modifier.height(4.dp))
                 }
-                Spacer(Modifier.height(6.dp))
-                LegacyText("- No of Chatters: " + (participants.size + 1))
-                participants.forEach { LegacyText("- " + it) }
-                LegacyText("-")
+                if (joined) {
+                    LegacyText("- No of Chatters: " + (participants.size + 1))
+                    participants.forEach { LegacyText("- " + it) }
+                    LegacyText("-")
+                }
             }
             LegacyFunctionBar(
                 leftLabel = "Options",
