@@ -35,10 +35,14 @@ fun LoginScreen(onLogin: () -> Unit) {
         "forgot-password" -> LegacyForgotPasswordScreen(
             onCancel = { page = "landing" }
         )
+        "help" -> LegacyHelpScreen(
+            onCancel = { page = "landing" }
+        )
         else -> LegacyLoginLandingScreen(
             onLogin = { page = "login" },
             onRegister = { page = "register" },
-            onForgotPassword = { page = "forgot-password" }
+            onForgotPassword = { page = "forgot-password" },
+            onHelp = { page = "help" }
         )
     }
 }
@@ -47,7 +51,8 @@ fun LoginScreen(onLogin: () -> Unit) {
 private fun LegacyLoginLandingScreen(
     onLogin: () -> Unit,
     onRegister: () -> Unit,
-    onForgotPassword: () -> Unit = {}
+    onForgotPassword: () -> Unit = {},
+    onHelp: () -> Unit = {}
 ) {
     val context = LocalContext.current
 
@@ -55,7 +60,7 @@ private fun LegacyLoginLandingScreen(
         "Login to Network" to "login",
         "Register a New Account" to "register",
         "Forgotten Password" to "forgot-password",
-        "Help" to "disabled",
+        "Help" to "help",
         "About Uzzap" to "disabled",
         "Exit Application" to "disabled"
     )
@@ -93,6 +98,7 @@ private fun LegacyLoginLandingScreen(
                                 if (action == "login") onLogin()
                                 if (action == "register") onRegister()
                                 if (action == "forgot-password") onForgotPassword()
+                                if (action == "help") onHelp()
                             }
                             .padding(horizontal = 8.dp, vertical = 6.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -222,6 +228,95 @@ private fun LegacyForgotPasswordScreen(onCancel: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { onCancel() }
+            )
+        }
+    }
+}
+
+
+@Composable
+private fun LegacyHelpScreen(onCancel: () -> Unit) {
+    val helpText = """* 1. Intro Help
+
+The Intro Help screen you saw when you first joined Uzzap can be seen again by pressing Options on the Main Menu, then choosing “Intro Help Screen”.
+
+* 2. Adding New Buddies
+
+Press the “Add or Invite Buddies” button on the Main Menu and choose to add new buddies manually or from your phonebook. If you know their User ID you can add them using this option also.
+
+* 3. Sending a message
+
+Press the “EM” button on the Main Menu to see your Buddy List. Scroll to a buddy then press the joystick button on your phone (alternatively press Options then Contact). Now choose Send Message to start a message to this buddy.
+
+* 4. Arrow Symbol - Sending Indicator
+
+The arrow symbol in the Message Tab means that a message you just sent has not been received by your buddy.
+
+* 5. Unread Messages Indicator
+
+The red symbol in the Message Tab means a new message has arrived from that buddy that you have not read.
+
+* 6. Messaging Shortcuts
+
+You can reply to a message simply by starting to type your reply while viewing the message from them.
+
+* 7. Invite friends
+
+Invite your friends to join so you can benefit from unlimited chat with them.
+
+* 8. Send Contacts
+
+To send Buddy details to a friend, choose the person you wish to send the contact to and then select “Send Contacts”.
+
+* 9. User Status
+
+You can change your status from the “Change Status” button on the Main Menu.
+
+* 10. Available by SMS
+
+From the Main Menu choose Settings then Offline Settings to choose how messages are delivered while offline.
+
+* 11. Sending SMS and ESMS
+
+Contacts that are not members of Uzzap can still receive SMS/ESMS where supported.
+
+* 12. Making a Phone Call
+
+From your Buddy list or Message window, press the Green Call button where supported.
+
+* 13. Hide Application
+
+On supported Symbian phones, Hide application lets Uzzap continue running in the background.
+
+* 14. Changing your mobile number
+
+You can change your mobile number from Settings then Change Mobile Number.
+
+* 15. Log Off and Exit Application
+
+Log Off returns to the Login and Registration screen. Exit Application completely shuts Uzzap down.
+
+Copyright (c) 2007/2008 3rd Brand Pte Ltd. All Rights Reserved."""
+
+    LegacyBackground(
+        modifier = Modifier.fillMaxSize(),
+        color = ReptilianTheme.Surface
+    ) {
+        Column(Modifier.fillMaxSize()) {
+            LegacyTitleBar("Help", Modifier.fillMaxWidth())
+            androidx.compose.foundation.rememberScrollState().let { scroll ->
+                androidx.compose.foundation.verticalScroll(scroll).let { scrollModifier ->
+                    androidx.compose.foundation.layout.Column(
+                        Modifier.weight(1f).fillMaxWidth().then(scrollModifier).padding(8.dp)
+                    ) {
+                        LegacyText(helpText)
+                    }
+                }
+            }
+            LegacyFunctionBar(
+                leftLabel = "Options",
+                rightLabel = "Back",
+                modifier = Modifier.fillMaxWidth().clickable { onCancel() }
             )
         }
     }
