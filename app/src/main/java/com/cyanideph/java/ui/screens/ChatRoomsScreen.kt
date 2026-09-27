@@ -40,7 +40,9 @@ fun ChatRoomsScreen(onBack: () -> Unit, onRoom: (String) -> Unit) {
             LegacyFunctionBar(
                 leftLabel = "Options",
                 rightLabel = "Menu",
-                modifier = Modifier.fillMaxWidth().clickable { showOptions = true }
+                modifier = Modifier.fillMaxWidth(),
+                onLeftClick = { showOptions = true },
+                onRightClick = onBack
             )
         }
     }
