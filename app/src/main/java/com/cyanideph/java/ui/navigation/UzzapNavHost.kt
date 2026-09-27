@@ -15,7 +15,7 @@ composable(Routes.RECEIVED_CONTACTS){ReceivedContactsScreen{navController.popBac
 composable(Routes.IM_CONNECTIONS){InstantMessagingConnectionsScreen{navController.popBackStack()}}
 composable(Routes.MESSAGES){MessagesScreen(onBack={navController.popBackStack()},onViewHistory={navController.navigate(Routes.HISTORY)},onReceivedContacts={navController.navigate(Routes.RECEIVED_CONTACTS)},onProfile={navController.navigate(Routes.PROFILE)})}
 composable(Routes.ROOMS){ChatRoomsScreen({navController.popBackStack()}){n->navController.navigate("room/"+java.net.URLEncoder.encode(n,"UTF-8"))}}
-composable(Routes.ROOM){e->ChatRoomScreen(java.net.URLDecoder.decode(e.arguments?.getString("name")?:"Room","UTF-8")){navController.popBackStack()}}
+composable(Routes.ROOM){e->ChatRoomScreen(java.net.URLDecoder.decode(e.arguments?.getString("name")?:"Room","UTF-8"),onBack={navController.popBackStack()},onBuddies={navController.navigate(Routes.BUDDIES)})}
 composable(Routes.SETTINGS){SettingsScreen(onBack={navController.popBackStack()},onProfile={navController.navigate(Routes.PROFILE)},onStatus={navController.navigate(Routes.STATUS)},onPassword={navController.navigate(Routes.PASSWORD)},onMobile={navController.navigate(Routes.CHANGE_MOBILE)},onOffline={navController.navigate(Routes.OFFLINE)},onChatroomTones={navController.navigate(Routes.CHATROOM_TONES)})}
 composable(Routes.HELP){HelpScreen{navController.popBackStack()}}
 composable(Routes.PROFILE){ProfileScreen{navController.popBackStack()}}
