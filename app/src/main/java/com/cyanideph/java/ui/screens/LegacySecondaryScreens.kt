@@ -9,9 +9,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.cyanideph.java.ui.theme.ReptilianTheme
-import com.cyanideph.java.ui.components.LegacyFunctionBar
-import com.cyanideph.java.ui.components.LegacyText
+import com.cyanideph.java.legacy.theme.ReptilianTheme
+import com.cyanideph.java.legacy.ui.*
 
 @Composable
 fun BatterySavingScreen(onBack: () -> Unit) {
