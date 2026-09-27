@@ -84,7 +84,8 @@ private fun ConnectionLoginDialog(provider: String, onLogin: () -> Unit, onCance
                     leftLabel = "Login",
                     rightLabel = "Cancel",
                     modifier = Modifier.fillMaxWidth(),
-                    onLeftClick = onLogin
+                    onLeftClick = onLogin,
+                    onRightClick = onCancel
                 )
             }
         }
