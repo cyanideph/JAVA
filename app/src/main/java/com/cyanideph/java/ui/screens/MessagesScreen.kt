@@ -26,9 +26,9 @@ private data class LegacyMessageTab(val title: String)
 
 private fun legacyMessageContacts(messageType: String, context: android.content.Context): List<Buddy> = when (messageType) {
     "yahoo" -> LegacyBuddyRepository.buddiesFor(context).filter { it.yahooId != null }
-    "msn" -> LegacyBuddyRepository.buddies.filter { it.msnId != null }
-    "email" -> LegacyBuddyRepository.buddies.filter { it.email != null }
-    "sms", "smsr", "random" -> LegacyBuddyRepository.buddies.filter { it.mobile != null }
+    "msn" -> LegacyBuddyRepository.buddiesFor(context).filter { it.msnId != null }
+    "email" -> LegacyBuddyRepository.buddiesFor(context).filter { it.email != null }
+    "sms", "smsr", "random" -> LegacyBuddyRepository.buddiesFor(context).filter { it.mobile != null }
     else -> LegacyBuddyRepository.buddiesFor(context)
 }
 
@@ -372,7 +372,7 @@ private fun LegacyEmoticonDialog(onPick: (String) -> Unit, onDismiss: () -> Unit
         ":Oo" to "themes/default/emoticon-13.png", ">," to "themes/default/emoticon-14.png", ":|" to "themes/default/emoticon-15.png", ":B," to "themes/default/emoticon-16.png",
         ":OOo" to "themes/default/emoticon-17.png", ":Zz." to "themes/default/emoticon-18.png", "O:)" to "themes/default/emoticon-19.png", "))(" to "themes/default/emoticon-20.png",
         ">><)" to "themes/default/emoticon-47.png", "<:D" to "themes/default/emoticon-clown.png", "(cU)" to "themes/default/emoticon-drink.png", "<:)" to "themes/default/emoticon-party.png",
-        "(+)" to "themes/default/emoticon-sick.png", "@};-" to "themes/default/emoticon-rose.png"
+        "(+)" to "themes/default/emoticon-sick.png", ":-)" to "themes/default/emoticon-smile.png", ":-(" to "themes/default/emoticon-sad.png", "@};-" to "themes/default/emoticon-rose.png"
     )
     Dialog(onDismissRequest = onDismiss) {
         Column(Modifier.background(ReptilianTheme.Surface).padding(6.dp)) {
