@@ -1,6 +1,5 @@
 package com.cyanideph.java.ui.screens
 
-import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -293,14 +292,14 @@ private fun LegacyNetworkLoginScreen(
             "username",
             "User ID",
             "Your user ID",
-            "* User ID\\n\\nUser ID you chose upon registering. User ID can be 6 to 12 characters, and can consist of numbers and letters.",
+            "* User ID\n\nUser ID you chose upon registering. User ID can be 6 to 12 characters, and can consist of numbers and letters.",
             12
         ),
         LegacyFormField(
             "password",
             "Password",
             "Your password",
-            "* Password\\n\\nEnter the personal password currently registered for your user account.",
+            "* Password\n\nEnter the personal password currently registered for your user account.",
             31,
             true
         )
@@ -324,8 +323,6 @@ private fun LegacyNetworkLoginScreen(
                     .background(ReptilianTheme.Surface)
                     .padding(10.dp)
             ) {
-                LegacyText("Automatic Login")
-                Spacer(Modifier.height(8.dp))
                 LegacyText(
                     "Would you like to log in automatically with your username/password when the application is started?"
                 )
