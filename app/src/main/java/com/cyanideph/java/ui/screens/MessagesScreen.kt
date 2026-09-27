@@ -148,7 +148,7 @@ private fun LegacyMessageOptions(
     val options = buildList<Pair<String, () -> Unit>> {
         add((if (hasRecipient) "Send Message" else "Set Recipient") to (if (hasRecipient) onDismiss else onRecipient))
         add("Edit Message" to onEdit)
-        if (messageType != "chat") {
+        if (messageType != "chatroom") {
             add("Add Recipient" to onRecipient)
             add("Show/Hide Recipients" to onToggleRecipients)
         }
