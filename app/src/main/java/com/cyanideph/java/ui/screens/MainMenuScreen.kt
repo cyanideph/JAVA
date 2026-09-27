@@ -34,7 +34,7 @@ fun MainMenuScreen(
     onThemes: () -> Unit = {},
     onBatterySaving: () -> Unit = {},
     onStatus: () -> Unit = {},
-    onSilentMode: () -> Unit = {}
+    onSilentMode: (Boolean) -> Unit = {}
 ) {
     val context = LocalContext.current
     val density = LocalDensity.current
@@ -49,7 +49,7 @@ fun MainMenuScreen(
         LegacyMenuItem("Buddy Matching", "001-abm-small", "001-abm-large", onBuddyMatching),
         LegacyMenuItem("Add or Invite Buddies", "002-buddies-small", "002-buddies-large", onAddInvite),
         LegacyMenuItem("Settings", "003-settings-small", "003-settings-large", onSettings),
-        LegacyMenuItem("Silent Mode", "008-ringtone-small", "008-ringtone-large", { silentModeEnabled = !silentModeEnabled; onSilentMode() }),
+        LegacyMenuItem("Silent Mode", "008-ringtone-small", "008-ringtone-large", { silentModeEnabled = !silentModeEnabled; onSilentMode(silentModeEnabled) }),
         LegacyMenuItem("Themes", "005-themes-small", "005-themes-large", onThemes),
         LegacyMenuItem("Help", "006-help-small", "006-help-large", onHelp),
         LegacyMenuItem("Battery Saving", "007-batteryinfo-small", "007-batteryinfo-large", onBatterySaving),
