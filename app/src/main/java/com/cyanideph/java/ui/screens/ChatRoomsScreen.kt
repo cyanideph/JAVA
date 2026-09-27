@@ -13,11 +13,8 @@ import com.cyanideph.java.ui.model.ChatRoom
 
 @Composable
 fun ChatRoomsScreen(onBack: () -> Unit, onRoom: (String) -> Unit) {
-    val rooms = listOf(
-        ChatRoom("General", "Public", 12),
-        ChatRoom("Friends", "Social", 6),
-        ChatRoom("Pinoy Chat", "Public", 31)
-    )
+    // Room records are service-provided in the legacy client; do not invent visible rooms.
+    val rooms = emptyList<ChatRoom>()
     var selected by remember { mutableIntStateOf(0) }
     var showOptions by remember { mutableStateOf(false) }
 
