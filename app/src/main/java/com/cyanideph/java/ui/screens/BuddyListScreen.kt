@@ -34,7 +34,8 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
     val density = LocalDensity.current
     var selectedGroup by remember { mutableIntStateOf(1) }
     var selectedBuddy by remember { mutableIntStateOf(-1) }
-    var showOptions by remember { mutableStateOf(false) }\n    var showContactOptions by remember { mutableStateOf(false) }
+    var showOptions by remember { mutableStateOf(false) }
+    var showContactOptions by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
 
     val buddies = LegacyBuddyRepository.buddiesFor(context)
@@ -76,7 +77,13 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
                 onLeftClick = { showOptions = true },
                 onRightClick = onBack
             )
-            if (showContactOptions && selectedBuddy >= 0) {\n                BuddyContactOptionsPopup(\n                    buddy = visible[selectedBuddy],\n                    onDismiss = { showContactOptions = false }\n                )\n            }\n            if (showOptions) {
+            if (showContactOptions && selectedBuddy >= 0) {
+                BuddyContactOptionsPopup(
+                    buddy = visible[selectedBuddy],
+                    onDismiss = { showContactOptions = false }
+                )
+            }
+            if (showOptions) {
                 BuddyOptionsPopup(
                     hasBuddy = selectedBuddy >= 0,
                     isActionRequired = legacyGroups[selectedGroup].first == "action_required",
@@ -122,7 +129,8 @@ private fun BuddyOptionsPopup(
                         .fillMaxWidth()
                         .clickable {
                             when (label) {
-                                "Contact" -> { onDismiss(); onContact() }\n                                "Add/Invite Buddies" -> onAdd()
+                                "Contact" -> { onDismiss(); onContact() }
+                                "Add/Invite Buddies" -> onAdd()
                                 "Uzzap Help" -> onHelp()
                                 else -> onDismiss()
                             }
