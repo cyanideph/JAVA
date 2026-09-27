@@ -54,7 +54,10 @@ fun StatusScreen(onBack: () -> Unit) {
                             .padding(horizontal = 8.dp, vertical = 7.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val bitmap = LegacyAssets.rememberBitmap(context, "themes/uzzap/"+item.asset+"-small.png")
+                        val bitmap = LegacyAssets.rememberBitmap(
+                            context,
+                            "themes/default/" + item.asset + ".png"
+                        )
                         Image(bitmap, contentDescription = item.label, Modifier.size(24.dp))
                         Spacer(Modifier.width(8.dp))
                         LegacyText(item.label)
@@ -75,7 +78,7 @@ fun StatusScreen(onBack: () -> Unit) {
                 LegacyText("Your status message")
                 OutlinedTextField(
                     value = message,
-                    onValueChange = { message = it },
+                    onValueChange = { message = it.take(100) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = false,
                     maxLines = 4
