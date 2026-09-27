@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.theme.ReptilianTheme
@@ -14,11 +15,12 @@ import com.cyanideph.java.legacy.theme.ReptilianTheme
 @Composable
 fun LegacyBitmapBar(left:String,middle:String,right:String,modifier:Modifier=Modifier){
  val c=LocalContext.current
+ val density=LocalDensity.current
  val l=LegacyAssets.rememberBitmap(c,left); val m=LegacyAssets.rememberBitmap(c,middle); val r=LegacyAssets.rememberBitmap(c,right)
  Row(modifier.height(22.dp)){
-  Image(l,null,Modifier.width(l.width.dp).fillMaxHeight(),contentScale=ContentScale.FillBounds)
+  Image(l,null,Modifier.width(with(density){l.width.toDp()}).fillMaxHeight(),contentScale=ContentScale.FillBounds)
   Image(m,null,Modifier.weight(1f).fillMaxHeight(),contentScale=ContentScale.FillBounds)
-  Image(r,null,Modifier.width(r.width.dp).fillMaxHeight(),contentScale=ContentScale.FillBounds)
+  Image(r,null,Modifier.width(with(density){r.width.toDp()}).fillMaxHeight(),contentScale=ContentScale.FillBounds)
  }
 }
 @Composable fun LegacyTitleBar(title:String,modifier:Modifier=Modifier){
