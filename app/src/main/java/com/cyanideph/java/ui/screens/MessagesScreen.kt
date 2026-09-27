@@ -68,6 +68,7 @@ fun MessagesScreen(
     var recipientPickerMode by remember { mutableStateOf("to") }
     var messageType by remember { mutableStateOf(if (selectedTab == 2) "chatroom" else "im") }
     val editorLimit = if (messageType == "chatroom") 160 else 700
+    val recipientCount = recipient.split(",").map { it.trim() }.count { it.isNotBlank() && !it.equals(",,,,", ignoreCase = false) }
 
     val messages = remember { listOf(
         Message("cy", "Welcome to Uzzap", "now", false),
@@ -104,6 +105,7 @@ fun MessagesScreen(
         LegacyMessageOptions(
             onDismiss = { showOptions = false },
             hasRecipient = recipient.isNotBlank(),
+            hasMultipleRecipients = recipientCount > 1,
             onEdit = { showOptions = false; showEditor = true },
             onRecipient = { showOptions = false; recipientPickerMode = "to"; recipientMode = true },
             messageType = messageType,
@@ -136,7 +138,12 @@ fun MessagesScreen(
             messageType = messageType,
             hasRecipient = recipient.isNotBlank(),
             onSendNewMessage = { showMessengerOptions = false; showEditor = true },
-            onReplyAll = { showMessengerOptions = false; showEditor = true },
+            onReplyAll = {
+                val recipients = recipient.split(",").map { it.trim() }.filter { it.isNotBlank() && it != ",,,," }
+                recipient = recipients.drop(1).take(3).joinToString(", ") + if (recipients.size > 4) ",,,," else ""
+                showMessengerOptions = false
+                showEditor = true
+            },
             onViewHistory = { showMessengerOptions = false; onViewHistory() },
             onReceivedContacts = { showMessengerOptions = false; onReceivedContacts() },
             onProfile = { showMessengerOptions = false; onProfile() },
@@ -151,6 +158,7 @@ fun MessagesScreen(
 private fun LegacyMessengerOptions(
     messageType: String,
     hasRecipient: Boolean,
+    hasMultipleRecipients: Boolean,
     onSendNewMessage: () -> Unit,
     onReplyAll: () -> Unit,
     onViewHistory: () -> Unit,
@@ -161,7 +169,7 @@ private fun LegacyMessengerOptions(
     val options = buildList<Pair<String, () -> Unit>> {
         add("Send New Message" to onSendNewMessage)
         if (hasRecipient) {
-            if (messageType != "yahoo" && messageType != "msn") add("Reply All" to onReplyAll)
+            if (hasMultipleRecipients && messageType != "yahoo" && messageType != "msn") add("Reply All" to onReplyAll)
             add("View History" to onViewHistory)
             add("Received Contacts" to onReceivedContacts)
             add("Profile" to onProfile)
