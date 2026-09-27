@@ -24,6 +24,7 @@ private data class LegacyMenuItem(val label: String, val small: String, val larg
 fun MainMenuScreen(
     onBuddies: () -> Unit,
     onMessages: () -> Unit,
+    onInstantMessaging: () -> Unit = onMessages,
     onRooms: () -> Unit,
     onSettings: () -> Unit,
     onHelp: () -> Unit,
@@ -40,17 +41,20 @@ fun MainMenuScreen(
     var selected by remember { mutableIntStateOf(0) }
     var firstRow by remember { mutableIntStateOf(0) }
     var showOptions by remember { mutableStateOf(false) }
+    // Java source: Kalypte.n is a runtime ringtone/audio controller; b() simply toggles its boolean state.
+    // Keep the same non-persistent runtime toggle here; no extra UI is rendered by the legacy app.
+    var silentModeEnabled by remember { mutableStateOf(false) }
     val items = listOf(
         LegacyMenuItem("Subscription", "000-smart-small", "000-smart-large", onSubscription),
         LegacyMenuItem("Buddy Matching", "001-abm-small", "001-abm-large", onBuddyMatching),
         LegacyMenuItem("Add or Invite Buddies", "002-buddies-small", "002-buddies-large", onAddInvite),
         LegacyMenuItem("Settings", "003-settings-small", "003-settings-large", onSettings),
-        LegacyMenuItem("Silent Mode", "008-ringtone-small", "008-ringtone-large", onSilentMode),
+        LegacyMenuItem("Silent Mode", "008-ringtone-small", "008-ringtone-large", { silentModeEnabled = !silentModeEnabled; onSilentMode() }),
         LegacyMenuItem("Themes", "005-themes-small", "005-themes-large", onThemes),
         LegacyMenuItem("Help", "006-help-small", "006-help-large", onHelp),
         LegacyMenuItem("Battery Saving", "007-batteryinfo-small", "007-batteryinfo-large", onBatterySaving),
         LegacyMenuItem("Extended Messaging", "d000-em-small", "d000-em-large", onMessages),
-        LegacyMenuItem("Instant Messaging", "d001-im-small", "d001-im-large", onMessages),
+        LegacyMenuItem("Instant Messaging", "d001-im-small", "d001-im-large", onInstantMessaging),
         LegacyMenuItem("Chat Rooms", "d002-chat-small", "d002-chat-large", onRooms),
         LegacyMenuItem("Change Status", "d003-status-small", "d003-status-large", onStatus)
     )
