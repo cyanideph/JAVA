@@ -41,7 +41,7 @@ fun InstantMessagingConnectionsScreen(onBack: () -> Unit) {
                     }
                 }
             }
-            LegacyFunctionBar(leftLabel = "Select", rightLabel = "Back", modifier = Modifier.fillMaxWidth().clickable { onBack() })
+            LegacyFunctionBar(leftLabel = "Select", rightLabel = "Back", modifier = Modifier.fillMaxWidth(), onLeftClick = { if (rows[selected].third) { if (selected == 0) yahooConnected = false else msnConnected = false } else loginProvider = rows[selected].first }, onRightClick = onBack)
         }
     }
     loginProvider?.let { provider ->
