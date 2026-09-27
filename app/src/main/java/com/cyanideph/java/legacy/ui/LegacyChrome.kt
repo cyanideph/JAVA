@@ -59,6 +59,40 @@ fun LegacyText(text:String,modifier:Modifier=Modifier)=
     Text(text,color=ReptilianTheme.Text,fontSize=ReptilianTheme.FontSize,modifier=modifier)
 
 @Composable
+fun LegacyFrame(
+    modifier: Modifier = Modifier,
+    content: @Composable BoxScope.() -> Unit
+) {
+    val context = LocalContext.current
+    val density = LocalDensity.current
+    val tl = LegacyAssets.rememberBitmap(context, "frame-topleft")
+    val top = LegacyAssets.rememberBitmap(context, "frame-top")
+    val tr = LegacyAssets.rememberBitmap(context, "frame-topright")
+    val left = LegacyAssets.rememberBitmap(context, "frame-left")
+    val right = LegacyAssets.rememberBitmap(context, "frame-right")
+    val bl = LegacyAssets.rememberBitmap(context, "frame-bottomleft")
+    val bottom = LegacyAssets.rememberBitmap(context, "frame-bottom")
+    val br = LegacyAssets.rememberBitmap(context, "frame-bottomright")
+    BoxWithConstraints(modifier) {
+        val l = with(density) { tl.width.toDp() }
+        val r = with(density) { tr.width.toDp() }
+        val t = with(density) { tl.height.toDp() }
+        val b = with(density) { bl.height.toDp() }
+        Box(Modifier.fillMaxSize().background(ReptilianTheme.panelBackground)) {
+            content()
+            Image(tl, null, Modifier.align(androidx.compose.ui.Alignment.TopStart).size(l, t), contentScale = ContentScale.None)
+            Image(tr, null, Modifier.align(androidx.compose.ui.Alignment.TopEnd).size(r, t), contentScale = ContentScale.None)
+            Image(bl, null, Modifier.align(androidx.compose.ui.Alignment.BottomStart).size(l, b), contentScale = ContentScale.None)
+            Image(br, null, Modifier.align(androidx.compose.ui.Alignment.BottomEnd).size(r, b), contentScale = ContentScale.None)
+            Image(top, null, Modifier.fillMaxWidth().height(t).padding(horizontal = l).align(androidx.compose.ui.Alignment.TopCenter), contentScale = ContentScale.Tile)
+            Image(bottom, null, Modifier.fillMaxWidth().height(b).padding(horizontal = l).align(androidx.compose.ui.Alignment.BottomCenter), contentScale = ContentScale.Tile)
+            Image(left, null, Modifier.fillMaxHeight().width(l).padding(vertical = t).align(androidx.compose.ui.Alignment.CenterStart), contentScale = ContentScale.Tile)
+            Image(right, null, Modifier.fillMaxHeight().width(r).padding(vertical = t).align(androidx.compose.ui.Alignment.CenterEnd), contentScale = ContentScale.Tile)
+        }
+    }
+}
+
+@Composable
 fun LegacyTabStrip(
     tabs: List<String>,
     selected: Int,
@@ -76,12 +110,13 @@ fun LegacyTabStrip(
     val indicatorSending = LegacyAssets.rememberBitmap(context, "sending-message-icon")
     BoxWithConstraints(modifier) {
     val availableWidthPx = with(density) { maxWidth.toPx() }
-    val visibleCount = (availableWidthPx / with(density) { normalAsset.width.toDp().toPx() }).toInt().coerceAtLeast(1)
+    val visibleCount = (availableWidthPx / with(density) { selectedAsset.width.toDp().toPx() }).toInt().coerceAtLeast(1)
     val start = when {
         tabs.isEmpty() -> 0
         selected < visibleCount -> 0
         else -> (selected - visibleCount + 1).coerceAtMost((tabs.size - visibleCount).coerceAtLeast(0))
     }
+    LegacyFrame(Modifier.fillMaxWidth()) {
     Row(Modifier.height(with(density) { maxOf(selectedAsset.height, normalAsset.height).toDp() })) {
         tabs.drop(start).take(visibleCount).forEachIndexed { localIndex, label ->
             val index = start + localIndex
@@ -106,6 +141,7 @@ fun LegacyTabStrip(
                 }
             }
         }
+    }
     }
 }
 @Composable
