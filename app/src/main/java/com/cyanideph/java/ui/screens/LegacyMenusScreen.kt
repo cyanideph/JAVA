@@ -32,7 +32,7 @@ fun LegacyMenusScreen(onBack: () -> Unit, onSelect: (String) -> Unit) {
                     LegacyText(entry.first, Modifier.fillMaxWidth().background(if (index == selected) ReptilianTheme.MenuSelected else ReptilianTheme.Surface).clickable { selected = index; popupSelected = 0; open = true }.padding(horizontal = 8.dp, vertical = 6.dp))
                 }
             }
-            LegacyFunctionBar(leftLabel = "Options", rightLabel = "Menu", modifier = Modifier.fillMaxWidth().clickable { open = true })
+            LegacyFunctionBar(leftLabel = "Options", rightLabel = "Menu", modifier = Modifier.fillMaxWidth(), onLeftClick = { open = true }, onRightClick = onBack)
         }
     }
     if (open) {
