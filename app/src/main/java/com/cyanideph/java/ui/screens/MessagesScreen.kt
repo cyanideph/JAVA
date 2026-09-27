@@ -118,8 +118,8 @@ fun MessagesScreen(
     if (recipientMode) {
         LegacyRecipientDialog(
             contacts = legacyMessageContacts(messageType),
-            onPick = {
-                if (recipientPickerMode == "cc") cc = it else recipient = it
+            onPick = { names ->
+                if (recipientPickerMode == "cc") cc = names else recipient = names
                 recipientMode = false
             },
             onDismiss = { recipientMode = false }
@@ -326,11 +326,14 @@ private fun LegacyRecipientDialog(
             }
             Row {
                 LegacyText("OK", Modifier.clickable {
-                    val names = sorted
+                    val selectedNames = sorted
                         .filter { it.id in selected }
-                        .take(3)
                         .map { it.displayName }
-                    if (names.isNotEmpty()) onPick(names.joinToString(", ")) else onDismiss()
+                    if (selectedNames.isNotEmpty()) {
+                        val visible = selectedNames.take(3).joinToString(", ")
+                        val formatted = if (selectedNames.size > 3) "$visible,,,," else visible
+                        onPick(formatted)
+                    } else onDismiss()
                 }.padding(10.dp))
                 LegacyText("Cancel", Modifier.clickable(onClick = onDismiss).padding(10.dp))
             }
