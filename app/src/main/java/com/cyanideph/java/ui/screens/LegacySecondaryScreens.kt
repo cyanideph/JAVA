@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
 
@@ -119,9 +120,10 @@ fun ChangeMobileScreen(onBack: () -> Unit) {
 }
 
 @Composable
-fun ChatInviteScreen(room: String, onBack: () -> Unit) {
+fun ChatInviteScreen(room: String, onBack: () -> Unit, onMenu: () -> Unit) {
     var accepted by remember { mutableStateOf(false) }
     var showOptions by remember { mutableStateOf(false) }
+
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar(if (accepted) "Chat - $room" else "Chat Invite - $room", Modifier.fillMaxWidth())
@@ -137,18 +139,34 @@ fun ChatInviteScreen(room: String, onBack: () -> Unit) {
                 rightLabel = "Menu",
                 modifier = Modifier.fillMaxWidth(),
                 onLeftClick = { showOptions = true },
-                onRightClick = onBack
+                onRightClick = onMenu
             )
         }
     }
-    if (showOptions) {
-        LegacyDialogMessage(if (!accepted) "Yes\n\nNo\n\nClose Tab" else "Options") { showOptions = false }
-    }
-    if (!accepted && !showOptions) {
-        // Invitation actions are exposed through the legacy Options popup.
+
+    if (showOptions && !accepted) {
+        Dialog(onDismissRequest = { showOptions = false }) {
+            LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
+                Column(Modifier.fillMaxWidth()) {
+                    listOf("Yes", "No", "Close Tab").forEach { action ->
+                        LegacyText(
+                            action,
+                            Modifier.fillMaxWidth()
+                                .clickable {
+                                    showOptions = false
+                                    when (action) {
+                                        "Yes" -> accepted = true
+                                        "No", "Close Tab" -> onBack()
+                                    }
+                                }
+                                .padding(horizontal = 8.dp, vertical = 7.dp)
+                        )
+                    }
+                }
+            }
+        }
     }
 }
-
 @Composable
 fun StoredMessageScreen(onBack: () -> Unit) {
     var showOptions by remember { mutableStateOf(false) }
