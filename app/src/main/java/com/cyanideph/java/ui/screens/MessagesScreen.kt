@@ -80,7 +80,7 @@ fun MessagesScreen(
                 onSelected = { selectedTab = it; messageType = if (it == 2) "chatroom" else "im" },
                 modifier = Modifier.fillMaxWidth()
             )
-            LegacyComposerPreview(messageText, recipient, cc, hideRecipients)
+            LegacyComposerPreview(messageText, messageType, recipient, cc, hideRecipients)
             LegacyMessageList(messages, Modifier.weight(1f))
             Row(Modifier.fillMaxWidth()) {
                 Box(Modifier.weight(1f).clickable { showOptions = true }) {
@@ -358,9 +358,17 @@ private fun LegacyEmoticonDialog(onPick: (String) -> Unit, onDismiss: () -> Unit
 }
 
 @Composable
-private fun LegacyComposerPreview(message: String, recipient: String, cc: String, hidden: Boolean) {
-    val to = if (recipient.isBlank()) "(no recipient set)" else recipient
-    val ccLine = if (cc.isNotBlank() && !hidden) "\n- Cc: $cc" else ""
+private fun LegacyComposerPreview(message: String, messageType: String, recipient: String, cc: String, hidden: Boolean) {
+    val rawRecipient = recipient.trim()
+    val displayRecipient = when {
+        rawRecipient.isBlank() -> "(no recipient set)"
+        messageType == "chatroom" -> "[Chatroom '$rawRecipient']"
+        else -> rawRecipient
+    }
+    val to = if (hidden && rawRecipient.isNotBlank() && messageType != "email") "(hidden) $displayRecipient" else displayRecipient
     val preview = if (message.length <= 15) message else message.take(13) + ".."
-    LegacyText("- To: $to$ccLine\n$preview", Modifier.padding(8.dp))
+    val ccLine = if (cc.isNotBlank() && messageType == "email") {
+        "\n- Cc: " + if (hidden) "(hidden) $cc" else cc
+    } else ""
+    LegacyText("- To: $to$ccLine\n$preview\n", Modifier.padding(8.dp))
 }
