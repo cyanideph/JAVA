@@ -34,7 +34,7 @@ fun MessagesScreen(onBack: () -> Unit) {
         )
     }
     var selectedTab by remember { mutableIntStateOf(0) }
-    var showOptions by remember { mutableStateOf(false) }
+    var showOptions by remember { mutableStateOf(false) }\n    var messageText by remember { mutableStateOf("") }\n    var recipient by remember { mutableStateOf("Friend 1") }\n    var cc by remember { mutableStateOf("") }\n    var hideRecipients by remember { mutableStateOf(false) }
 
     val messages = listOf(
         Message("cy", "Welcome to Uzzap", "now", false),
@@ -52,7 +52,7 @@ fun MessagesScreen(onBack: () -> Unit) {
                 modifier = Modifier.fillMaxWidth()
             )
 
-            when (selectedTab) {
+            LegacyComposerPreview(messageText, recipient, cc, hideRecipients)\n\n            when (selectedTab) {
                 0 -> LegacyMessageList(messages)
                 1 -> LegacyMessageList(messages)
                 else -> LegacyMessageList(messages)
@@ -143,4 +143,21 @@ private fun LegacyMessageOptions(onDismiss: () -> Unit) {
             }
         }
     }
+}
+
+
+@Composable
+private fun LegacyComposerPreview(
+    message: String,
+    recipient: String,
+    cc: String,
+    hidden: Boolean
+) {
+    val to = if (recipient.isBlank()) "(no recipient set)" else recipient
+    val ccLine = if (cc.isNotBlank() && !hidden) "\n- Cc: $cc" else ""
+    val preview = if (message.length <= 15) message else message.take(13) + ".."
+    LegacyText(
+        "- To: $to$ccLine\n$preview",
+        Modifier.padding(8.dp)
+    )
 }
