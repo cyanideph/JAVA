@@ -29,6 +29,7 @@ private fun legacyMessageContacts(): List<Buddy> = LegacyBuddyRepository.buddies
 private fun legacyMessengerTitle(messageType: String, recipient: String): String {
     val display = recipient.ifBlank { "Friend 1" }
     return when (messageType) {
+        "__abm__" -> "New buddies"
         "chatroom" -> "Chat Room"
         "sms", "smsr" -> "SMS - $display"
         "email" -> "Email - $display"
@@ -41,7 +42,12 @@ private fun legacyMessengerTitle(messageType: String, recipient: String): String
 
 
 @Composable
-fun MessagesScreen(onBack: () -> Unit) {
+fun MessagesScreen(
+    onBack: () -> Unit,
+    onViewHistory: () -> Unit = {},
+    onReceivedContacts: () -> Unit = {},
+    onProfile: () -> Unit = {}
+) {
     val tabs = remember { listOf(LegacyMessageTab("Buddy List"), LegacyMessageTab("Message"), LegacyMessageTab("Chat")) }
     var selectedTab by remember { mutableIntStateOf(0) }
     var showOptions by remember { mutableStateOf(false) }
@@ -123,7 +129,11 @@ fun MessagesScreen(onBack: () -> Unit) {
         LegacyMessengerOptions(
             messageType = messageType,
             hasRecipient = recipient.isNotBlank(),
-            onClose = { showMessengerOptions = false },
+            onSendNewMessage = { showMessengerOptions = false; showEditor = true },
+            onReplyAll = { showMessengerOptions = false; showEditor = true },
+            onViewHistory = { showMessengerOptions = false; onViewHistory() },
+            onReceivedContacts = { showMessengerOptions = false; onReceivedContacts() },
+            onProfile = { showMessengerOptions = false; onProfile() },
             onCloseTab = { showMessengerOptions = false; onBack() }
         )
     }
@@ -135,16 +145,20 @@ fun MessagesScreen(onBack: () -> Unit) {
 private fun LegacyMessengerOptions(
     messageType: String,
     hasRecipient: Boolean,
-    onClose: () -> Unit,
+    onSendNewMessage: () -> Unit,
+    onReplyAll: () -> Unit,
+    onViewHistory: () -> Unit,
+    onReceivedContacts: () -> Unit,
+    onProfile: () -> Unit,
     onCloseTab: () -> Unit
 ) {
     val options = buildList<Pair<String, () -> Unit>> {
-        add("Send New Message" to onClose)
+        add("Send New Message" to onSendNewMessage)
         if (hasRecipient) {
-            if (messageType != "yahoo" && messageType != "msn") add("Reply All" to onClose)
-            add("View History" to onClose)
-            add("Received Contacts" to onClose)
-            add("Profile" to onClose)
+            if (messageType != "yahoo" && messageType != "msn") add("Reply All" to onReplyAll)
+            add("View History" to onViewHistory)
+            add("Received Contacts" to onReceivedContacts)
+            add("Profile" to onProfile)
         }
         add("Close Tab" to onCloseTab)
     }
