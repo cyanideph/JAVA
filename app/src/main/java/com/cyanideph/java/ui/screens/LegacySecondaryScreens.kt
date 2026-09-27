@@ -18,8 +18,7 @@ fun BatterySavingScreen(onBack: () -> Unit) {
 
 @Composable
 fun OfflineSettingsScreen(onBack: () -> Unit) {
-    var route by remember { mutableStateOf("Email") }
-    LegacySelectableScreen("Offline Settings", "Choose how your messages will be delivered when Uzzap is off.", listOf("Available SMS", "Email"), route, { route = it }, "Options", "Save")
+    LegacyTextScreen("Offline Settings", "", "Options", "Close Tab")
 }
 
 @Composable
@@ -110,7 +109,7 @@ fun BuddyMatchingScreen(onBack: () -> Unit) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("Buddy Matching", Modifier.fillMaxWidth())
             LegacyText("Automatic Buddy Matching", Modifier.padding(8.dp))
-            LegacyText("Buddy matching is not supported on this device.", Modifier.padding(8.dp))
+            LegacyText("Not supported on this device.", Modifier.padding(8.dp))
             Spacer(Modifier.weight(1f))
             LegacyFunctionBar(rightLabel = "Close", modifier = Modifier.clickable { onBack() })
         }
