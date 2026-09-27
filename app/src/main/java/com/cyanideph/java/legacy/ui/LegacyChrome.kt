@@ -62,18 +62,27 @@ fun LegacyTabStrip(
     tabs: List<String>,
     selected: Int,
     onSelected: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    indicators: List<Int> = emptyList()
 ) {
     val context = LocalContext.current
     val density = LocalDensity.current
     val selectedAsset = LegacyAssets.rememberBitmap(context, "tab-selected")
     val normalAsset = LegacyAssets.rememberBitmap(context, "tab-not-selected")
-    val tabHeight = maxOf(selectedAsset.height, normalAsset.height)
-    Row(
-        modifier.height(with(density) { tabHeight.toDp() }),
-        horizontalArrangement = Arrangement.Start
-    ) {
-        tabs.forEachIndexed { index, label ->
+    val indicatorUnread = LegacyAssets.rememberBitmap(context, "unread-icon")
+    val indicatorChat = LegacyAssets.rememberBitmap(context, "chat-icon")
+    val indicatorUnreadSending = LegacyAssets.rememberBitmap(context, "unread-sending-icon")
+    val indicatorSending = LegacyAssets.rememberBitmap(context, "sending-message-icon")
+    val tabWidthPx = normalAsset.width.coerceAtLeast(1)
+    val visibleCount = (LocalDensity.current.run { 1000.dp.toPx() } / tabWidthPx).toInt().coerceAtLeast(1)
+    val start = when {
+        tabs.isEmpty() -> 0
+        selected < visibleCount -> 0
+        else -> (selected - visibleCount + 1).coerceAtMost((tabs.size - visibleCount).coerceAtLeast(0))
+    }
+    Row(modifier.height(with(density) { maxOf(selectedAsset.height, normalAsset.height).toDp() })) {
+        tabs.drop(start).take(visibleCount).forEachIndexed { localIndex, label ->
+            val index = start + localIndex
             val bg = if (index == selected) selectedAsset else normalAsset
             Box(
                 Modifier
@@ -82,15 +91,21 @@ fun LegacyTabStrip(
                     .clickable { onSelected(index) }
             ) {
                 Image(bg, null, Modifier.fillMaxSize(), contentScale = ContentScale.FillBounds)
-                LegacyText(
-                    label,
-                    Modifier.align(androidx.compose.ui.Alignment.Center)
-                )
+                LegacyText(label, Modifier.align(androidx.compose.ui.Alignment.Center))
+                val state = indicators.getOrNull(index) ?: 0
+                val icon = when (state) {
+                    1 -> indicatorUnread
+                    2 -> indicatorSending
+                    3 -> indicatorUnreadSending
+                    else -> indicatorChat
+                }
+                if (state != 0) {
+                    Image(icon, null, Modifier.align(androidx.compose.ui.Alignment.TopEnd))
+                }
             }
         }
     }
 }
-
 @Composable
 fun LegacyCheckbox(
     checked: Boolean,
