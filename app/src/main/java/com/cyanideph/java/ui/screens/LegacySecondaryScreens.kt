@@ -110,7 +110,7 @@ fun BuddyMatchingScreen(onBack: () -> Unit) {
 }
 
 @Composable
-fun AddInviteBuddiesScreen(onBack: () -> Unit, onBuddies: () -> Unit) {
+fun AddInviteBuddiesScreen(onBack: () -> Unit, onBuddies: () -> Unit, onAddOther: () -> Unit = {}) {
     var selected by remember { mutableIntStateOf(0) }
     val options = listOf("Invite Friends to Uzzap","Add Buddy by Mobile","Add Buddy by User ID","Add Other Contact")
     LegacyBackground(Modifier.fillMaxSize()) {
@@ -125,7 +125,7 @@ fun AddInviteBuddiesScreen(onBack: () -> Unit, onBuddies: () -> Unit) {
             }
             LegacyFunctionBar(leftLabel = "Select", rightLabel = "Close",
                 modifier = Modifier.fillMaxWidth().clickable {
-                    if (selected == 1 || selected == 2 || selected == 3) onBuddies() else onBack()
+                    when (selected) { 1, 2 -> onBuddies(); 3 -> onAddOther(); else -> onBack() }
                 })
         }
     }
