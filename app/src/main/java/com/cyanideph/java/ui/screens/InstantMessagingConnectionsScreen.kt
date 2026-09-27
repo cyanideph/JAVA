@@ -54,11 +54,9 @@ private fun ConnectionLoginDialog(provider: String, onLogin: () -> Unit, onCance
     var username by remember(provider) { mutableStateOf("") }
     var password by remember(provider) { mutableStateOf("") }
     Dialog(onDismissRequest = onCancel) {
-        Column(Modifier.background(ReptilianTheme.Surface).padding(10.dp)) {
-            LegacyText(if (provider == "Yahoo") "* Connect to Yahoo\n" else "* Connect to MSN\n")
-            Spacer(Modifier.height(6.dp))
-            LegacyText(if (provider == "Yahoo") "Yahoo ID" else "MSN ID")
-            LegacyText(if (provider == "Yahoo") "(eg. abs)" else "(eg. abs@hotmail.com)")
+        LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
+            Column(Modifier.fillMaxWidth().padding(10.dp)) {
+                LegacyText(if (provider == "Yahoo") "* Connect to Yahoo\\n" else "* Connect to MSN\\n")
             LegacyFormList(
                 fields = listOf(
                     LegacyFormField(
@@ -82,11 +80,12 @@ private fun ConnectionLoginDialog(provider: String, onLogin: () -> Unit, onCance
                 onValueChange = { key, value -> if (key == "username") username = value else password = value },
                 modifier = Modifier.fillMaxWidth()
             )
-            LegacyFunctionBar(
-                leftLabel = "Login",
-                rightLabel = "Cancel",
-                modifier = Modifier.fillMaxWidth().clickable(onClick = onLogin)
-            )
+                LegacyFunctionBar(
+                    leftLabel = "Login",
+                    rightLabel = "Cancel",
+                    modifier = Modifier.fillMaxWidth().clickable(onClick = onLogin)
+                )
+            }
         }
     }
 }
