@@ -288,8 +288,24 @@ private fun LegacyNetworkLoginScreen(
     onCancel: () -> Unit,
     onLogin: () -> Unit
 ) {
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    val fields = listOf(
+        LegacyFormField(
+            "username",
+            "User ID",
+            "Your user ID",
+            "* User ID\\n\\nUser ID you chose upon registering. User ID can be 6 to 12 characters, and can consist of numbers and letters.",
+            12
+        ),
+        LegacyFormField(
+            "password",
+            "Password",
+            "Your password",
+            "* Password\\n\\nEnter the personal password currently registered for your user account.",
+            31,
+            true
+        )
+    )
+    var values by remember { mutableStateOf(emptyMap<String, String>()) }
     var showAutoLogin by remember { mutableStateOf(false) }
 
     if (showAutoLogin) {
@@ -321,56 +337,25 @@ private fun LegacyNetworkLoginScreen(
         }
     }
 
-    LegacyBackground(
-        modifier = Modifier.fillMaxSize(),
-        color = ReptilianTheme.Surface
-    ) {
+    LegacyBackground(Modifier.fillMaxSize(), ReptilianTheme.Surface) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("* Login to network", Modifier.fillMaxWidth())
-
-            Column(
+            LegacyFormList(
+                fields = fields,
+                values = values,
+                onValueChanged = { key, value -> values = values + (key to value) },
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 8.dp)
-            ) {
-                LegacyText("User ID")
-                LegacyText("Your user ID")
-                OutlinedTextField(
-                    value = username,
-                    onValueChange = { username = it.take(12) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
-                )
-
-                Spacer(Modifier.height(10.dp))
-
-                LegacyText("Password")
-                LegacyText("Your password")
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it.take(31) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
-                )
-
-                Spacer(Modifier.height(8.dp))
-                LegacyText(
-                    "* User ID\n\nUser ID you chose upon registering. User ID can be 6 to 12 characters, and can consist of numbers and letters."
-                )
-                Spacer(Modifier.height(6.dp))
-                LegacyText(
-                    "* Password\n\nEnter the personal password currently registered for your user account."
-                )
-            }
-
+                    .padding(8.dp)
+            )
             LegacyFunctionBar(
                 leftLabel = "Login",
                 rightLabel = "Cancel",
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        if (username.isNotBlank() && password.isNotBlank()) {
+                        if (!values["username"].isNullOrBlank() && !values["password"].isNullOrBlank()) {
                             showAutoLogin = true
                         } else {
                             onCancel()
