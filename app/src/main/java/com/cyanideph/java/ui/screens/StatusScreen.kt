@@ -50,7 +50,7 @@ fun StatusScreen(onBack: () -> Unit) {
                     }
                 }
             }
-            LegacyFunctionBar(leftLabel = "Options", rightLabel = "Back", modifier = Modifier.fillMaxWidth())
+            LegacyFunctionBar(leftLabel = "Options", rightLabel = "Back", modifier = Modifier.fillMaxWidth(), onRightClick = onBack)
         }
     }
 
