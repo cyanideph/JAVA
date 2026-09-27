@@ -99,45 +99,47 @@ fun BuddyListScreen(onBack: () -> Unit) {
 private fun BuddyOptionsPopup(
     hasBuddy: Boolean,
     isActionRequired: Boolean,
+    buddyType: String? = "amazilia",
+    hasEmail: Boolean = false,
+    hasMobile: Boolean = false,
+    hasYahoo: Boolean = false,
+    hasMsn: Boolean = false,
+    hasHistory: Boolean = false,
+    hasAuthorizedContact: Boolean = hasBuddy,
     onDismiss: () -> Unit,
     onAdd: () -> Unit,
     onHelp: () -> Unit
 ) {
     val options = buildList {
-        if (hasBuddy) add("Contact")
-        if (!hasBuddy && !isActionRequired) add("Send Group Message")
-        if (!hasBuddy) add("Manage Groups")
-        add("New Group")
-        add("Add/Invite Buddies")
-        add("Clear Message History")
-        add("Clear Search Bar")
-        add("Uzzap Help")
+        if (!hasAuthorizedContact) add("Authorize as Buddy")
+        if (!hasBuddy) add("Request to Authorize")
+        if (hasYahoo || (buddyType == "amazilia" && hasAuthorizedContact)) add("Send Message")
+        if (hasEmail) add("Send Email")
+        if (hasMobile) add("Send SMS")
+        if (!hasBuddy) {
+            if (hasYahoo) add("Invite via Yahoo")
+            if (hasMsn) add("Invite via MSN")
+            if (hasMobile) add("Invite via E-SMS")
+            if (hasEmail) add("Invite via Email")
+        }
+        if (buddyType == "amazilia" && hasAuthorizedContact) {
+            add("Send Contacts")
+            add("Group Chat")
+        }
+        add("My Friends")
+        add("Other Groups")
+        add("Profile")
+        if (buddyType == "amazilia") add("Remove Buddy")
+        if (hasHistory) add("View History")
     }
     androidx.compose.ui.window.Dialog(onDismissRequest = onDismiss) {
-        Column(
-            Modifier
-                .wrapContentWidth()
-                .background(ReptilianTheme.Surface)
-        ) {
+        Column(Modifier.wrapContentWidth().background(ReptilianTheme.Surface)) {
             options.forEach { label ->
-                LegacyText(
-                    label,
-                    Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            when (label) {
-                                "Add/Invite Buddies" -> onAdd()
-                                "Uzzap Help" -> onHelp()
-                                else -> onDismiss()
-                            }
-                        }
-                        .padding(horizontal = 18.dp, vertical = 9.dp)
-                )
+                LegacyText(label, Modifier.fillMaxWidth().clickable { onDismiss() }.padding(horizontal = 18.dp, vertical = 9.dp))
             }
         }
     }
 }
-
 private fun BuddyRow(
     buddy: Buddy,
     selected: Boolean,
