@@ -10,7 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.asImageBitmap
 
 object LegacyThemeState {
-    var current by mutableStateOf("default")
+    var current by mutableStateOf("black")
         private set
 
     private var loaded = false
@@ -18,7 +18,7 @@ object LegacyThemeState {
     fun ensure(context: Context) {
         if (!loaded) {
             current = context.getSharedPreferences("kalypte.theme", Context.MODE_PRIVATE)
-                .getString("kalypte.theme", "default") ?: "default"
+                .getString("kalypte.theme", "black") ?: "black"
             loaded = true
         }
     }
