@@ -52,7 +52,10 @@ fun MessagesScreen(
     onBack: () -> Unit,
     onViewHistory: () -> Unit = {},
     onReceivedContacts: () -> Unit = {},
-    onProfile: () -> Unit = {}
+    onProfile: () -> Unit = {},
+    isBuddyInvite: Boolean = false,
+    onAcceptBuddyInvite: () -> Unit = {},
+    onRejectBuddyInvite: () -> Unit = {}
 ) {
     val tabs = remember { listOf(LegacyMessageTab("Buddy List"), LegacyMessageTab("Message"), LegacyMessageTab("Chat")) }
     var selectedTab by remember { mutableIntStateOf(0) }
@@ -87,6 +90,12 @@ fun MessagesScreen(
                 onSelected = { selectedTab = it; messageType = if (it == 2) "chatroom" else "im" },
                 modifier = Modifier.fillMaxWidth()
             )
+            if (isBuddyInvite) {
+                LegacyText(
+                    "[This user has invited you to their buddy list. To accept the invitation, choose "Accept Buddy Invite" from the options menu]\nYou can chat with the user in this window before you accept to confirm who they are.]",
+                    Modifier.padding(horizontal = 5.dp, vertical = 4.dp)
+                )
+            }
             LegacyComposerPreview(messageText, messageType, recipient, cc, hideRecipients)
             LegacyMessageList(messages, Modifier.weight(1f))
             Row(Modifier.fillMaxWidth()) {
@@ -137,7 +146,10 @@ fun MessagesScreen(
         LegacyMessengerOptions(
             messageType = messageType,
             hasRecipient = recipient.isNotBlank(),
+            isBuddyInvite = isBuddyInvite,
             onSendNewMessage = { showMessengerOptions = false; showEditor = true },
+            onAcceptBuddyInvite = { showMessengerOptions = false; onAcceptBuddyInvite() },
+            onRejectBuddyInvite = { showMessengerOptions = false; onRejectBuddyInvite(); onBack() },
             onReplyAll = {
                 val recipients = recipient.split(",").map { it.trim() }.filter { it.isNotBlank() && it != ",,,," }
                 recipient = recipients.drop(1).take(3).joinToString(", ") + if (recipients.size > 4) ",,,," else ""
@@ -159,7 +171,10 @@ private fun LegacyMessengerOptions(
     messageType: String,
     hasRecipient: Boolean,
     hasMultipleRecipients: Boolean,
+    isBuddyInvite: Boolean,
     onSendNewMessage: () -> Unit,
+    onAcceptBuddyInvite: () -> Unit,
+    onRejectBuddyInvite: () -> Unit,
     onReplyAll: () -> Unit,
     onViewHistory: () -> Unit,
     onReceivedContacts: () -> Unit,
@@ -167,12 +182,18 @@ private fun LegacyMessengerOptions(
     onCloseTab: () -> Unit
 ) {
     val options = buildList<Pair<String, () -> Unit>> {
-        add("Send New Message" to onSendNewMessage)
-        if (hasRecipient) {
-            if (hasMultipleRecipients && messageType != "yahoo" && messageType != "msn") add("Reply All" to onReplyAll)
-            add("View History" to onViewHistory)
-            add("Received Contacts" to onReceivedContacts)
-            add("Profile" to onProfile)
+        if (isBuddyInvite) {
+            add("Accept Buddy Invite" to onAcceptBuddyInvite)
+            add("Reject Buddy Invite" to onRejectBuddyInvite)
+            add("Send Message" to onSendNewMessage)
+        } else {
+            add("Send New Message" to onSendNewMessage)
+            if (hasRecipient) {
+                if (hasMultipleRecipients && messageType != "yahoo" && messageType != "msn") add("Reply All" to onReplyAll)
+                add("View History" to onViewHistory)
+                add("Received Contacts" to onReceivedContacts)
+                add("Profile" to onProfile)
+            }
         }
         add("Close Tab" to onCloseTab)
     }
