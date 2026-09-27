@@ -34,7 +34,7 @@ fun BuddyListScreen(onBack: () -> Unit) {
     val density = LocalDensity.current
     var selectedGroup by remember { mutableIntStateOf(1) }
     var selectedBuddy by remember { mutableIntStateOf(-1) }
-    var showOptions by remember { mutableStateOf(false) }
+    var showOptions by remember { mutableStateOf(false) }\n    var showContactOptions by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
 
     val buddies = LegacyBuddyRepository.buddiesFor(context)
@@ -64,7 +64,7 @@ fun BuddyListScreen(onBack: () -> Unit) {
                     BuddyRow(
                         buddy = buddy,
                         selected = selected,
-                        onClick = { selectedBuddy = index }
+                        onClick = { selectedBuddy = index; showContactOptions = false }
                     )
                 }
             }
@@ -76,7 +76,7 @@ fun BuddyListScreen(onBack: () -> Unit) {
                 onLeftClick = { showOptions = true },
                 onRightClick = onBack
             )
-            if (showOptions) {
+            if (showContactOptions && selectedBuddy >= 0) {\n                BuddyContactOptionsPopup(\n                    buddy = visible[selectedBuddy],\n                    onDismiss = { showContactOptions = false }\n                )\n            }\n            if (showOptions) {
                 BuddyOptionsPopup(
                     hasBuddy = selectedBuddy >= 0,
                     isActionRequired = legacyGroups[selectedGroup].first == "action_required",
@@ -105,35 +105,73 @@ private fun BuddyOptionsPopup(
     onHelp: () -> Unit
 ) {
     val options = buildList {
-        if (!hasAuthorizedContact) add("Authorize as Buddy")
-        if (!hasBuddy) add("Request to Authorize")
-        if (hasYahoo || hasMsn || (buddyType == "amazilia" && hasAuthorizedContact)) add("Send Message")
-        if (hasEmail) add("Send Email")
-        if (hasMobile) add("Send SMS")
-        if (!hasBuddy) {
-            if (hasYahoo) add("Invite via Yahoo")
-            if (hasMsn) add("Invite via MSN")
-            if (hasMobile) add("Invite via E-SMS")
-            if (hasEmail) add("Invite via Email")
-        }
-        if (buddyType == "amazilia" && hasAuthorizedContact) {
-            add("Send Contacts")
-            add("Group Chat")
-        }
-        add("My Friends")
-        add("Other Groups")
-        add("Profile")
-        if (buddyType == "amazilia") add("Remove Buddy")
-        if (hasHistory) add("View History")
+        if (hasBuddy) add("Contact")
+        if (!hasBuddy && !isActionRequired) add("Send Group Message")
+        if (!hasBuddy && !isActionRequired) add("Manage Groups")
+        add("New Group")
+        add("Add/Invite Buddies")
+        add("Clear Message History")
+        add("Uzzap Help")
     }
     androidx.compose.ui.window.Dialog(onDismissRequest = onDismiss) {
         Column(Modifier.wrapContentWidth().background(ReptilianTheme.Surface)) {
             options.forEach { label ->
-                LegacyText(label, Modifier.fillMaxWidth().clickable { onDismiss() }.padding(horizontal = 18.dp, vertical = 9.dp))
+                LegacyText(
+                    label,
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            when (label) {
+                                "Add/Invite Buddies" -> onAdd()
+                                "Uzzap Help" -> onHelp()
+                                else -> onDismiss()
+                            }
+                        }
+                        .padding(horizontal = 18.dp, vertical = 9.dp)
+                )
             }
         }
     }
 }
+
+@Composable
+private fun BuddyContactOptionsPopup(
+    buddy: Buddy,
+    onDismiss: () -> Unit
+) {
+    val options = buildList {
+        if (buddy.status != "Available") add("Authorize as Buddy")
+        add("Request to Authorize")
+        add("Send Message")
+        if (buddy.email != null) add("Send Email")
+        if (buddy.mobile != null) add("Send SMS")
+        if (buddy.yahooId != null) add("Invite via Yahoo")
+        if (buddy.msnId != null) add("Invite via MSN")
+        if (buddy.mobile != null) add("Invite via E-SMS")
+        if (buddy.email != null) add("Invite via Email")
+        add("Send Contacts")
+        add("Group Chat")
+        add("My Friends")
+        add("Other Groups")
+        add("Profile")
+        add("Remove Buddy")
+        add("View History")
+    }
+    androidx.compose.ui.window.Dialog(onDismissRequest = onDismiss) {
+        Column(Modifier.wrapContentWidth().background(ReptilianTheme.Surface)) {
+            options.forEach { label ->
+                LegacyText(
+                    label,
+                    Modifier
+                        .fillMaxWidth()
+                        .clickable { onDismiss() }
+                        .padding(horizontal = 18.dp, vertical = 9.dp)
+                )
+            }
+        }
+    }
+}
+
 private fun BuddyRow(
     buddy: Buddy,
     selected: Boolean,
