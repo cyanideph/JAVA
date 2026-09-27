@@ -9,9 +9,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
+import androidx.compose.material3.TextButton
 
 /**
  * Java Uzzap parity for dg.java (startup menu) and k.java (primary login form).
@@ -28,11 +30,10 @@ fun LoginScreen(onLogin: () -> Unit, onExit: () -> Unit) {
         )
         "register" -> LegacyRegisterAccountScreen(
             onCancel = { page = "landing" },
-            onSubmit = { /* legacy registration transport boundary; validation occurs before submission */ }
+            onSubmit = { }
         )
         "forgot-password" -> LegacyForgotPasswordScreen(
-            onCancel = { page = "landing" },
-            onSubmit = { page = "landing" }
+            onCancel = { page = "landing" }
         )
         "help" -> LegacyHelpScreen(
             onCancel = { page = "landing" }
@@ -145,24 +146,45 @@ private fun LegacyRegisterAccountScreen(onCancel: () -> Unit, onSubmit: () -> Un
         LegacyFormField("credit", "Credit", "Credit", "Optional.  Enter the Userid of a person who helped you register.", 12)
     )
     var values by remember { mutableStateOf(emptyMap<String, String>()) }
+    var error by remember { mutableStateOf<String?>(null) }
+    val validChars: (String) -> Boolean = { it.all { ch -> ch.isLetterOrDigit() || ch.isWhitespace() } }
+    fun submit() {
+        val first = values["firstname"].orEmpty()
+        val last = values["lastname"].orEmpty()
+        val email = values["email"].orEmpty()
+        val pass = values["password"].orEmpty()
+        val pass2 = values["password2"].orEmpty()
+        error = when {
+            first.isEmpty() -> "Missing value for 'First Name'."
+            !validChars(first) -> "Your firstname must not contain special symbols."
+            last.isEmpty() -> "Missing value for 'Last Name'."
+            !validChars(last) -> "Your lastname must not contain special symbols."
+            email.isEmpty() -> "Missing value for 'Email Address'."
+            email.length < 3 || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> "Invalid entry for 'Email Address'."
+            pass.isEmpty() -> "Password must be at least 6 characters in length."
+            !validChars(pass) -> "Your password must not contain special symbols."
+            pass.length < 6 -> "Password must be at least 6 characters in length."
+            pass2.isEmpty() -> "Missing value for 'Re-enter Password'."
+            pass != pass2 -> "Passwords don't match."
+            else -> null
+        }
+        if (error == null) onSubmit()
+    }
     LegacyBackground(Modifier.fillMaxSize(), ReptilianTheme.Surface) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("* Register account", Modifier.fillMaxWidth())
             LegacyFormList(fields, values, { key, value -> values = values + (key to value) }, Modifier.weight(1f).fillMaxWidth().padding(8.dp))
-            LegacyFunctionBar("Register", "Cancel", Modifier.fillMaxWidth().clickable { onSubmit() })
+            LegacyFunctionBar("Register", "Cancel", Modifier.fillMaxWidth().clickable { submit() })
         }
     }
-}
-
-@Composable
-private fun LegacyForgotPasswordScreen(onCancel: () -> Unit) {
-    val fields = listOf(LegacyFormField("username", "User ID / Mobile Number", "User ID/Mobile Number", "Your User ID and Password will be sent to the Email address on your account.\n", 30))
-    var values by remember { mutableStateOf(emptyMap<String, String>()) }
-    LegacyBackground(Modifier.fillMaxSize(), ReptilianTheme.Surface) {
-        Column(Modifier.fillMaxSize()) {
-            LegacyTitleBar("Forgotten Password", Modifier.fillMaxWidth())
-            LegacyFormList(fields, values, { key, value -> values = values + (key to value) }, Modifier.weight(1f).fillMaxWidth().padding(8.dp))
-            LegacyFunctionBar("OK", "Cancel", Modifier.fillMaxWidth().clickable { onCancel() })
+    error?.let { msg ->
+        Dialog(onDismissRequest = { error = null }) {
+            LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
+                Column(Modifier.fillMaxWidth().padding(10.dp)) {
+                    LegacyText("* Incorrect data\n\nPlease make sure to fill out all fields as instructed:\n\n$msg")
+                    LegacyFunctionBar("", "OK", Modifier.fillMaxWidth().clickable { error = null })
+                }
+            }
         }
     }
 }
@@ -317,20 +339,29 @@ private fun LegacyNetworkLoginScreen(
     var showAutoLogin by remember { mutableStateOf(false) }
 
     if (showAutoLogin) {
-        LegacyConfirmationFrame(
-            message = "Would you like to log in automatically with your username/password when the application is started?",
-            onYes = {
-                prefs.edit().putString("amazilia.username", values["username"].orEmpty().lowercase()).putString("amazilia.password", values["password"].orEmpty()).putString("kolipri.xmpp.autologin", "yes").apply()
-                showAutoLogin = false
-                onLogin()
-            },
-            onNo = {
-                prefs.edit().putString("amazilia.username", values["username"].orEmpty().lowercase()).putString("amazilia.password", values["password"].orEmpty()).putString("kolipri.xmpp.autologin", "no").apply()
-                showAutoLogin = false
-                onLogin()
-            },
-            onDismiss = { showAutoLogin = false }
-        )
+        Dialog(onDismissRequest = { showAutoLogin = false }) {
+            LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
+                Column(Modifier.fillMaxWidth().padding(10.dp)) {
+                    LegacyText("Would you like to log in automatically with your username/password when the application is started?")
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                        TextButton(onClick = {
+                            prefs.edit().putString("amazilia.username", values["username"].orEmpty().lowercase())
+                                .putString("amazilia.password", values["password"].orEmpty())
+                                .putString("kolipri.xmpp.autologin", "yes").apply()
+                            showAutoLogin = false
+                            onLogin()
+                        }) { LegacyText("Yes") }
+                        TextButton(onClick = {
+                            prefs.edit().putString("amazilia.username", values["username"].orEmpty().lowercase())
+                                .putString("amazilia.password", values["password"].orEmpty())
+                                .putString("kolipri.xmpp.autologin", "no").apply()
+                            showAutoLogin = false
+                            onLogin()
+                        }) { LegacyText("No") }
+                    }
+                }
+            }
+        }
     }
 
     LegacyBackground(Modifier.fillMaxSize(), ReptilianTheme.Surface) {
