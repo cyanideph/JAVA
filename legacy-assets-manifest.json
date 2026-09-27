@@ -1,1 +1,6 @@
-{"sourceRepository":"https://github.com/cyanideph/javauzzap","sourceRef":"main","destinationRoot":"legacy","strategy":"canonical-binary-sync"}
+{
+  "sourceRepository": "https://github.com/cyanideph/javauzzap",
+  "sourceRef": "4645532460a865a6196ab04091a46f0d33d381e7",
+  "destinationRoot": "legacy",
+  "strategy": "canonical-binary-sync"
+}
