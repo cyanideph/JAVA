@@ -39,6 +39,8 @@ fun MessagesScreen(onBack: () -> Unit) {
     var showEditor by remember { mutableStateOf(false) }
     var recipientMode by remember { mutableStateOf(false) }
     var showEmoticons by remember { mutableStateOf(false) }
+    val messageType = if (selectedTab == 2) "chat" else "im"
+    val editorLimit = if (messageType == "chat") 160 else 700
 
     val messages = remember { listOf(
         Message("cy", "Welcome to Uzzap", "now", false),
@@ -49,7 +51,7 @@ fun MessagesScreen(onBack: () -> Unit) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar(
                 when (selectedTab) {
-                    1 -> "EM - Friend 1"
+                    1 -> if (recipient.isBlank()) "EM - Friend 1" else "EM - $recipient"
                     2 -> "Chat Room"
                     else -> "Instant Messaging"
                 },
@@ -81,12 +83,13 @@ fun MessagesScreen(onBack: () -> Unit) {
             hasRecipient = recipient.isNotBlank(),
             onEdit = { showOptions = false; showEditor = true },
             onRecipient = { showOptions = false; recipientMode = true },
+            messageType = messageType,
             onToggleRecipients = { hideRecipients = !hideRecipients; showOptions = false },
             onEmoticon = { showOptions = false; showEmoticons = true }
         )
     }
     if (showEditor) {
-        LegacyEditorDialog(messageText, { messageText = it.take(700) }) { showEditor = false }
+        LegacyEditorDialog(messageText, { messageText = it.take(editorLimit) }, editorLimit) { showEditor = false }
     }
     if (recipientMode) {
         LegacyRecipientDialog(
@@ -100,7 +103,7 @@ fun MessagesScreen(onBack: () -> Unit) {
     }
     if (showEmoticons) {
         LegacyEmoticonDialog(
-            onPick = { messageText = (messageText + it).take(700); showEmoticons = false },
+            onPick = { messageText = (messageText + it).take(editorLimit); showEmoticons = false },
             onDismiss = { showEmoticons = false }
         )
     }
@@ -136,6 +139,7 @@ private fun MessageRow(message: Message) {
 private fun LegacyMessageOptions(
     onDismiss: () -> Unit,
     hasRecipient: Boolean,
+    messageType: String,
     onEdit: () -> Unit,
     onRecipient: () -> Unit,
     onToggleRecipients: () -> Unit,
@@ -144,8 +148,10 @@ private fun LegacyMessageOptions(
     val options = buildList<Pair<String, () -> Unit>> {
         add((if (hasRecipient) "Send Message" else "Set Recipient") to (if (hasRecipient) onDismiss else onRecipient))
         add("Edit Message" to onEdit)
-        if (hasRecipient) add("Add Recipient" to onRecipient)
-        add("Show/Hide Recipients" to onToggleRecipients)
+        if (messageType != "chat") {
+            add("Add Recipient" to onRecipient)
+            add("Show/Hide Recipients" to onToggleRecipients)
+        }
         add("Add Emoticon" to onEmoticon)
     }
     Dialog(onDismissRequest = onDismiss) {
@@ -164,11 +170,12 @@ private fun LegacyMessageOptions(
 }
 
 @Composable
-private fun LegacyEditorDialog(value: String, onValue: (String) -> Unit, onClose: () -> Unit) {
+private fun LegacyEditorDialog(value: String, onValue: (String) -> Unit, maxLength: Int, onClose: () -> Unit) {
     Dialog(onDismissRequest = onClose) {
         Column(Modifier.background(ReptilianTheme.Surface).padding(10.dp)) {
             LegacyText("Type your message")
             OutlinedTextField(value, onValue, Modifier.fillMaxWidth(), maxLines = 8)
+            LegacyText("Maximum $maxLength characters")
             Row {
                 LegacyText("OK", Modifier.clickable(onClick = onClose).padding(10.dp))
                 LegacyText("Cancel", Modifier.clickable(onClick = onClose).padding(10.dp))
