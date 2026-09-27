@@ -33,7 +33,7 @@ private fun legacyMessageContacts(messageType: String): List<Buddy> = when (mess
 }
 
 private fun legacyMessengerTitle(messageType: String, recipient: String): String {
-    val display = recipient.ifBlank { "Friend 1" }
+    val display = recipient
     return when (messageType) {
         "__abm__" -> "New buddies"
         "chatroom" -> "Chat Room"
@@ -73,10 +73,8 @@ fun MessagesScreen(
     val editorLimit = if (messageType == "chatroom") 160 else 700
     val recipientCount = recipient.split(",").map { it.trim() }.count { it.isNotBlank() && !it.equals(",,,,", ignoreCase = false) }
 
-    val messages = remember { listOf(
-        Message("cy", "Welcome to Uzzap", "now", false),
-        Message("Friend 1", "Hello!", "now", false)
-    ) }
+    // No fabricated message records: legacy message rows are service/state driven.
+    val messages = emptyList<Message>()
 
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
