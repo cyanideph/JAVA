@@ -22,29 +22,37 @@ import com.cyanideph.java.legacy.ui.*
  */
 @Composable
 fun LoginScreen(onLogin: () -> Unit) {
-    var showForm by remember { mutableStateOf(false) }
+    var page by remember { mutableStateOf("landing") }
 
-    if (showForm) {
-        LegacyNetworkLoginScreen(
-            onCancel = { showForm = false },
+    when (page) {
+        "login" -> LegacyNetworkLoginScreen(
+            onCancel = { page = "landing" },
             onLogin = onLogin
         )
-    } else {
-        LegacyLoginLandingScreen(onLogin = { showForm = true })
+        "register" -> LegacyRegisterAccountScreen(
+            onCancel = { page = "landing" }
+        )
+        else -> LegacyLoginLandingScreen(
+            onLogin = { page = "login" },
+            onRegister = { page = "register" }
+        )
     }
 }
 
 @Composable
-private fun LegacyLoginLandingScreen(onLogin: () -> Unit) {
+private fun LegacyLoginLandingScreen(
+    onLogin: () -> Unit,
+    onRegister: () -> Unit
+) {
     val context = LocalContext.current
 
     val items = listOf(
-        "Login to Network" to true,
-        "Register a New Account" to false,
-        "Forgotten Password" to false,
-        "Help" to false,
-        "About Uzzap" to false,
-        "Exit Application" to false
+        "Login to Network" to "login",
+        "Register a New Account" to "register",
+        "Forgotten Password" to "disabled",
+        "Help" to "disabled",
+        "About Uzzap" to "disabled",
+        "Exit Application" to "disabled"
     )
 
     LegacyBackground(
@@ -72,11 +80,14 @@ private fun LegacyLoginLandingScreen(onLogin: () -> Unit) {
                     .fillMaxWidth()
                     .weight(0.66f)
             ) {
-                items.forEach { (label, enabled) ->
+                items.forEach { (label, action) ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable(enabled = enabled) { onLogin() }
+                            .clickable(enabled = action != "disabled") {
+                                if (action == "login") onLogin()
+                                if (action == "register") onRegister()
+                            }
                             .padding(horizontal = 8.dp, vertical = 6.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -97,6 +108,68 @@ private fun LegacyLoginLandingScreen(onLogin: () -> Unit) {
                 leftLabel = "",
                 rightLabel = "Exit",
                 modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+}
+
+
+@Composable
+private fun LegacyRegisterAccountScreen(onCancel: () -> Unit) {
+    var firstName by remember { mutableStateOf("") }
+    var lastName by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var password2 by remember { mutableStateOf("") }
+    var credit by remember { mutableStateOf("") }
+
+    LegacyBackground(
+        modifier = Modifier.fillMaxSize(),
+        color = ReptilianTheme.Surface
+    ) {
+        Column(Modifier.fillMaxSize()) {
+            LegacyTitleBar("* Register account", Modifier.fillMaxWidth())
+
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 8.dp)
+            ) {
+                LegacyText("First Name")
+                LegacyText("Your first name")
+                OutlinedTextField(firstName, { firstName = it.take(60) }, Modifier.fillMaxWidth(), singleLine = true)
+
+                Spacer(Modifier.height(6.dp))
+                LegacyText("Last Name")
+                LegacyText("Your last name")
+                OutlinedTextField(lastName, { lastName = it.take(60) }, Modifier.fillMaxWidth(), singleLine = true)
+
+                Spacer(Modifier.height(6.dp))
+                LegacyText("Email Address")
+                LegacyText("Your email address")
+                OutlinedTextField(email, { email = it }, Modifier.fillMaxWidth(), singleLine = true)
+
+                Spacer(Modifier.height(6.dp))
+                LegacyText("Password")
+                LegacyText("Choose your password")
+                OutlinedTextField(password, { password = it.take(30) }, Modifier.fillMaxWidth(), singleLine = true)
+
+                Spacer(Modifier.height(6.dp))
+                LegacyText("Re-enter password")
+                LegacyText("Password verification")
+                OutlinedTextField(password2, { password2 = it.take(30) }, Modifier.fillMaxWidth(), singleLine = true)
+
+                Spacer(Modifier.height(6.dp))
+                LegacyText("Credit")
+                LegacyText("Credit")
+                OutlinedTextField(credit, { credit = it.take(12) }, Modifier.fillMaxWidth(), singleLine = true)
+            }
+
+            LegacyFunctionBar(
+                leftLabel = "Register",
+                rightLabel = "Cancel",
+                modifier = Modifier.fillMaxWidth().clickable { onCancel() }
             )
         }
     }
