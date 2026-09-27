@@ -68,7 +68,10 @@ fun ChangePasswordScreen(onBack: () -> Unit) {
 
 @Composable
 fun ChatroomTonesScreen(onBack: () -> Unit) {
-    var enabled by remember { mutableStateOf(true) }
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val prefs = remember { context.getSharedPreferences("legacy_settings", android.content.Context.MODE_PRIVATE) }
+    var enabled by remember { mutableStateOf(prefs.getString("chatroom.alert", "yes") != "no") }
+
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("* Chatroom Tones", Modifier.fillMaxWidth())
@@ -88,11 +91,13 @@ fun ChatroomTonesScreen(onBack: () -> Unit) {
                 leftLabel = "",
                 rightLabel = "Save",
                 modifier = Modifier.fillMaxWidth(),
-                onRightClick = onBack
+                onRightClick = {
+                    prefs.edit().putString("chatroom.alert", if (enabled) "yes" else "no").apply()
+                    onBack()
+                }
             )
         }
     }
-    if (processing) LegacyDialogMessage("Your request is being processed. Please wait...") { processing = false }
 }
 @Composable
 fun SubscriptionMenuScreen(onBack: () -> Unit, onPurchaseHistory: () -> Unit) {
