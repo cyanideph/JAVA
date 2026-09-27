@@ -49,7 +49,7 @@ fun ReceivedContactsScreen(onBack: () -> Unit) {
                 leftLabel = "Options",
                 rightLabel = "Close",
                 modifier = Modifier.fillMaxWidth()
-                    .clickable { onBack() }
+                    .clickable { showOptions = true }
             )
         }
     }
