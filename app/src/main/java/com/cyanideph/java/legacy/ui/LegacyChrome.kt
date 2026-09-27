@@ -42,9 +42,9 @@ fun LegacyTitleBar(title:String,modifier:Modifier=Modifier){
 
 @Composable
 fun LegacyFunctionBar(
+    modifier: Modifier = Modifier,
     leftLabel: String = "",
-    rightLabel: String = "",
-    modifier: Modifier = Modifier
+    rightLabel: String = ""
 ) {
     val context = LocalContext.current
     val density = LocalDensity.current
