@@ -68,7 +68,7 @@ fun RegistrationScreen(onBack: () -> Unit) {
 
     error?.let { message ->
         LegacyDialogMessage(
-            text = "* Incorrect data\\n\\nPlease make sure to fill out all fields as instructed:\\n\\n$message",
+            text = "* Incorrect data\n\nPlease make sure to fill out all fields as instructed:\n\n$message",
             onDismiss = { error = null }
         )
     }
