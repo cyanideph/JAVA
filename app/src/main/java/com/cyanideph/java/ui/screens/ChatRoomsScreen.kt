@@ -18,13 +18,20 @@ fun ChatRoomsScreen(onBack: () -> Unit, onRoom: (String) -> Unit) {
     val rooms = emptyList<ChatRoom>()
     var selected by remember { mutableIntStateOf(0) }
     var showOptions by remember { mutableStateOf(false) }
+    var inCategory by remember { mutableStateOf(false) }
+    var loading by remember { mutableStateOf(true) }
+    var searchError by remember { mutableStateOf<String?>(null) }
 
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("Chat Rooms", Modifier.fillMaxWidth())
             Column(Modifier.weight(1f).fillMaxWidth()) {
-                if (rooms.isEmpty()) {
-                    LegacyText("Getting Categories..", Modifier.padding(6.dp))
+                if (searchError != null) {
+                    LegacyText(searchError!!, Modifier.padding(6.dp))
+                } else if (loading) {
+                    LegacyText(if (inCategory) "Getting Rooms.." else "Getting Categories..", Modifier.padding(6.dp))
+                } else if (rooms.isEmpty()) {
+                    LegacyText("No chat rooms", Modifier.padding(6.dp))
                 } else {
                     rooms.forEachIndexed { index, room ->
                         LegacyText(
@@ -39,10 +46,10 @@ fun ChatRoomsScreen(onBack: () -> Unit, onRoom: (String) -> Unit) {
             }
             LegacyFunctionBar(
                 leftLabel = "Options",
-                rightLabel = "Menu",
+                rightLabel = if (inCategory) "Back" else "Menu",
                 modifier = Modifier.fillMaxWidth(),
                 onLeftClick = { showOptions = true },
-                onRightClick = onBack
+                onRightClick = { if (inCategory) { inCategory = false; loading = false; searchError = null } else onBack }
             )
         }
     }
@@ -51,15 +58,15 @@ fun ChatRoomsScreen(onBack: () -> Unit, onRoom: (String) -> Unit) {
         Dialog(onDismissRequest = { showOptions = false }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
             Column(Modifier.background(ReptilianTheme.Surface)) {
                 LegacyText(
-                    if (rooms.isEmpty()) "Select Category" else "Join Room",
+                    if (rooms.isEmpty()) if (inCategory) "Join Room" else "Select Category" else "Join Room",
                     Modifier.fillMaxWidth().clickable {
                         showOptions = false
-                        if (rooms.isNotEmpty()) onRoom(rooms[selected].name)
+                        if (rooms.isNotEmpty()) onRoom(rooms[selected].name) else { inCategory = true; loading = true }
                     }.padding(horizontal = 18.dp, vertical = 9.dp)
                 )
                 LegacyText(
-                    if (rooms.isEmpty()) "Refresh Category List" else "Refresh Room List",
-                    Modifier.fillMaxWidth().clickable { showOptions = false }
+                    if (rooms.isEmpty()) if (inCategory) "Refresh Room List" else "Refresh Category List" else "Refresh Room List",
+                    Modifier.fillMaxWidth().clickable { showOptions = false; loading = true }
                         .padding(horizontal = 18.dp, vertical = 9.dp)
                 )
                 LegacyText(
