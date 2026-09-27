@@ -26,6 +26,19 @@ private data class LegacyMessageTab(val title: String)
 
 private fun legacyMessageContacts(): List<Buddy> = LegacyBuddyRepository.buddies
 
+private fun legacyMessengerTitle(messageType: String, recipient: String): String {
+    val display = recipient.ifBlank { "Friend 1" }
+    return when (messageType) {
+        "chatroom" -> "Chat Room"
+        "sms", "smsr" -> "SMS - $display"
+        "email" -> "Email - $display"
+        "im" -> "EM - $display"
+        "yahoo" -> "Y! - $display"
+        "msn" -> "MSN - $display"
+        else -> "EM - $display"
+    }
+}
+
 
 @Composable
 fun MessagesScreen(onBack: () -> Unit) {
@@ -51,11 +64,7 @@ fun MessagesScreen(onBack: () -> Unit) {
     LegacyBackground(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar(
-                when (selectedTab) {
-                    1 -> if (recipient.isBlank()) "EM - Friend 1" else "EM - $recipient"
-                    2 -> "Chat Room"
-                    else -> "Instant Messaging"
-                },
+                legacyMessengerTitle(messageType, recipient),
                 Modifier.fillMaxWidth()
             )
             LegacyTabStrip(
