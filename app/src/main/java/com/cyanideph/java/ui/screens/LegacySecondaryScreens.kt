@@ -65,10 +65,7 @@ fun OfflineSettingsScreen(onBack: () -> Unit) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("Offline Settings", Modifier.fillMaxWidth())
             LegacyText(
-                "* Offline Settings
-
-Choose how your messages will be delivered when Uzzap is off.
-",
+                "* Offline Settings\n\nChoose how your messages will be delivered when Uzzap is off.\n",
                 Modifier.fillMaxWidth().padding(6.dp)
             )
             listOf("sms" to "Available SMS", "email" to "Email").forEach { (value, label) ->
@@ -114,7 +111,7 @@ Choose how your messages will be delivered when Uzzap is off.
 
     if (showHelp) {
         LegacyDialogMessage(
-            "* Offline Settings
+            """* Offline Settings
 
 Allows you to set how your messages will be delivered when UZZAP is off:
 
@@ -122,7 +119,7 @@ Choose " Available SMS " to receive messages via SMS when Uzzap is off - Only av
 
 Choose " Email " to have your messages forwarded to Email when off.
 
-If no options are selected, your messages will be stored for up to 14 days until you next Login to Uzzap."
+If no options are selected, your messages will be stored for up to 14 days until you next Login to Uzzap."""
         ) { showHelp = false }
     }
 }
