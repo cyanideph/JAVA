@@ -48,7 +48,7 @@ fun SettingsScreen(
                     )
                 }
             }
-            LegacyFunctionBar(leftLabel = "Options", rightLabel = "Menu", modifier = Modifier.fillMaxWidth().clickable { showOptions = true })
+            LegacyFunctionBar(leftLabel = "Options", rightLabel = "Menu", modifier = Modifier.fillMaxWidth(), onLeftClick = { showOptions = true }, onRightClick = onBack)
         }
     }
     if (showOptions) Dialog(onDismissRequest = { showOptions = false }) {
