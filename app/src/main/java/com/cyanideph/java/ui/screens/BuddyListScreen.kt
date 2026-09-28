@@ -284,6 +284,7 @@ private fun BuddyContactOptionsPopup(
     }
 }
 
+@Composable
 private fun BuddyRow(
     buddy: Buddy,
     selected: Boolean,
