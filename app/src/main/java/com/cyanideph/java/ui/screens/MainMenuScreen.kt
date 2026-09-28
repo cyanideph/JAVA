@@ -17,6 +17,7 @@ import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.ui.LegacyBackground
 import com.cyanideph.java.legacy.ui.LegacyText
 import com.cyanideph.java.legacy.ui.LegacyFunctionBar
+import com.cyanideph.java.legacy.ui.LegacyAdaptiveDialog
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 
 private data class LegacyMenuItem(val label: String, val small: String, val large: String, val onClick: () -> Unit)
