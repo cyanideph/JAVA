@@ -1,6 +1,7 @@
 package com.cyanideph.java.legacy.ui
 
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.ui.unit.dp
 
 /**
