@@ -13,8 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 
 
@@ -88,10 +86,7 @@ private fun LegacyFieldEditor(
         5 -> input.filter { it.isDigit() || it == '.' || it == '-' }
         else -> input
     }.take(field.maxLength)
-    Dialog(
-        onDismissRequest = onCancel,
-        properties = DialogProperties(usePlatformDefaultWidth = false)
-    ) {
+    LegacyAdaptiveDialog(onDismissRequest = onCancel) {
         LegacyFrame(
             Modifier
                 .fillMaxWidth()
@@ -138,10 +133,7 @@ fun LegacyDialogMessage(
     text: String,
     onDismiss: () -> Unit
 ) {
-    Dialog(
-        onDismissRequest = onDismiss,
-        properties = DialogProperties(usePlatformDefaultWidth = false)
-    ) {
+    LegacyAdaptiveDialog(onDismissRequest = onDismiss) {
         LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
             Column(Modifier.fillMaxWidth().padding(10.dp)) {
                 LegacyText(text)
