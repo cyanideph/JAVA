@@ -24,7 +24,8 @@ private val legacyFunctionStyle get() = TextStyle(color=ReptilianTheme.FunctionB
  val l=LegacyAssets.rememberBitmap(c,left)
  val m=LegacyAssets.rememberBitmap(c,middle)
  val r=LegacyAssets.rememberBitmap(c,right)
- val scale=legacyVisualMetrics().scale
+ val metrics=legacyVisualMetrics()
+ val scale=metrics.scale
  val h=maxOf(l.height,m.height,r.height)
  Row(modifier.height((h*scale).dp)){
   Image(l,null,Modifier.width((l.width*scale).dp).fillMaxHeight(),contentScale=ContentScale.FillBounds)
@@ -36,7 +37,7 @@ private val legacyFunctionStyle get() = TextStyle(color=ReptilianTheme.FunctionB
 @Composable fun LegacyTitleBar(title:String,modifier:Modifier=Modifier){
  Box(modifier){
   LegacyBitmapBar(BarPath+"titlebar-left.png",BarPath+"titlebar-middle.png",BarPath+"titlebar-right.png",Modifier.fillMaxWidth())
-  BasicText(title,style=legacyTitleStyle,modifier=Modifier.padding(horizontal=8.dp).wrapContentHeight())
+  BasicText(title,style=legacyTitleStyle,modifier=Modifier.padding(horizontal=legacyVisualMetrics().space8).wrapContentHeight())
  }
 }
 
@@ -46,8 +47,8 @@ private val legacyFunctionStyle get() = TextStyle(color=ReptilianTheme.FunctionB
  Box(modifier){
   LegacyBitmapBar("themes/default/functionbar-left.png","themes/default/functionbar-middle.png","themes/default/functionbar-right.png",Modifier.fillMaxWidth())
   Row(Modifier.fillMaxWidth().height(metrics.functionBarHeight),horizontalArrangement=Arrangement.SpaceBetween){
-   BasicText(leftLabel,style=legacyFunctionStyle,modifier=Modifier.padding(start=6.dp).then(if(onLeftClick!=null)Modifier.clickable{onLeftClick()}else Modifier))
-   BasicText(rightLabel,style=legacyFunctionStyle,modifier=Modifier.padding(end=6.dp).then(if(onRightClick!=null)Modifier.clickable{onRightClick()}else Modifier))
+   BasicText(leftLabel,style=legacyFunctionStyle,modifier=Modifier.padding(start=legacyVisualMetrics().space6).then(if(onLeftClick!=null)Modifier.clickable{onLeftClick()}else Modifier))
+   BasicText(rightLabel,style=legacyFunctionStyle,modifier=Modifier.padding(end=legacyVisualMetrics().space6).then(if(onRightClick!=null)Modifier.clickable{onRightClick()}else Modifier))
   }
  }
 }
