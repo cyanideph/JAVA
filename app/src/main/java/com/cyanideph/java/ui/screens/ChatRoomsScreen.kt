@@ -56,7 +56,11 @@ fun ChatRoomsScreen(onBack: () -> Unit, onRoom: (String) -> Unit) {
 
     if (showOptions) {
         Dialog(onDismissRequest = { showOptions = false }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
-            Column(Modifier.background(ReptilianTheme.Surface)) {
+            Column(
+                Modifier
+                    .legacyAdaptivePopupWidth()
+                    .background(ReptilianTheme.Surface)
+            ) {
                 LegacyText(
                     if (rooms.isEmpty()) if (inCategory) "Join Room" else "Select Category" else "Join Room",
                     Modifier.fillMaxWidth().clickable {
