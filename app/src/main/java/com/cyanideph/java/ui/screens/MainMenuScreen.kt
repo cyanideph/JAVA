@@ -57,7 +57,7 @@ fun MainMenuScreen(
         LegacyMenuItem("Silent Mode", "themes/default/008-ringtone-small.png", "themes/default/008-ringtone-large.png", { silentModeEnabled = !silentModeEnabled; onSilentMode(silentModeEnabled) }),
         LegacyMenuItem("Themes", "themes/default/005-themes-small.png", "themes/default/005-themes-large.png", onThemes),
         LegacyMenuItem("Help", "themes/default/006-help-small.png", "themes/default/006-help-large.png", onHelp),
-        LegacyMenuItem("Battery Saving", "007-batteryinfo-small", "007-batteryinfo-large", onBatterySaving),
+        LegacyMenuItem("Battery Saving", "themes/default/007-batteryinfo-small.png", "themes/default/007-batteryinfo-large.png", onBatterySaving),
         LegacyMenuItem("Extended Messaging", "d000-em-small", "d000-em-large", onMessages),
         LegacyMenuItem("Instant Messaging", "d001-im-small", "d001-im-large", onInstantMessaging),
         LegacyMenuItem("Chat Rooms", "d002-chat-small", "d002-chat-large", onRooms),
