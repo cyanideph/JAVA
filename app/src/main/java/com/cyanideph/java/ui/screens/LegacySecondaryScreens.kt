@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
 
@@ -92,7 +91,7 @@ fun OfflineSettingsScreen(onBack: () -> Unit) {
     }
 
     if (showOptions) {
-        Dialog(onDismissRequest = { showOptions = false }) {
+        LegacyAdaptiveDialog(onDismissRequest = { showOptions = false }, maxWidth = 360.dp) {
             LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
                 Column(Modifier.fillMaxWidth()) {
                     listOf("Help", "Close Tab").forEach { action ->
@@ -152,7 +151,7 @@ fun PurchaseHistoryScreen(onBack: () -> Unit) {
     }
 
     if (showOptions) {
-        Dialog(onDismissRequest = { showOptions = false }) {
+        LegacyAdaptiveDialog(onDismissRequest = { showOptions = false }, maxWidth = 360.dp) {
             LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
                 Column(Modifier.fillMaxWidth()) {
                     listOf("Refresh", "Close").forEach { action ->
@@ -217,7 +216,7 @@ fun ChatInviteScreen(room: String, onBack: () -> Unit, onMenu: () -> Unit) {
     }
 
     if (showOptions && !accepted) {
-        Dialog(onDismissRequest = { showOptions = false }) {
+        LegacyAdaptiveDialog(onDismissRequest = { showOptions = false }, maxWidth = 360.dp) {
             LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
                 Column(Modifier.fillMaxWidth()) {
                     listOf("Yes", "No", "Close Tab").forEach { action ->
@@ -266,7 +265,7 @@ fun StoredMessageScreen(
         }
     }
     if (showOptions) {
-        Dialog(onDismissRequest = { showOptions = false }) {
+        LegacyAdaptiveDialog(onDismissRequest = { showOptions = false }, maxWidth = 360.dp) {
             LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
                 Column(Modifier.fillMaxWidth()) {
                     options.forEach { action ->
