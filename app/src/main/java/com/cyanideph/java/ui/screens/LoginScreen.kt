@@ -78,7 +78,7 @@ private fun LegacyLoginLandingScreen(
         color = ReptilianTheme.Surface
     ) {
         Column(Modifier.fillMaxSize()) {
-            Box(
+            BoxWithConstraints(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(0.34f),
@@ -89,7 +89,8 @@ private fun LegacyLoginLandingScreen(
                         context,
                         "themes/default/logo-large.png"
                     ),
-                    contentDescription = "Uzzap"
+                    contentDescription = "Uzzap",
+                    modifier = Modifier.widthIn(max = minOf(maxWidth * 0.82f, 240.dp))
                 )
             }
 
@@ -97,6 +98,7 @@ private fun LegacyLoginLandingScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(0.66f)
+                    .verticalScroll(rememberScrollState())
             ) {
                 items.forEach { (label, action) ->
                     Row(
