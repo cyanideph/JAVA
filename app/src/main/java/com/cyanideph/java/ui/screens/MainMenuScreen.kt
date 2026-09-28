@@ -82,7 +82,7 @@ fun MainMenuScreen(
             Column(Modifier.fillMaxSize()) {
                 Box(Modifier.weight(1f).fillMaxWidth()) {
                     val totalRows = (items.size + columnCount - 1) / columnCount
-                    val viewportHeight = maxHeight - textBarHeight - bottomBarHeight - functionBarHeight
+                    val viewportHeight = with(density) { constraints.maxHeight.toDp() } - textBarHeight - bottomBarHeight - functionBarHeight
                     val visibleRows = maxOf(1, ((with(density) { viewportHeight.toPx() } + spacingPx) / (cellHeightPx + spacingPx)).toInt())
                     val needsScroll = totalRows > visibleRows
                     val maxFirstRow = (totalRows - visibleRows).coerceAtLeast(0)
