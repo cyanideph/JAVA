@@ -10,23 +10,28 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.asImageBitmap
 
 object LegacyThemeState {
-    var current by mutableStateOf("black")
+    private const val DEFAULT_THEME = "default"
+    private val bundledThemes = setOf("default", "uzzap")
+
+    var current by mutableStateOf(DEFAULT_THEME)
         private set
 
     private var loaded = false
 
     fun ensure(context: Context) {
         if (!loaded) {
-            current = context.getSharedPreferences("kalypte.theme", Context.MODE_PRIVATE)
-                .getString("kalypte.theme", "black") ?: "black"
+            val saved = context.getSharedPreferences("kalypte.theme", Context.MODE_PRIVATE)
+                .getString("kalypte.theme", DEFAULT_THEME) ?: DEFAULT_THEME
+            current = if (saved in bundledThemes) saved else DEFAULT_THEME
             loaded = true
         }
     }
 
     fun select(context: Context, theme: String) {
-        current = theme
+        val selected = if (theme in bundledThemes) theme else DEFAULT_THEME
+        current = selected
         context.getSharedPreferences("kalypte.theme", Context.MODE_PRIVATE)
-            .edit().putString("kalypte.theme", theme).apply()
+            .edit().putString("kalypte.theme", selected).apply()
     }
 }
 
