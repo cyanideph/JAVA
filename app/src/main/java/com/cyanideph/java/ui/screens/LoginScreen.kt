@@ -295,13 +295,11 @@ Copyright (c) 2007/2008 3rd Brand Pte Ltd. All Rights Reserved."""
     ) {
         Column(Modifier.fillMaxSize()) {
             LegacyTitleBar("Help", Modifier.fillMaxWidth())
-            androidx.compose.foundation.rememberScrollState().let { scroll ->
-                androidx.compose.foundation.verticalScroll(scroll).let { scrollModifier ->
-                    androidx.compose.foundation.layout.Column(
-                        Modifier.weight(1f).fillMaxWidth().then(scrollModifier).padding(8.dp)
-                    ) {
-                        LegacyText(helpText)
-                    }
+            val scroll = rememberScrollState()
+                Column(
+                    Modifier.weight(1f).fillMaxWidth().verticalScroll(scroll).padding(8.dp)
+                ) {
+                    LegacyText(helpText)
                 }
             }
             LegacyFunctionBar(
