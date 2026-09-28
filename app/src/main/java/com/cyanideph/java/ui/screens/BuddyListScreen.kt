@@ -32,7 +32,6 @@ private val legacyGroups = listOf(
 @Composable
 fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: () -> Unit = {}) {
     val context = LocalContext.current
-    val density = LocalDensity.current
     var selectedGroup by remember { mutableIntStateOf(1) }
     var selectedBuddy by remember { mutableIntStateOf(-1) }
     var search by remember { mutableStateOf("") }
@@ -297,6 +296,7 @@ private fun BuddyRow(
         else -> "themes/default/offline.png"
     }
     val icon = LegacyAssets.rememberBitmap(context, statusAsset)
+    val metrics = com.cyanideph.java.legacy.ui.legacyVisualMetrics()
     val bg = if (selected) ReptilianTheme.MenuSelected else ReptilianTheme.Surface
 
     Row(
@@ -310,10 +310,7 @@ private fun BuddyRow(
         Image(
             icon,
             contentDescription = buddy.status,
-            Modifier.size(
-                with(density) { icon.width.toDp() },
-                with(density) { icon.height.toDp() }
-            ),
+            Modifier.size(metrics.presenceIconSize),
             contentScale = ContentScale.None
         )
         Spacer(Modifier.width(6.dp))
