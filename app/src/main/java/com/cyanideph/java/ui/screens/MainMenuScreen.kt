@@ -12,7 +12,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.window.Dialog
 import com.cyanideph.java.legacy.ui.LegacyFrame
 import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.ui.LegacyBackground
@@ -139,7 +138,7 @@ private fun LegacyOptionsPopup(
         "About Uzzap" to { onDismiss(); onAbout() },
         "Exit Application" to { onDismiss(); onExit() }
     )
-    Dialog(onDismissRequest = onDismiss) {
+    LegacyAdaptiveDialog(onDismissRequest = onDismiss, maxWidth = 360.dp) {
         LegacyFrame(Modifier.wrapContentWidth()) {
             Column(Modifier.wrapContentWidth().background(ReptilianTheme.Surface)) {
                 options.forEach { (label, action) ->
