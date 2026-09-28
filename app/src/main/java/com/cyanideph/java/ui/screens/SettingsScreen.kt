@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
 
@@ -51,7 +50,7 @@ fun SettingsScreen(
             LegacyFunctionBar(leftLabel = "Options", rightLabel = "Menu", modifier = Modifier.fillMaxWidth(), onLeftClick = { showOptions = true }, onRightClick = onBack)
         }
     }
-    if (showOptions) Dialog(onDismissRequest = { showOptions = false }) {
+    if (showOptions) LegacyAdaptiveDialog(onDismissRequest = { showOptions = false }, maxWidth = 360.dp) {
         Column(Modifier.background(ReptilianTheme.Surface)) {
             options.forEach { label -> LegacyText(label, Modifier.fillMaxWidth().clickable { select(label) }.padding(horizontal = 18.dp, vertical = 9.dp)) }
         }
