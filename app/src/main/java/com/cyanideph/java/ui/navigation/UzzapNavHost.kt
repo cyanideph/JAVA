@@ -14,13 +14,26 @@ composable(Routes.BUDDIES){BuddyListScreen(onBack={navController.popBackStack()}
 composable(Routes.RECEIVED_CONTACTS){ReceivedContactsScreen{navController.popBackStack()}}
 composable(Routes.IM_CONNECTIONS){InstantMessagingConnectionsScreen(onBack={navController.popBackStack()})}
 composable(Routes.MESSAGES){MessagesScreen(onBack={navController.popBackStack()},onViewHistory={navController.navigate(Routes.HISTORY)},onReceivedContacts={navController.navigate(Routes.RECEIVED_CONTACTS)},onProfile={navController.navigate(Routes.PROFILE)})}
-composable(Routes.ROOMS){ChatRoomsScreen(onBack={navController.popBackStack()},onRoom={n->navController.navigate("room/"+java.net.URLEncoder.encode(n,"UTF-8"))}}
+composable(Routes.ROOMS) {
+    ChatRoomsScreen(
+        onBack = { navController.popBackStack() },
+        onRoom = { name ->
+            navController.navigate(
+                "room/" + java.net.URLEncoder.encode(name, "UTF-8")
+            )
+        }
+    )
+}
 composable(Routes.ROOM){e->ChatRoomScreen(java.net.URLDecoder.decode(e.arguments?.getString("name")?:"Room","UTF-8"),onBack={navController.popBackStack()},onBuddies={navController.navigate(Routes.BUDDIES)})}
 composable(Routes.SETTINGS){SettingsScreen(onBack={navController.popBackStack()},onProfile={navController.navigate(Routes.PROFILE)},onStatus={navController.navigate(Routes.STATUS)},onPassword={navController.navigate(Routes.PASSWORD)},onMobile={navController.navigate(Routes.CHANGE_MOBILE)},onOffline={navController.navigate(Routes.OFFLINE)},onChatroomTones={navController.navigate(Routes.CHATROOM_TONES)})}
 composable(Routes.HELP){HelpScreen{navController.popBackStack()}}
 composable(Routes.PROFILE){ProfileScreen{navController.popBackStack()}}
 composable(Routes.STATUS){StatusScreen(onBack={navController.popBackStack()},onSettings={navController.navigate(Routes.SETTINGS)})}
-composable(Routes.HISTORY){HistoryScreen{navController.popBackStack()}}
+composable(Routes.HISTORY) {
+    HistoryScreen(
+        onBack = { navController.popBackStack() }
+    )
+}
 composable(Routes.REGISTER){RegistrationScreen{navController.popBackStack()}}
 composable(Routes.ABOUT){AboutScreen{navController.popBackStack()}}
 composable(Routes.MENUS){LegacyMenusScreen({navController.popBackStack()},{})}
@@ -28,7 +41,11 @@ composable(Routes.BATTERY){BatterySavingScreen(onBack={navController.popBackStac
 composable(Routes.OFFLINE){OfflineSettingsScreen{navController.popBackStack()}}
 composable(Routes.PURCHASE_HISTORY){PurchaseHistoryScreen{navController.popBackStack()}}
 composable(Routes.CHANGE_MOBILE){ChangeMobileScreen{navController.popBackStack()}}
-composable(Routes.STORED_MESSAGE){StoredMessageScreen{navController.popBackStack()}}
+composable(Routes.STORED_MESSAGE) {
+    StoredMessageScreen(
+        onBack = { navController.popBackStack() }
+    )
+}
 composable(Routes.CHAT_INVITE){e->ChatInviteScreen(java.net.URLDecoder.decode(e.arguments?.getString("name")?:"Room","UTF-8"),onBack={navController.popBackStack()},onMenu={navController.navigate(Routes.MAIN)})}
 composable(Routes.PASSWORD){ChangePasswordScreen{navController.popBackStack()}}
 composable(Routes.CHATROOM_TONES){ChatroomTonesScreen{navController.popBackStack()}}
