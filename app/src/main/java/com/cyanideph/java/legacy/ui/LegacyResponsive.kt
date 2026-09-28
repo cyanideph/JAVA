@@ -100,6 +100,7 @@ fun legacyVisualMetrics(): LegacyVisualMetrics {
 fun LegacyVisualSize(legacyPx: Int): Dp =
     (legacyPx * legacyVisualMetrics().scale).dp
 
+@Composable
 fun LegacyVisualSize(legacyPx: Float): Dp =
     (legacyPx * legacyVisualMetrics().scale).dp
 
