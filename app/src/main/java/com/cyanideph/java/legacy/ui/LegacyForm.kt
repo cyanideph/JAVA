@@ -17,6 +17,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 
+private val LegacyDialogMaxWidth = 640.dp
+
 data class LegacyFormField(
     val key: String,
     val label: String,
@@ -91,7 +93,12 @@ private fun LegacyFieldEditor(
         onDismissRequest = onCancel,
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
-        LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
+        LegacyFrame(
+            Modifier
+                .fillMaxWidth()
+                .widthIn(max = LegacyDialogMaxWidth)
+                .padding(horizontal = 12.dp, vertical = 16.dp)
+        ) {
             Column(Modifier.fillMaxWidth().padding(10.dp)) {
                 LegacyText(field.description)
                 if (field.help.isNotBlank()) {
