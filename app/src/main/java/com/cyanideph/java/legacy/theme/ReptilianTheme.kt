@@ -5,6 +5,7 @@ import androidx.compose.ui.unit.sp
 
 object ReptilianTheme {
     val menuSelected = Color(0xFFB6B6B6)
+    val MenuSelected get() = menuSelected
     val text = Color(0xFF000000)
     val titleBarText = Color(0xFFFFFFFF)
     val functionBarText = Color(0xFFFFFFFF)
