@@ -218,13 +218,13 @@ private fun LegacyMessageList(messages: List<Message>, modifier: Modifier = Modi
 @Composable
 private fun MessageRow(message: Message) {
     val context = LocalContext.current
-    val density = LocalDensity.current
     val icon = LegacyAssets.rememberBitmap(context, if (message.outgoing) "themes/default/sending-message-icon.png" else "themes/default/message.png")
+    val metrics = com.cyanideph.java.legacy.ui.legacyVisualMetrics()
     Row(
         Modifier.fillMaxWidth().background(ReptilianTheme.Surface).padding(horizontal = 5.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(icon, null, Modifier.size(with(density) { icon.width.toDp() }, with(density) { icon.height.toDp() }), contentScale = ContentScale.None)
+        Image(icon, null, Modifier.size((icon.width * metrics.scale).dp, (icon.height * metrics.scale).dp), contentScale = ContentScale.None)
         Spacer(Modifier.width(5.dp))
         Column(Modifier.weight(1f)) {
             LegacyText(message.sender)
@@ -344,13 +344,13 @@ private fun LegacyRecipientDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     val bitmap = LegacyAssets.rememberBitmap(LocalContext.current, statusAsset)
-                    val density = LocalDensity.current
+                    val metrics = com.cyanideph.java.legacy.ui.legacyVisualMetrics()
                     Image(
                         bitmap,
                         null,
                         Modifier.size(
-                            with(density) { bitmap.width.toDp() },
-                            with(density) { bitmap.height.toDp() }
+                            (bitmap.width * metrics.scale).dp,
+                            (bitmap.height * metrics.scale).dp
                         ),
                         contentScale = ContentScale.None
                     )
