@@ -3,15 +3,16 @@ package com.cyanideph.java.ui.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import com.cyanideph.java.legacy.ui.LegacyText
 
 @Composable
 fun HomeScreen() {
     Column(
-        modifier = androidx.compose.ui.Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center
     ) {
-        Text("EM - Buddy List")
+        LegacyText("EM - Buddy List")
     }
 }
