@@ -149,6 +149,7 @@ fun MessagesScreen(
         LegacyMessengerOptions(
             messageType = messageType,
             hasRecipient = recipient.isNotBlank(),
+            hasMultipleRecipients = recipientCount > 1,
             isBuddyInvite = isBuddyInvite,
             onSendNewMessage = { showMessengerOptions = false; showEditor = true },
             onAcceptBuddyInvite = { showMessengerOptions = false; onAcceptBuddyInvite() },
