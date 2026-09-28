@@ -50,7 +50,7 @@ fun MainMenuScreen(
     // Keep the same non-persistent runtime toggle here; no extra UI is rendered by the legacy app.
     var silentModeEnabled by remember { mutableStateOf(false) }
     val items = listOf(
-        LegacyMenuItem("Subscription", "000-smart-small", "000-smart-large", onSubscription),
+        LegacyMenuItem("Subscription", "themes/default/000-smart-small.png", "themes/default/000-smart-large.png", onSubscription),
         LegacyMenuItem("Buddy Matching", "001-abm-small", "001-abm-large", onBuddyMatching),
         LegacyMenuItem("Add or Invite Buddies", "002-buddies-small", "002-buddies-large", onAddInvite),
         LegacyMenuItem("Settings", "003-settings-small", "003-settings-large", onSettings),
