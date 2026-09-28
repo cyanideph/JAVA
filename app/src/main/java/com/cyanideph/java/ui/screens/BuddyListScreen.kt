@@ -132,7 +132,6 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
                     }
                 }
             }
-    }
             if (showNewGroup) {
                 Dialog(onDismissRequest = { showNewGroup = false }) {
                     Column(Modifier.background(ReptilianTheme.Surface).padding(12.dp)) {
