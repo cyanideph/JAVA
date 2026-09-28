@@ -10,9 +10,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 
-fun Modifier.legacyAdaptiveDialogWidth() = widthIn(max = 640.dp)
+/**
+ * Responsive sizing primitives for the legacy Uzzap UI.
+ *
+ * Legacy bitmap dimensions remain intrinsic where pixel parity matters.
+ * Container dimensions, dialogs and popups adapt to the available window.
+ */
+private const val RESPONSIVE_WIDTH_FRACTION = 0.94f
 
-fun Modifier.legacyAdaptivePopupWidth() = widthIn(max = 360.dp)
+fun Modifier.legacyAdaptiveDialogWidth() =
+    fillMaxWidth(RESPONSIVE_WIDTH_FRACTION).widthIn(max = 640.dp)
+
+fun Modifier.legacyAdaptivePopupWidth() =
+    fillMaxWidth(RESPONSIVE_WIDTH_FRACTION).widthIn(max = 360.dp)
+
+fun Modifier.legacyAdaptiveWidth(maxWidth: Dp) =
+    fillMaxWidth(RESPONSIVE_WIDTH_FRACTION).widthIn(max = maxWidth)
 
 @Composable
 fun LegacyAdaptiveDialog(
@@ -24,7 +37,11 @@ fun LegacyAdaptiveDialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
-        Box(Modifier.fillMaxWidth().widthIn(max = maxWidth)) {
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .legacyAdaptiveWidth(maxWidth)
+        ) {
             content()
         }
     }
