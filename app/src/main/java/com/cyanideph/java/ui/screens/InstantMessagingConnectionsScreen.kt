@@ -9,7 +9,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
@@ -53,7 +52,7 @@ fun InstantMessagingConnectionsScreen(onBack: () -> Unit) {
 private fun ConnectionLoginDialog(provider: String, onLogin: () -> Unit, onCancel: () -> Unit) {
     var username by remember(provider) { mutableStateOf("") }
     var password by remember(provider) { mutableStateOf("") }
-    Dialog(onDismissRequest = onCancel) {
+    LegacyAdaptiveDialog(onDismissRequest = onCancel) {
         LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
             Column(Modifier.fillMaxWidth().padding(10.dp)) {
                 LegacyText(if (provider == "Yahoo") "* Connect to Yahoo\n" else "* Connect to MSN\n")
