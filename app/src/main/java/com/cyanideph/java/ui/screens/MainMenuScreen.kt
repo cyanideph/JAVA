@@ -66,25 +66,20 @@ fun MainMenuScreen(
     LegacyBackground(Modifier.fillMaxSize()) {
         BoxWithConstraints(Modifier.fillMaxSize()) {
             val containerMaxHeight = maxHeight
-            val availableWidthPx = with(density) { maxWidth.toPx() }
-            val cellWidthPx = items.maxOf { LegacyAssets.bitmap(context, it.large).width.toFloat() }
-            val cellHeightPx = items.maxOf { LegacyAssets.bitmap(context, it.large).height.toFloat() }
-            val columnCount = maxOf(1, (availableWidthPx / cellWidthPx).toInt())
-            val spacingPx = ((availableWidthPx - columnCount * cellWidthPx) / (columnCount + 1f)).coerceAtLeast(0f)
-            val spacing = with(density) { spacingPx.toDp() }
-            val cellWidth = with(density) { cellWidthPx.toDp() }
-            val cellHeight = with(density) { cellHeightPx.toDp() }
+            val metrics = com.cyanideph.java.legacy.ui.legacyVisualMetrics()
+            val cellWidth = metrics.mainMenuLargeIcon
+            val cellHeight = metrics.mainMenuLargeIcon
+            val columnCount = maxOf(1, (maxWidth / cellWidth).toInt())
+            val spacing = ((maxWidth - columnCount * cellWidth) / (columnCount + 1f)).coerceAtLeast(0.dp)
             val bottomBar = LegacyAssets.rememberBitmap(context, "themes/uzzap/menu-bottombar.png")
-            val fontHeight = with(density) { ReptilianTheme.FontSize.toPx() }
-            val textBarHeight = with(density) { (fontHeight + 8f).toDp() }
-            val bottomBarHeight = with(density) { bottomBar.height.toDp() }
-            val functionBar = LegacyAssets.rememberBitmap(context, "themes/uzzap/functionbar-middle.png")
-            val functionBarHeight = with(density) { functionBar.height.toDp() }
+            val textBarHeight = (ReptilianTheme.FontSize.value + 8f).dp
+            val bottomBarHeight = metrics.menuBottomBarHeight
+            val functionBarHeight = metrics.functionBarHeight
             Column(Modifier.fillMaxSize()) {
                 Box(Modifier.weight(1f).fillMaxWidth()) {
                     val totalRows = (items.size + columnCount - 1) / columnCount
-                    val viewportHeight = containerMaxHeight - textBarHeight - bottomBarHeight - functionBarHeight
-                    val visibleRows = maxOf(1, ((with(density) { viewportHeight.toPx() } + spacingPx) / (cellHeightPx + spacingPx)).toInt())
+                    val viewportHeight = (containerMaxHeight - textBarHeight - bottomBarHeight - functionBarHeight).coerceAtLeast(1.dp)
+                    val visibleRows = maxOf(1, ((viewportHeight + spacing) / (cellHeight + spacing)).toInt())
                     val needsScroll = totalRows > visibleRows
                     val maxFirstRow = (totalRows - visibleRows).coerceAtLeast(0)
                     firstRow = firstRow.coerceIn(0, maxFirstRow)
@@ -101,8 +96,9 @@ fun MainMenuScreen(
                                     val index = items.indexOf(item)
                                     val path = if (index == selected) item.large else item.small
                                     val bitmap = LegacyAssets.rememberBitmap(context, path)
+                                    val iconSize = if (index == selected) metrics.mainMenuLargeIcon else metrics.mainMenuSmallIcon
                                     Box(Modifier.width(cellWidth).fillMaxHeight().clickable { selected = index; item.onClick() }, contentAlignment = Alignment.Center) {
-                                        Image(bitmap, contentDescription = item.label, Modifier.size(with(density) { bitmap.width.toDp() }, with(density) { bitmap.height.toDp() }), contentScale = ContentScale.None)
+                                        Image(bitmap, contentDescription = item.label, Modifier.size(iconSize), contentScale = ContentScale.FillBounds)
                                     }
                                 }
                             }
