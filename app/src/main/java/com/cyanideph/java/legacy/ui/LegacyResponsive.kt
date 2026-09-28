@@ -11,3 +11,9 @@ import androidx.compose.ui.unit.dp
  * available content width is constrained when a device is unusually wide.
  */
 fun Modifier.legacyAdaptiveDialogWidth() = this.widthIn(max = 640.dp)
+
+/**
+ * Keeps legacy popup menus usable on narrow phones while preventing them from
+ * becoming excessively wide on tablets/foldables.
+ */
+fun Modifier.legacyAdaptivePopupWidth() = this.widthIn(max = 360.dp)
