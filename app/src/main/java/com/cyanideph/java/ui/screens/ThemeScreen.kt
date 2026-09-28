@@ -39,7 +39,7 @@ fun ThemeScreen(onBack: () -> Unit) {
             Column(Modifier.weight(1f).fillMaxWidth()) {
                 val context = LocalContext.current
                 val density = LocalDensity.current
-                val arrow = LegacyAssets.rememberBitmap(context, "small-arrow")
+                val arrow = LegacyAssets.rememberBitmap(context, "themes/default/small-arrow.png")
                 themes.forEach { theme ->
                     androidx.compose.foundation.layout.Row(
                         Modifier.fillMaxWidth()
