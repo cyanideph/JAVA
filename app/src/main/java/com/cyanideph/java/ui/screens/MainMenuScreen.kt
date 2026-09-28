@@ -116,7 +116,7 @@ fun MainMenuScreen(
                     }
                 }
                 Box(Modifier.fillMaxWidth().height(textBarHeight).background(ReptilianTheme.MainMenuBar).clickable { showOptions = true }, contentAlignment = Alignment.Center) { LegacyText(items.getOrNull(selected)?.label.orEmpty()) }
-                Image(bottomBar, contentDescription = null, Modifier.fillMaxWidth().height(bottomBarHeight), contentScale = ContentScale.Tile)
+                Image(bottomBar, contentDescription = null, Modifier.fillMaxWidth().height(bottomBarHeight), contentScale = ContentScale.FillBounds)
                 LegacyFunctionBar(leftLabel = "Options", rightLabel = "Exit", modifier = Modifier.fillMaxWidth(), onLeftClick = { showOptions = true }, onRightClick = onExit)
             }
             if (showOptions) LegacyOptionsPopup(onDismiss = { showOptions = false }, onLogOff = onLogOff, onAbout = onAbout, onExit = onExit)
