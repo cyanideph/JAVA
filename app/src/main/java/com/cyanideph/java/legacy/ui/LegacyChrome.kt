@@ -113,7 +113,7 @@ private val legacyFunctionStyle get() = TextStyle(color=ReptilianTheme.FunctionB
       LegacyText(label,Modifier.align(androidx.compose.ui.Alignment.Center))
       val s=indicators.getOrNull(i)?:0
       val icon=when(s){1->iu;2->iss;3->ius;else->ic}
-      if(s!=0)Image(icon,null,Modifier.size(icon.width*metrics.scale.dp,icon.height*metrics.scale.dp).align(androidx.compose.ui.Alignment.TopEnd))
+      if(s!=0)Image(icon,null,Modifier.size((icon.width*metrics.scale).dp,(icon.height*metrics.scale).dp).align(androidx.compose.ui.Alignment.TopEnd))
      }
     }
    }
