@@ -17,6 +17,9 @@ private const val LEGACY_REFERENCE_WIDTH_DP = 320f
 private const val LEGACY_MIN_SCALE = 0.82f
 private const val LEGACY_MAX_SCALE = 1.20f
 
+/** Legacy reference width is a reconstructed visual baseline, not a claimed original handset resolution. */
+private const val LEGACY_REFERENCE_WIDTH_LABEL = "legacy-reference-width"
+
 /**
  * Shared coordinate system for legacy Uzzap artwork.
  *
@@ -26,6 +29,15 @@ private const val LEGACY_MAX_SCALE = 1.20f
  */
 data class LegacyVisualMetrics(
     val scale: Float,
+    val space4: Dp,
+    val space5: Dp,
+    val space6: Dp,
+    val space8: Dp,
+    val space10: Dp,
+    val space12: Dp,
+    val space16: Dp,
+    val space18: Dp,
+    val space24: Dp,
     val titleBarHeight: Dp,
     val functionBarHeight: Dp,
     val menuBottomBarHeight: Dp,
@@ -40,6 +52,8 @@ data class LegacyVisualMetrics(
 
 private val DefaultLegacyVisualMetrics = LegacyVisualMetrics(
     scale = 1f,
+    space4 = 4.dp, space5 = 5.dp, space6 = 6.dp, space8 = 8.dp,
+    space10 = 10.dp, space12 = 12.dp, space16 = 16.dp, space18 = 18.dp, space24 = 24.dp,
     titleBarHeight = 32.dp,
     functionBarHeight = 32.dp,
     menuBottomBarHeight = 64.dp,
@@ -60,6 +74,15 @@ fun legacyVisualMetrics(): LegacyVisualMetrics {
         .coerceIn(LEGACY_MIN_SCALE, LEGACY_MAX_SCALE)
     return LegacyVisualMetrics(
         scale = scale,
+        space4 = (4f * scale).dp,
+        space5 = (5f * scale).dp,
+        space6 = (6f * scale).dp,
+        space8 = (8f * scale).dp,
+        space10 = (10f * scale).dp,
+        space12 = (12f * scale).dp,
+        space16 = (16f * scale).dp,
+        space18 = (18f * scale).dp,
+        space24 = (24f * scale).dp,
         titleBarHeight = (32f * scale).dp,
         functionBarHeight = (32f * scale).dp,
         menuBottomBarHeight = (64f * scale).dp,
@@ -75,6 +98,9 @@ fun legacyVisualMetrics(): LegacyVisualMetrics {
 
 @Composable
 fun LegacyVisualSize(legacyPx: Int): Dp =
+    (legacyPx * legacyVisualMetrics().scale).dp
+
+fun LegacyVisualSize(legacyPx: Float): Dp =
     (legacyPx * legacyVisualMetrics().scale).dp
 
 fun Modifier.legacyAdaptiveDialogWidth() =
