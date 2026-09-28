@@ -2,6 +2,7 @@ package com.cyanideph.java.legacy.theme
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import kotlin.jvm.JvmName
 
 object ReptilianTheme {
     val menuSelected = Color(0xFFB6B6B6)
