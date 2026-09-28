@@ -14,7 +14,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
@@ -201,7 +200,7 @@ private fun LegacyMessengerOptions(
         }
         add("Close Tab" to onCloseTab)
     }
-    Dialog(onDismissRequest = onCloseTab) {
+    LegacyAdaptiveDialog(onDismissRequest = onCloseTab, maxWidth = 360.dp) {
         Column(Modifier.background(ReptilianTheme.Surface)) {
             options.forEach { (label, action) ->
                 LegacyText(label, Modifier.fillMaxWidth().clickable(onClick = action).padding(horizontal = 18.dp, vertical = 9.dp))
@@ -263,7 +262,7 @@ private fun LegacyMessageOptions(
         }
         add("Add Emoticon" to onEmoticon)
     }
-    Dialog(onDismissRequest = onDismiss) {
+    LegacyAdaptiveDialog(onDismissRequest = onDismiss, maxWidth = 640.dp) {
         Column(Modifier.background(ReptilianTheme.Surface)) {
             options.forEach { (label, action) ->
                 LegacyText(
@@ -286,7 +285,7 @@ private fun LegacyEditorDialog(
     onCancel: () -> Unit
 ) {
     var draft by remember(value) { mutableStateOf(value) }
-    Dialog(onDismissRequest = onCancel) {
+    LegacyAdaptiveDialog(onDismissRequest = onCancel, maxWidth = 640.dp) {
         Column(Modifier.background(ReptilianTheme.Surface).padding(10.dp)) {
             LegacyText("Type your message")
             BasicTextField(
@@ -316,7 +315,7 @@ private fun LegacyRecipientDialog(
     val sorted = remember(contacts) { contacts.sortedBy { it.displayName.lowercase() } }
     val filtered = sorted.filter { it.displayName.contains(query.trim(), ignoreCase = true) }
 
-    Dialog(onDismissRequest = onDismiss) {
+    LegacyAdaptiveDialog(onDismissRequest = onDismiss, maxWidth = 360.dp) {
         Column(Modifier.background(ReptilianTheme.Surface).padding(6.dp)) {
             LegacyText("Recipient", Modifier.padding(6.dp))
             BasicTextField(value = query, onValueChange = { query = it }, modifier = Modifier.fillMaxWidth().padding(6.dp), singleLine = true)
