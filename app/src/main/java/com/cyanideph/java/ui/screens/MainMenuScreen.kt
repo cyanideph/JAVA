@@ -51,7 +51,7 @@ fun MainMenuScreen(
     var silentModeEnabled by remember { mutableStateOf(false) }
     val items = listOf(
         LegacyMenuItem("Subscription", "themes/default/000-smart-small.png", "themes/default/000-smart-large.png", onSubscription),
-        LegacyMenuItem("Buddy Matching", "001-abm-small", "001-abm-large", onBuddyMatching),
+        LegacyMenuItem("Buddy Matching", "themes/default/001-abm-small.png", "themes/default/001-abm-large.png", onBuddyMatching),
         LegacyMenuItem("Add or Invite Buddies", "002-buddies-small", "002-buddies-large", onAddInvite),
         LegacyMenuItem("Settings", "003-settings-small", "003-settings-large", onSettings),
         LegacyMenuItem("Silent Mode", "008-ringtone-small", "008-ringtone-large", { silentModeEnabled = !silentModeEnabled; onSilentMode(silentModeEnabled) }),
