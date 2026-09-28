@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
 
@@ -53,7 +52,7 @@ fun HistoryScreen(
     }
 
     if (showOptions) {
-        Dialog(onDismissRequest = { showOptions = false }) {
+        LegacyAdaptiveDialog(onDismissRequest = { showOptions = false }, maxWidth = 360.dp) {
             Column(Modifier.background(ReptilianTheme.Surface)) {
                 if (messages.isNotEmpty()) {
                     LegacyText(
