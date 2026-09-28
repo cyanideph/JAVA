@@ -34,8 +34,16 @@ fun LegacyFormList(
     modifier: Modifier = Modifier
 ) {
     var editing by remember { mutableStateOf<String?>(null) }
+    val metrics = legacyVisualMetrics()
     LegacyFrame(modifier.fillMaxWidth()) {
-        Column(Modifier.fillMaxWidth()) {
+        // Keep form content inside the legacy frame's drawable border.
+        // Without this inner inset, the first glyph of each label can render
+        // underneath the left frame edge on narrow/legacy-scaled viewports.
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = metrics.space6)
+        ) {
             fields.forEach { field ->
                 Column(
                     Modifier
