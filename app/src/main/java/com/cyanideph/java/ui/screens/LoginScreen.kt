@@ -445,8 +445,7 @@ private fun LegacyNetworkLoginScreen(
                                 .apply()
                             showAutoLogin = false
                             onLogin()
-                        })
-                            .padding(8.dp))
+                        }.padding(8.dp))
 
                         LegacyText("No", Modifier.clickable {
                             prefs.edit()
@@ -456,8 +455,7 @@ private fun LegacyNetworkLoginScreen(
                                 .apply()
                             showAutoLogin = false
                             onLogin()
-                        })
-                            .padding(8.dp))
+                        }.padding(8.dp))
                     }
                 }
             }
