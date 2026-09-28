@@ -301,7 +301,6 @@ Copyright (c) 2007/2008 3rd Brand Pte Ltd. All Rights Reserved."""
                 ) {
                     LegacyText(helpText)
                 }
-            }
             LegacyFunctionBar(
                 leftLabel = "Options",
                 rightLabel = "Back",
