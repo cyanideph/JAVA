@@ -58,7 +58,7 @@ fun MainMenuScreen(
         LegacyMenuItem("Themes", "themes/default/005-themes-small.png", "themes/default/005-themes-large.png", onThemes),
         LegacyMenuItem("Help", "themes/default/006-help-small.png", "themes/default/006-help-large.png", onHelp),
         LegacyMenuItem("Battery Saving", "themes/default/007-batteryinfo-small.png", "themes/default/007-batteryinfo-large.png", onBatterySaving),
-        LegacyMenuItem("Extended Messaging", "d000-em-small", "d000-em-large", onMessages),
+        LegacyMenuItem("Extended Messaging", "themes/default/d000-em-small.png", "themes/default/d000-em-large.png", onMessages),
         LegacyMenuItem("Instant Messaging", "d001-im-small", "d001-im-large", onInstantMessaging),
         LegacyMenuItem("Chat Rooms", "d002-chat-small", "d002-chat-large", onRooms),
         LegacyMenuItem("Change Status", "d003-status-small", "d003-status-large", onStatus)
