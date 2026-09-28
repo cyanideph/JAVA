@@ -259,7 +259,7 @@ fun StoredMessageScreen(
             LegacyTitleBar("Stored Message", Modifier.fillMaxWidth())
             Spacer(Modifier.weight(1f))
             LegacyFunctionBar(
-                "Options","Buddies",Modifier.fillMaxWidth(),
+                modifier=Modifier.fillMaxWidth(), leftLabel="Options", rightLabel="Buddies",
                 onLeftClick = { showOptions = true },
                 onRightClick = onBack
             )
@@ -291,7 +291,7 @@ private fun LegacyTextScreen(title: String, resource: String, left: String, righ
             LegacyTitleBar(title, Modifier.fillMaxWidth())
             if (resource.isNotEmpty()) LegacyText(resource, Modifier.padding(6.dp))
             Spacer(Modifier.weight(1f))
-            LegacyFunctionBar(left,right,Modifier.fillMaxWidth())
+            LegacyFunctionBar(modifier=Modifier.fillMaxWidth(),leftLabel=left,rightLabel=right)
         }
     }
 }
@@ -324,7 +324,7 @@ fun AddInviteBuddiesScreen(onBack: () -> Unit, onBuddies: () -> Unit, onAddOther
                 }
             }
             LegacyFunctionBar(
-                "Select","Close",Modifier.fillMaxWidth(),
+                modifier=Modifier.fillMaxWidth(), leftLabel="Select", rightLabel="Close",
                 onLeftClick={
                     when(selected){1,2->onBuddies();3->onAddOther();else->onBack()}
                 },
