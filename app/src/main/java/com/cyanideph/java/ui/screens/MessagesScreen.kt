@@ -238,6 +238,7 @@ private fun MessageRow(message: Message) {
 private fun LegacyMessageOptions(
     onDismiss: () -> Unit,
     hasRecipient: Boolean,
+    hasMultipleRecipients: Boolean,
     messageType: String,
     onEdit: () -> Unit,
     onRecipient: () -> Unit,
