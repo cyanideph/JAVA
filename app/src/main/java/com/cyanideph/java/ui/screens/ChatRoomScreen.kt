@@ -6,6 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.cyanideph.java.legacy.ui.*
 
 @Composable
@@ -50,8 +51,16 @@ fun ChatRoomScreen(room: String, onBack: () -> Unit, onBuddies: () -> Unit) {
         }
     }
 
-    if (showOptions) Dialog(onDismissRequest = { showOptions = false }) {
-        LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
+    if (showOptions) Dialog(
+        onDismissRequest = { showOptions = false },
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        LegacyFrame(
+            Modifier
+                .fillMaxWidth()
+                .legacyAdaptivePopupWidth()
+                .padding(16.dp)
+        ) {
             Column(Modifier.fillMaxWidth()) {
                 actions.forEach { action ->
                     LegacyText(action, Modifier.fillMaxWidth().clickable {
