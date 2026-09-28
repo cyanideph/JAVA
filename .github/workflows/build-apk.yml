@@ -1,4 +1,5 @@
 name: Build Android APK
+# Trigger validation after latest frontend compile fix.
 
 on:
   workflow_dispatch:
