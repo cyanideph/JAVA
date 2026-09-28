@@ -70,7 +70,7 @@ fun MainMenuScreen(
             val cellWidth = metrics.mainMenuLargeIcon
             val cellHeight = metrics.mainMenuLargeIcon
             val columnCount = maxOf(1, (maxWidth / cellWidth).toInt())
-            val spacing = ((maxWidth - columnCount * cellWidth) / (columnCount + 1f)).coerceAtLeast(0.dp)
+            val spacing = ((maxWidth.value - columnCount * cellWidth.value) / (columnCount + 1f)).coerceAtLeast(0f).dp
             val bottomBar = LegacyAssets.rememberBitmap(context, "themes/uzzap/menu-bottombar.png")
             val textBarHeight = (ReptilianTheme.FontSize.value + 8f).dp
             val bottomBarHeight = metrics.menuBottomBarHeight
