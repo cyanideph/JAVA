@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.unit.dp
 import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.theme.ReptilianTheme
@@ -116,7 +115,7 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
             }
         }
             if (showGroups) {
-                Dialog(onDismissRequest = { showGroups = false }) {
+                LegacyAdaptiveDialog(onDismissRequest = { showGroups = false }, maxWidth = 360.dp) {
                     Column(Modifier.background(ReptilianTheme.Surface)) {
                         legacyGroups.forEachIndexed { index, group ->
                             LegacyText(
@@ -133,7 +132,7 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
                 }
             }
             if (showNewGroup) {
-                Dialog(onDismissRequest = { showNewGroup = false }) {
+                LegacyAdaptiveDialog(onDismissRequest = { showNewGroup = false }, maxWidth = 360.dp) {
                     Column(Modifier.background(ReptilianTheme.Surface).padding(12.dp)) {
                         LegacyText("New Group", Modifier.padding(bottom = 8.dp))
                         BasicTextField(value = newGroupName, onValueChange = { newGroupName = it.take(50) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
@@ -142,7 +141,7 @@ fun BuddyListScreen(onBack: () -> Unit, onAddInvite: () -> Unit = {}, onHelp: ()
                 }
             }
             if (showManageGroups) {
-                Dialog(onDismissRequest = { showManageGroups = false }) {
+                LegacyAdaptiveDialog(onDismissRequest = { showManageGroups = false }, maxWidth = 360.dp) {
                     Column(Modifier.background(ReptilianTheme.Surface)) {
                         LegacyText("Rename Group", Modifier.fillMaxWidth().clickable { showManageGroups = false }.padding(horizontal = 18.dp, vertical = 9.dp))
                         val group = legacyGroups[selectedGroup].first
@@ -202,7 +201,7 @@ private fun BuddyOptionsPopup(
         if (searchActive) add("Clear Search Bar")
         add("Uzzap Help")
     }
-    androidx.compose.ui.window.Dialog(onDismissRequest = onDismiss) {
+    LegacyAdaptiveDialog(onDismissRequest = onDismiss, maxWidth = 360.dp) {
         Column(Modifier.wrapContentWidth().background(ReptilianTheme.Surface)) {
             options.forEach { label ->
                 LegacyText(
@@ -271,7 +270,7 @@ private fun BuddyContactOptionsPopup(
         if (buddy.hasAmazCid && !buddy.isOtherContact && (usernamePresent.not() || eligible)) add("View History")
     }
 
-    Dialog(onDismissRequest = onDismiss) {
+    LegacyAdaptiveDialog(onDismissRequest = onDismiss, maxWidth = 360.dp) {
         Column(Modifier.wrapContentWidth().background(ReptilianTheme.Surface)) {
             options.forEach { label ->
                 LegacyText(
