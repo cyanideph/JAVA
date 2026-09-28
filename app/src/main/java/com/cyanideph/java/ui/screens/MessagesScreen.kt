@@ -390,7 +390,7 @@ private fun LegacyEmoticonDialog(onPick: (String) -> Unit, onDismiss: () -> Unit
         ">><)" to "themes/default/emoticon-47.png", "<:D" to "themes/default/emoticon-clown.png", "(cU)" to "themes/default/emoticon-drink.png", "<:)" to "themes/default/emoticon-party.png",
         "(+)" to "themes/default/emoticon-sick.png", ":-)" to "themes/default/emoticon-smile.png", ":-(" to "themes/default/emoticon-sad.png", "@};-" to "themes/default/emoticon-rose.png"
     )
-    Dialog(onDismissRequest = onDismiss) {
+    LegacyAdaptiveDialog(onDismissRequest = onDismiss, maxWidth = 360.dp) {
         Column(Modifier.background(ReptilianTheme.Surface).padding(6.dp)) {
             entries.chunked(4).forEach { row ->
                 Row {
