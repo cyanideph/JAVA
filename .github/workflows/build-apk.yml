@@ -1,5 +1,6 @@
 name: Build Android APK
 # Validate legacy theme asset fix.
+# Automatic main-branch build trigger.
 
 on:
   workflow_dispatch:
