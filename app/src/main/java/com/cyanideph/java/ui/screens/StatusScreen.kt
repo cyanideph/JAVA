@@ -9,7 +9,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.cyanideph.java.legacy.assets.LegacyAssets
 import com.cyanideph.java.legacy.theme.ReptilianTheme
 import com.cyanideph.java.legacy.ui.*
@@ -56,7 +55,7 @@ fun StatusScreen(onBack: () -> Unit, onSettings: () -> Unit = {}) {
     }
 
     if (showStatusMessage) {
-        Dialog(onDismissRequest = { showStatusMessage = false }) {
+        LegacyAdaptiveDialog(onDismissRequest = { showStatusMessage = false }) {
             LegacyFrame(Modifier.fillMaxWidth().padding(16.dp)) {
                 Column(Modifier.fillMaxWidth().padding(10.dp)) {
                     LegacyText("Your status message")
